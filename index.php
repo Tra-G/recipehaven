@@ -44,11 +44,11 @@ if ($route) {
             require('views/' . $view . '.php');
         }
     } else {
-        // If the action does not exist in the controller, redirect to the 404 page
+        // If the action does not exist in the controller, send 404 error code
         http_response_code(404);
     }
 } else {
-    // If the URL is not valid, redirect to the 404 page
+    // If the URL is not valid, send 404 error code
     http_response_code(404);
 }
 

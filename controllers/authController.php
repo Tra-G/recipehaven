@@ -1,60 +1,72 @@
 <?php
 
-// load the functions
-require_once(__DIR__ . "/../models/functions.php");
-
 class authController {
 
-    // login page
+    // login
     public function login() {
         $title = pageTitle("Login");
         $errors = [];
 
         // Go to dashboard if user is logged in
         if (isUserLoggedIn()){
-            route("user/dashboard");
+            redirect("user/dashboard");
             exit();
         }
 
         // check if form is submitted
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $email = trim($_POST['email']);
-            $password = trim($_POST['password']);
+        if (is_post_set('email', 'password')) {
 
-            if (empty($email) || empty($password)) {
-                $errors[] = "All fields are required.";
-            }
+            // get data from form
+            $loginData = array(
+                'email' => $_POST['email'],
+                'password' => $_POST['password'],
+            );
 
-            $user = getRowBySelector('users', 'email', $email);
-            if ($user) {
-                $hashed_password = $user['password'];
-                if(password_verify($password, $hashed_password)){
+            // validate data
+            $errors = (new FormValidator($loginData))
+                ->validateEmail()
+                ->validatePassword()
+                ->getErrors();
 
-                    // Unset all session variables
-                    session_unset();
-                    session_regenerate_id(true);
+            // if no errors, check if user exists
+            if (empty($errors)) {
+                $user = getRowBySelector('users', 'email', $loginData['email']);
 
-                    $_SESSION["logged"] = true;
-                    $_SESSION["user_id"] = $user['id'];
+                // check if user exists
+                if ($user) {
+                    $hashed_password = $user['password'];
 
-                    // go to proper dashboard
-                    if ($user["role"] == "admin")
-                        route("admin/dashboard");
-                    else if ($user["role"] == "user")
-                        route("user/dashboard");
-                    else
-                        $errors[] = "No user found";
+                    // check if password is correct
+                    if(password_verify($loginData['password'], $hashed_password)){
+
+                        // Unset all session variables
+                        session_unset();
+                        session_regenerate_id(true);
+
+                        $_SESSION["user_id"] = $user['id'];
+
+                        // go to proper dashboard
+                        if ($user["role"] == "admin")
+                            redirect("admin/dashboard");
+                        else if ($user["role"] == "user")
+                            redirect("user/dashboard");
+                        else
+                            $errors[] = "Incorrect details";
+                    }
+                    else{
+                        $errors[] = "Incorrect details";
+                    }
                 }
-                else{
-                    $errors[] = "Incorrect password";
+                else {
+                    $errors[] = "Incorrect details";
                 }
-            }
-            else {
-                $errors[] = "Email was not found";
             }
         }
 
-        return array('title' => $title, 'errors' => $errors);
+        return array(
+            'title' => $title,
+            'errors' => $errors
+        );
     }
 
     // register page
@@ -64,67 +76,44 @@ class authController {
 
         // Go to dashboard if user is logged in
         if (isUserLoggedIn()){
-            route("user/dashboard");
+            redirect("user/dashboard");
             exit();
         }
 
         // check if form is submitted
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $name = trim($_POST['name']);
-            $email = trim($_POST['email']);
-            $password = trim($_POST['password']);
-            $phone = trim($_POST['phone']);
-            $address = trim($_POST['address']);
-            $city = trim($_POST['city']);
-            $zip = trim($_POST['zip']);
+        if (is_post_set('email', 'password', 'first_name', 'last_name')) {
 
-            // $states = array(
-            //     "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno",
-            //     "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "Federal Capital Territory",
-            //     "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara",
-            //     "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers",
-            //     "Sokoto", "Taraba", "Yobe", "Zamfara"
-            // );
-            // if (!in_array($state, $states)) {
-            //     $errors[] = "Invalid state";
-            // }
+            // get data from form
+            $registerData = array(
+                'email' => $_POST['email'],
+                'first_name' => $_POST['first_name'],
+                'last_name' => $_POST['last_name'],
+                'password' => $_POST['password'],
+            );
 
-            if (empty($name) || empty($email) || empty($password) || empty($phone) || empty($address) || empty($city) || empty($zip)) {
-                $errors[] = "All fields are required.";
+            // validate data
+            $errors = (new FormValidator($registerData))
+                ->validateEmail()
+                ->validateText('first_name')
+                ->validateText('last_name')
+                ->validatePassword()
+                ->getErrors();
+
+            // check if email already exists
+            if (getRowBySelector('users', 'email', $registerData['email'])) {
+                $errors['email'] = "Email already exists";
             }
 
-            // Validate email
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = "Invalid email format.";
-            }
-            if (getRowBySelector('users', 'email', $email)) {
-                $errors[] = "Email is already taken.";
-            }
+            // if no errors, insert data into database
+            if (empty($errors)) {
+                $hashed_password = password_hash($registerData['password'], PASSWORD_DEFAULT);
 
-            // Validate phone number
-            if (getRowBySelector('users', 'phone', $phone)) {
-                $errors[] = "Phone number is already taken.";
-            }
-            if (!ctype_digit($phone)) {
-                $errors[] = "Phone number is not valid";
-            }
+                // prepare data for database
+                $db_data = $registerData;
+                $db_data['role'] = 'user';
+                $db_data['password'] = $hashed_password;
 
-            // Insert if no error
-            if (count($errors) == 0) {
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-                $data_array = array(
-                    'role' => 'user',
-                    'name' => $name,
-                    'email' => $email,
-                    'password' => $hashed_password,
-                    'phone' => $phone,
-                    'address' => $address,
-                    'city' => $city,
-                    'zip' => $zip,
-                );
-
-                $id = insertRow('users', $data_array);
+                $id = insertRow('users', $db_data);
                 if ($id) {
                     // Unset all session variables
                     session_unset();
@@ -132,14 +121,16 @@ class authController {
 
                     // Set session variables
                     $_SESSION['user_id'] = $id;
-                    $_SESSION['logged'] = true;
 
-                    route("user/dashboard");
+                    redirect("user/dashboard");
                 }
             }
         }
 
-        return array('title' => $title, 'errors' => $errors);
+        return array(
+            'title' => $title,
+            'errors' => $errors
+        );
     }
 
     // logout
@@ -151,7 +142,7 @@ class authController {
         session_destroy();
 
         // Redirect to the login page
-        route("login");
+        redirect("login");
     }
 }
 

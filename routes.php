@@ -20,10 +20,12 @@ function r($route) {
 $routes = array(
     // Front pages
     r('') => router('homeController', 'index', 'index'),
+    r('all') => router('homeController', 'allRecipe', 'recipes'),
     r('about') => router('homeController', 'about', 'about'),
     r('contact') => router('homeController', 'contact', 'contact'),
     r('blog') => router('homeController', 'blog', 'blog/index'),
     r('blog/{id}') => router('homeController', 'post', 'blog/single'),
+    r('search') => router('homeController', 'search', 'search'),
 
     // Authentication
     r('login') => router('authController', 'login', 'auth/login'),

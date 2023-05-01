@@ -355,6 +355,16 @@ function isUserLoggedIn() {
     return false;
 }
 
+// Checks if form is submitted
+function is_post_set(...$names) {
+    foreach ($names as $name) {
+        if (!isset($_POST[$name])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Form input validator
 class FormValidator {
     private $formData;
@@ -426,9 +436,9 @@ class FormValidator {
             $this->errors['password'] = 'Password is required';
         } else {
             $password = $this->sanitizeInput($this->formData['password']);
-            if (strlen($password) < 8) {
-                $this->errors['password'] = 'Password must be at least 8 characters';
-            }
+            // if (strlen($password) < 8) {
+            //     $this->errors['password'] = 'Password must be at least 8 characters';
+            // }
         }
 
         // Return $this to enable method chaining
@@ -508,11 +518,11 @@ class FormValidator {
 
     public function validateText($fieldName) {
         if (empty($this->formData[$fieldName])) {
-            $this->errors[$fieldName] = ucfirst($fieldName) . ' is required';
+            $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' is required';
         } else {
             $text = $this->sanitizeInput($this->formData[$fieldName]);
             if (!preg_match("/^[a-zA-Z0-9\s]+$/", $text)) {
-                $this->errors[$fieldName] = ucfirst($fieldName) . ' can only contain alphanumeric characters and spaces';
+                $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' can only contain alphanumeric characters and spaces';
             }
         }
 
@@ -521,11 +531,11 @@ class FormValidator {
 
     public function validateLongText($fieldName) {
         if (empty($this->formData[$fieldName])) {
-            $this->errors[$fieldName] = ucfirst($fieldName) . ' is required';
+            $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' is required';
         } else {
             $longText = $this->sanitizeInput($this->formData[$fieldName]);
             if (strlen($longText) < 20) {
-                $this->errors[$fieldName] = ucfirst($fieldName) . ' must be at least 20 characters';
+                $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' must be at least 20 characters';
             }
         }
 
@@ -550,11 +560,11 @@ class FormValidator {
 
     public function validateNumber($fieldName) {
         if (empty($this->formData[$fieldName])) {
-            $this->errors[$fieldName] = ucfirst($fieldName) . ' is required';
+            $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' is required';
         } else {
             $number = $this->sanitizeInput($this->formData[$fieldName]);
             if (!is_numeric($number)) {
-                $this->errors[$fieldName] = ucfirst($fieldName) . ' must be a number';
+                $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' must be a number';
             }
         }
 
