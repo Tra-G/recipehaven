@@ -20,7 +20,7 @@ function r($route) {
 $routes = array(
     // Front pages
     r('') => router('homeController', 'index', 'index'),
-    r('all') => router('homeController', 'allRecipe', 'recipes'),
+    r('recipes') => router('homeController', 'allRecipe', 'recipes'),
     r('about') => router('homeController', 'about', 'about'),
     r('contact') => router('homeController', 'contact', 'contact'),
     r('blog') => router('homeController', 'blog', 'blog/index'),

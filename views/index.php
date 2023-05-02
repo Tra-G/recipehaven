@@ -8,7 +8,7 @@
     <nav>
         <ul>
             <li><a href="<?php echo route(''); ?>">Home</a></li>
-            <li><a href="<?php echo route('all'); ?>">All Recipes</a></li>
+            <li><a href="<?php echo route('recipes'); ?>">All Recipes</a></li>
             <li><a href="<?php echo route('about'); ?>">About</a></li>
             <li><a href="<?php echo route('blog'); ?>">Blog</a></li>
             <li><a href="<?php echo route('contact'); ?>">Contact</a></li>
