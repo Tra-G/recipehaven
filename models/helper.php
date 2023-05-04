@@ -1,5 +1,13 @@
 <?php
 
+// Load PHPMailer classes
+require_once(__DIR__.'/phpmailer/src/PHPMailer.php');
+require_once(__DIR__.'/phpmailer/src/SMTP.php');
+require_once(__DIR__.'/phpmailer/src/Exception.php');
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 /**
  * CRUD OPERATIONS
  *
@@ -170,21 +178,23 @@ function updateRowBySelector($table, $data, $selectorColumn, $selectorValue) {
 }
 
 
-function deleteRowBySelector($table, $selectorColumn, $selectorValue) {
+function deleteRowBySelector($table, $selectorColumn = null, $selectorValue = null) {
     $conn = db_connect();
-    // Construct the SQL query
-    $sql = "DELETE FROM $table WHERE $selectorColumn = " . $conn->real_escape_string($selectorValue);
 
-    // Execute the query
-    if ($conn->query($sql) === TRUE) {
-        // If the query was successful, return the number of rows affected
-        $affected_rows = $conn->affected_rows;
+    // Use prepared statements to prevent SQL injection
+    if ($selectorColumn && $selectorValue) {
+        $stmt = $conn->prepare("DELETE FROM $table WHERE $selectorColumn = ?");
+        $stmt->bind_param("s", $selectorValue);
     } else {
-        // If the query failed, return null
-        $affected_rows = null;
+        $stmt = $conn->prepare("DELETE FROM $table");
     }
 
-    // Close the database connection
+    // Execute the query
+    $stmt->execute();
+    $affected_rows = $stmt->affected_rows;
+
+    // Close the statement and database connection
+    $stmt->close();
     mysqli_close($conn);
 
     return $affected_rows;
@@ -364,6 +374,50 @@ function is_post_set(...$names) {
         }
     }
     return true;
+}
+
+// Generate token
+function generate_token($length=32) {
+    return bin2hex(random_bytes($length));
+}
+
+// email sending function with option for smtp without phpmailer and normal mail
+function send_email($to, $subject, $message, $headers = null) {
+    if (getenv('SMTP_ENABLED') == 'true') {
+        // SMTP enabled
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->SMTPDebug = 0; // Enable verbose debug output
+            $mail->isSMTP(); // Set mailer to use SMTP
+            $mail->Host = $_ENV['SMTP_HOST']; // Specify main and backup SMTP servers
+            $mail->SMTPAuth = true; // Enable SMTP authentication
+            $mail->Username = $_ENV['SMTP_USERNAME']; // SMTP username
+            $mail->Password = $_ENV['SMTP_PASSWORD']; // SMTP password
+            $mail->SMTPSecure = $_ENV['SMTP_ENCRYPTION']; // Enable TLS encryption, `ssl` also accepted
+            $mail->Port = $_ENV['SMTP_PORT']; // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom($_ENV['SMTP_FROM_EMAIL'], $_ENV['SMTP_FROM_NAME']);
+            $mail->addAddress($to); // Add a recipient
+
+            //Content
+            $mail->isHTML(true); // Set email format to HTML
+            $mail->Subject = $subject;
+            $mail->Body = $message;
+
+            $mail->send();
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    } else {
+        // SMTP disabled
+        if (mail($to, $subject, $message, $headers))
+            return true;
+        else
+            return false;
+    }
 }
 
 // Form input validator
