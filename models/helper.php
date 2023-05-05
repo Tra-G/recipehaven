@@ -336,7 +336,7 @@ date_default_timezone_set($_ENV['TIME_ZONE']);
 
 // dynamic page title
 function pageTitle($site_name){
-	return  $_ENV['SITE_NAME'] . " | ".$site_name;
+	return  $site_name . " | " . $_ENV['SITE_NAME'];
 }
 
 // This function redirects the user to a specified URL by sending a Location header
@@ -345,8 +345,16 @@ function redirect($url) {
 }
 
 // This function returns the full URL for a given path by concatenating the APP_ROOT constant with the provided URL
-function route($url) {
-    return APP_ROOT . '/'.$url;
+function route($url, $params = []) {
+    $query = '';
+    foreach ($params as $name => $value) {
+        $query .= '&' . urlencode($name) . '=' . urlencode($value);
+    }
+    $query = ltrim($query, '&');
+    if (!empty($query)) {
+        $url .= '?' . $query;
+    }
+    return APP_ROOT . '/' . $url;
 }
 
 
@@ -686,17 +694,57 @@ class Recipe {
         $sql = "SELECT * FROM recipes WHERE id = ?";
         $params = array($id);
         $stmt = $this->executeQuery($sql, $params);
-        $recipe = $stmt->fetch();
+        $result = $stmt->get_result();
+        $recipe = $result->fetch_assoc();
         return $recipe;
     }
 
-    // fetch all recipes
-    public function getAllRecipes() {
-        $sql = "SELECT * FROM recipes";
-        $stmt = $this->executeQuery($sql, array());
+    // fetch all recipes and add page and perpage
+    public function getAllRecipes($page = 1, $perPage = 10) {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT * FROM recipes LIMIT ?, ?";
+        $params = array($offset, $perPage);
+        $stmt = $this->executeQuery($sql, $params);
         $result = $stmt->get_result();
         $recipes = $result->fetch_all(MYSQLI_ASSOC);
         return $recipes;
+    }
+
+    // get recipes by status
+    public function getRecipesByStatus($status, $page = 1, $perPage = 10) {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT * FROM recipes WHERE status = ? LIMIT ?, ?";
+        $params = array($status, $offset, $perPage);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $recipes = $result->fetch_all(MYSQLI_ASSOC);
+        return $recipes;
+    }
+
+    // search recipes
+    public function searchRecipes($search, $page = null, $perpage = null) {
+        $sql = "SELECT * FROM recipes WHERE title LIKE '%$search%' OR ingredients LIKE '%$search%' OR categories LIKE '%$search%'";
+
+        if ($page && $perpage) {
+            $offset = ($page - 1) * $perpage;
+            $sql .= " LIMIT ?, ?";
+            $stmt = $this->executeQuery($sql, array($offset, $perpage));
+        } else {
+            $stmt = $this->executeQuery($sql, array());
+        }
+
+        $result = $stmt->get_result();
+        $recipes = $result->fetch_all(MYSQLI_ASSOC);
+        return $recipes;
+    }
+
+    // count total search results
+    public function searchRecipesCount($search) {
+        $sql = "SELECT COUNT(*) AS count FROM recipes WHERE title LIKE '%$search%' OR ingredients LIKE '%$search%' OR categories LIKE '%$search%'";
+        $stmt = $this->executeQuery($sql, array());
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'];
     }
 
     // get recipe by multiple categories
@@ -740,25 +788,6 @@ class Recipe {
         $params = array($id);
         $stmt = $this->executeQuery($sql, $params);
         return $stmt->rowCount();
-    }
-
-    // search recipes
-    public function searchRecipes($search) {
-        $sql = "SELECT * FROM recipes WHERE title LIKE '%$search%' OR ingredients LIKE '%$search%' OR directions LIKE '%$search%'";
-        $stmt = $this->executeQuery($sql, array());
-        $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
-    }
-
-    // get recipes by status
-    public function getRecipesByStatus($status) {
-        $sql = "SELECT * FROM recipes WHERE status = ?";
-        $params = array($status);
-        $stmt = $this->executeQuery($sql, $params);
-        $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
     }
 
     // get latest recipes

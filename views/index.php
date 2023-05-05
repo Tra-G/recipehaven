@@ -12,14 +12,15 @@
             <li><a href="<?php echo route('about'); ?>">About</a></li>
             <li><a href="<?php echo route('blog'); ?>">Blog</a></li>
             <li><a href="<?php echo route('contact'); ?>">Contact</a></li>
+            <li><a href="<?php echo route('search'); ?>">Search</a></li>
             <li><a href="<?php echo route('login'); ?>">Login</a></li>
             <li><a href="<?php echo route('register'); ?>">Register</a></li>
         </ul>
     </nav>
 
     <!-- search form -->
-    <form action="<?php echo route('search'); ?>" method="post">
-        <input type="text" name="search" placeholder="Search for recipe">
+    <form action="<?php echo route('search'); ?>" method="get">
+        <input type="text" name="param" placeholder="Search for recipe">
         <input type="submit" value="Search">
     </form>
 

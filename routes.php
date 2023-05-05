@@ -11,8 +11,10 @@ function router($controller, $action, $view=null) {
 
 // Helper function to convert route to regex
 function r($route) {
-    // handle placeholder for {id}
-    $route = str_replace("{id}", '(\d+)', $route);
+    // Handle parameters {id}, {string} and {page}
+    $route = str_replace("{id}", '([0-9]+)', $route);
+    $route = str_replace("{string}", '([a-zA-Z0-9]+)', $route);
+    $route = str_replace("{page}", '([0-9]+)', $route);
     return '|^'. $route .'/?$|';
 }
 
@@ -20,12 +22,15 @@ function r($route) {
 $routes = array(
     // Front pages
     r('') => router('homeController', 'index', 'index'),
-    r('recipes') => router('homeController', 'allRecipe', 'recipes'),
     r('about') => router('homeController', 'about', 'about'),
     r('contact') => router('homeController', 'contact', 'contact'),
     r('blog') => router('homeController', 'blog', 'blog/index'),
     r('blog/{id}') => router('homeController', 'post', 'blog/single'),
     r('search') => router('homeController', 'search', 'search'),
+
+    // Recipes
+    r('recipes') => router('homeController', 'allRecipes', 'recipes'),
+    r('recipe/{id}') => router('homeController', 'singleRecipe', 'recipe'),
 
     // Authentication
     r('login') => router('authController', 'login', 'auth/login'),
