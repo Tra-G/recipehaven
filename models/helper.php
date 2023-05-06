@@ -689,16 +689,6 @@ class Recipe {
         return $stmt;
     }
 
-    // get recipe by id
-    public function getRecipeById($id) {
-        $sql = "SELECT * FROM recipes WHERE id = ?";
-        $params = array($id);
-        $stmt = $this->executeQuery($sql, $params);
-        $result = $stmt->get_result();
-        $recipe = $result->fetch_assoc();
-        return $recipe;
-    }
-
     // fetch all recipes and add page and perpage
     public function getAllRecipes($page = 1, $perPage = 10) {
         $offset = ($page - 1) * $perPage;
@@ -708,6 +698,19 @@ class Recipe {
         $result = $stmt->get_result();
         $recipes = $result->fetch_all(MYSQLI_ASSOC);
         return $recipes;
+    }
+
+    // get recipe by id
+    public function getRecipeById($id) {
+        $sql = "SELECT recipes.*, users.first_name, users.last_name
+                FROM recipes
+                LEFT JOIN users ON recipes.user_id = users.id
+                WHERE recipes.id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $recipe = $result->fetch_assoc();
+        return $recipe;
     }
 
     // get recipes by status
@@ -747,160 +750,158 @@ class Recipe {
         return $row['count'];
     }
 
-    // get recipe by multiple categories
-    public function getRecipeByCategories($categories) {
-        $sql = "SELECT * FROM recipes WHERE category IN ($categories)";
-        $stmt = $this->executeQuery($sql, array());
-        $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
-    }
-
-    // get recipe by user id
-    public function getRecipeByUserId($userId) {
-        $sql = "SELECT * FROM recipes WHERE user_id = ?";
-        $params = array($userId);
-        $stmt = $this->executeQuery($sql, $params);
-        $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
-    }
-
-    // create recipe
-    public function createRecipe($title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $images, $userId) {
-        $sql = "INSERT INTO recipes (title, directions, ingredients, prep_time, servings, status, category, image, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $params = array($title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $images, $userId);
-        $stmt = $this->executeQuery($sql, $params);
-        return $stmt->rowCount();
-    }
-
-    // udpate recipe
-    public function updateRecipe($id, $title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $images) {
-        $sql = "UPDATE recipes SET title = ?, directions = ?, ingredients = ?, prep_time = ?, servings = ?, status = ?, category = ?, image = ? WHERE id = ?";
-        $params = array($title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $images, $id);
-        $stmt = $this->executeQuery($sql, $params);
-        return $stmt->rowCount();
-    }
-
-    // delete recipe
-    public function deleteRecipe($id) {
-        $sql = "DELETE FROM recipes WHERE id = ?";
+    // increment views and return new view count
+    public function incrementViews($id) {
+        $sql = "UPDATE recipes SET views = views + 1 WHERE id = ?";
         $params = array($id);
         $stmt = $this->executeQuery($sql, $params);
-        return $stmt->rowCount();
-    }
-
-    // get latest recipes
-    public function getLatestRecipes() {
-        $sql = "SELECT * FROM recipes ORDER BY created_at DESC LIMIT 3";
-        $stmt = $this->executeQuery($sql, array());
-        $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
-    }
-
-    // get most saved recipes (saved_recipes table with foreign key to recipe id)
-    public function getMostSavedRecipes() {
-        $sql = "SELECT recipes.*, COUNT(saved_recipes.recipe_id) AS total_saves FROM recipes LEFT JOIN saved_recipes ON recipes.id = saved_recipes.recipe_id GROUP BY recipes.id ORDER BY total_saves DESC LIMIT 3";
-        $stmt = $this->executeQuery($sql, array());
-        $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
-    }
-
-    // get random recipes
-    public function getRandomRecipes($num) {
-        $sql = "SELECT * FROM recipes ORDER BY RAND() LIMIT $num";
-        $stmt = $this->executeQuery($sql, array());
-        $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
-    }
-
-    // get recipe by prep time
-    public function getRecipeByPrepTime($prepTime) {
-        $sql = "SELECT * FROM recipes WHERE prep_time <= ?";
-        $params = array($prepTime);
+        $sql = "SELECT views FROM recipes WHERE id = ?";
         $stmt = $this->executeQuery($sql, $params);
         $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
+        $row = $result->fetch_assoc();
+        return $row['views'];
     }
 
-    // get recipe by servings
-    public function getRecipeByServings($servings) {
-        $sql = "SELECT * FROM recipes WHERE servings <= ?";
-        $params = array($servings);
+    // get recipe ratings from the ratings table and get the average rating
+    public function getRecipeRatings($id) {
+        $sql = "SELECT * FROM ratings WHERE recipe_id = ?";
+        $params = array($id);
         $stmt = $this->executeQuery($sql, $params);
         $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
+        $ratings = $result->fetch_all(MYSQLI_ASSOC);
+
+        $total = 0;
+        foreach ($ratings as $rating) {
+            $total += $rating['rating'];
+        }
+
+        if (count($ratings) > 0) {
+            $average = $total / count($ratings);
+            $average = round($average * 2) / 2; // round to nearest 0.5
+        } else {
+            $average = 0;
+        }
+
+        // total number of ratings
+        $total_ratings = count($ratings);
+
+        return array(
+            'ratings' => $ratings,
+            'total' => $total_ratings,
+            'average' => $average
+        );
     }
 
-    // get recipe by user id and status
-    public function getRecipeByUserIdAndStatus($userId, $status) {
-        $sql = "SELECT * FROM recipes WHERE user_id = ? AND status = ?";
-        $params = array($userId, $status);
+    // get comments for a recipe
+    public function getRecipeComments($id, $page = 1, $perpage = 10, $sort = 'created_at', $direction = 'DESC') {
+        $offset = ($page - 1) * $perpage;
+        $sql = "SELECT comments.*, users.first_name, users.last_name
+                FROM comments
+                LEFT JOIN users ON comments.user_id = users.id
+                WHERE recipe_id = ?
+                ORDER BY $sort $direction
+                LIMIT ?, ?";
+        $params = array($id, $offset, $perpage);
         $stmt = $this->executeQuery($sql, $params);
         $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
+        $comments = $result->fetch_all(MYSQLI_ASSOC);
+        return $comments;
     }
 
-    // get recipe by ingredients
-    public function getRecipeByIngredients($ingredients) {
-        $sql = "SELECT * FROM recipes WHERE ingredients LIKE ?";
-        $params = array('%' . $ingredients . '%');
+    // save recipe (table: saved_recipes)
+    public function saveRecipe($user_id, $recipe_id) {
+        $sql = "INSERT INTO saved_recipes (user_id, recipe_id) VALUES (?, ?)";
+        $params = array($user_id, $recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // unsave recipe (table: saved_recipes)
+    public function unsaveRecipe($user_id, $recipe_id) {
+        $sql = "DELETE FROM saved_recipes WHERE user_id = ? AND recipe_id = ?";
+        $params = array($user_id, $recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // check if recipe is saved by user
+    public function isSaved($user_id, $recipe_id) {
+        $sql = "SELECT * FROM saved_recipes WHERE user_id = ? AND recipe_id = ?";
+        $params = array($user_id, $recipe_id);
         $stmt = $this->executeQuery($sql, $params);
         $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
+        $row = $result->fetch_assoc();
+        return $row ? true : false;
     }
 
-    // get recipes with highest ratings
-    public function getRecipeByHighestRatings() {
-        $sql = "SELECT * FROM recipes WHERE id IN (SELECT recipe_id FROM ratings GROUP BY recipe_id ORDER BY AVG(rating) DESC)";
-        $stmt = $this->executeQuery($sql, array());
+    // recipe rating (table: ratings) - save or update
+    public function rateRecipe($user_id, $recipe_id, $rating) {
+        $sql = "SELECT * FROM ratings WHERE user_id = ? AND recipe_id = ?";
+        $params = array($user_id, $recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
         $result = $stmt->get_result();
-        $recipes = $result->fetch_all(MYSQLI_ASSOC);
-        return $recipes;
+        $row = $result->fetch_assoc();
+
+        if ($row) {
+            // update rating
+            $sql = "UPDATE ratings SET rating = ? WHERE user_id = ? AND recipe_id = ?";
+            $params = array($rating, $user_id, $recipe_id);
+            $stmt = $this->executeQuery($sql, $params);
+        } else {
+            // insert rating
+            $sql = "INSERT INTO ratings (user_id, recipe_id, rating) VALUES (?, ?, ?)";
+            $params = array($user_id, $recipe_id, $rating);
+            $stmt = $this->executeQuery($sql, $params);
+        }
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+}
+
+// Blog class
+class Blog {
+
+    private $conn;
+
+    public function __construct($conn) {
+        $this->conn = $conn;
     }
 
-    // get total recipes count
-    public function getTotalRecipesCount() {
-        $sql = "SELECT COUNT(*) AS total_recipes FROM recipes";
-        $stmt = $this->executeQuery($sql, array());
-        $result = $stmt->fetch();
-        return $result['total_recipes'];
+    // execute query
+    private function executeQuery($sql, $params) {
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
     }
 
-    // get total recipes count by user id
-    public function getTotalRecipesCountByUserId($userId) {
-        $sql = "SELECT COUNT(*) AS total_recipes FROM recipes WHERE user_id = ?";
-        $params = array($userId);
+    // get all posts (with optional orderby, page and perpage)
+    public function getAllPosts($page = 1, $perPage = 10, $orderBy = 'created_at', $orderDir = 'desc') {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT * FROM blog_posts ORDER BY $orderBy $orderDir LIMIT ?, ?";
+        $params = array($offset, $perPage);
         $stmt = $this->executeQuery($sql, $params);
-        $result = $stmt->fetch();
-        return $result['total_recipes'];
+        $result = $stmt->get_result();
+        $posts = $result->fetch_all(MYSQLI_ASSOC);
+        return $posts;
     }
 
-    // get total recipes count by status
-    public function getTotalRecipesCountByStatus($status) {
-        $sql = "SELECT COUNT(*) AS total_recipes FROM recipes WHERE status = ?";
-        $params = array($status);
+    // get blog by id and add user's first and last name
+    public function getPostById($id) {
+        $sql = "SELECT blog_posts.*, users.first_name, users.last_name
+                FROM blog_posts
+                LEFT JOIN users ON blog_posts.user_id = users.id
+                WHERE blog_posts.id = ?";
+        $params = array($id);
         $stmt = $this->executeQuery($sql, $params);
-        $result = $stmt->fetch();
-        return $result['total_recipes'];
+        $result = $stmt->get_result();
+        $post = $result->fetch_assoc();
+        return $post;
     }
-
-    // get total recipes count by user id and status
-    public function getTotalRecipesCountByUserIdAndStatus($userId, $status) {
-        $sql = "SELECT COUNT(*) AS total_recipes FROM recipes WHERE user_id = ? AND status = ?";
-        $params = array($userId, $status);
-        $stmt = $this->executeQuery($sql, $params);
-        $result = $stmt->fetch();
-        return $result['total_recipes'];
-    }
-
 }
 
 ?>

@@ -11,10 +11,11 @@ function router($controller, $action, $view=null) {
 
 // Helper function to convert route to regex
 function r($route) {
-    // Handle parameters {id}, {string} and {page}
+    // Handle parameters {id}, {string}, {page} and {rating}
     $route = str_replace("{id}", '([0-9]+)', $route);
     $route = str_replace("{string}", '([a-zA-Z0-9]+)', $route);
     $route = str_replace("{page}", '([0-9]+)', $route);
+    $route = str_replace("{rating}", '([1-5])', $route);
     return '|^'. $route .'/?$|';
 }
 
@@ -29,8 +30,11 @@ $routes = array(
     r('search') => router('homeController', 'search', 'search'),
 
     // Recipes
-    r('recipes') => router('homeController', 'allRecipes', 'recipes'),
-    r('recipe/{id}') => router('homeController', 'singleRecipe', 'recipe'),
+    r('recipes') => router('homeController', 'allRecipes', 'recipe/all'),
+    r('recipe/{id}') => router('homeController', 'singleRecipe', 'recipe/single'),
+    r('recipe/{id}/save') => router('homeController', 'saveRecipe'),
+    r('recipe/{id}/unsave') => router('homeController', 'unsaveRecipe'),
+    r('recipe/{id}/rate/{rating}') => router('homeController', 'rateRecipe'),
 
     // Authentication
     r('login') => router('authController', 'login', 'auth/login'),

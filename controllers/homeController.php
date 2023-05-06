@@ -3,10 +3,12 @@
 class homeController {
 
     private $recipes;
+    private $blog;
 
     public function __construct() {
         // load recipes class and pass in db connection
         $this->recipes = new Recipe(db_connect());
+        $this->blog = new Blog(db_connect());
     }
 
     // home page
@@ -21,8 +23,12 @@ class homeController {
     // all recipes page
     public function allRecipes() {
         $title = pageTitle('All Recipes');
-        $page = isset($_GET['page']) ? $_GET['page'] : 1;
         $per_page = 4;
+
+        // check if page is set and page is numeric
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+
+        // get all recipes
         $all_recipes = $this->recipes->getRecipesByStatus('published', $page, $per_page);
 
         // if no recipes found, redirect to recipes page
@@ -44,6 +50,12 @@ class homeController {
 
     // single recipe page
     public function singleRecipe($id) {
+        $logged = isUserLoggedIn() ? true : false;
+        $per_page = 1;
+
+        // check if page is set and page is numeric
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+
         // get recipe by id
         $recipe = $this->recipes->getRecipeById($id);
 
@@ -53,21 +65,147 @@ class homeController {
             exit();
         }
 
-        $title = pageTitle($recipe['title']);
+        // check if recipe has already been viewed in this session
+        if (!isset($_SESSION['viewed_recipes'])) {
+            $_SESSION['viewed_recipes'] = array();
+        }
+        if (!in_array($id, $_SESSION['viewed_recipes'])) {
+            // increment views
+            $views = $this->recipes->incrementViews($id);
+            // add recipe id to viewed recipes in session
+            $_SESSION['viewed_recipes'][] = $id;
+        } else {
+            // recipe has already been viewed in this session, don't increment views
+            $views = $recipe['views'];
+        }
+
+        // get recipe ratings
+        $ratings = $this->recipes->getRecipeRatings($id);
+
+        // get recipe comments
+        $comments = $this->recipes->getRecipeComments($id, $page, $per_page);
+
+        // check if previous page and next page exist and set to null if not
+        $prev = $this->recipes->getRecipeComments($id, $page-1, $per_page);
+        $next = $this->recipes->getRecipeComments($id, $page+1, $per_page);
+
+        // check if recipe has already been saved by user
+        $saved = $logged ? $this->recipes->isSaved($_SESSION['user_id'], $id) : false;
 
         return array(
-            'title' => $title,
+            'title' => pageTitle($recipe['title']),
+            'logged' => $logged,
             'recipe' => $recipe,
+            'views' => $views,
+            'ratings' => $ratings,
+            'comments' => $comments,
+            'saved' => $saved,
+            'prev' => $prev ? $page-1 : null,
+            'next' => $next ? $page+1 : null,
         );
+    }
+
+    // save recipe
+    public function saveRecipe($id) {
+        $logged = isUserLoggedIn() ? true : false;
+        $response = 'Error saving recipe';
+
+        // if user is logged in, save recipe
+        if ($logged) {
+
+            // get recipe by id
+            $recipe = $this->recipes->getRecipeById($id);
+
+            // if no recipe found, redirect to recipes page
+            if (!$recipe) {
+                $response = 'Recipe not found';
+            }
+            else {
+
+                // check if recipe has already been saved by user
+                $saved = $this->recipes->isSaved($_SESSION['user_id'], $id);
+
+                // save recipe
+                if ($saved) {
+                    $response = 'Recipe already saved';
+                }
+                else {
+                    $save = $this->recipes->saveRecipe($_SESSION['user_id'], $id);
+                    $response = $save ? 'Recipe saved' : 'Error saving recipe';
+                }
+            }
+        }
+
+        echo $response;
+    }
+
+    // unsave recipe
+    public function unsaveRecipe($id) {
+        $logged = isUserLoggedIn() ? true : false;
+        $response = 'Error unsaving recipe';
+
+        // if user is logged in, unsave recipe
+        if ($logged) {
+
+            // get recipe by id
+            $recipe = $this->recipes->getRecipeById($id);
+
+            // if no recipe found, redirect to recipes page
+            if (!$recipe) {
+                $response = 'Recipe not found';
+            }
+            else {
+
+                // check if recipe has already been saved by user
+                $saved = $this->recipes->isSaved($_SESSION['user_id'], $id);
+
+                // unsave recipe
+                if (!$saved) {
+                    $response = 'Recipe not saved';
+                }
+                else {
+                    $unsave = $this->recipes->unsaveRecipe($_SESSION['user_id'], $id);
+                    $response = $unsave ? 'Recipe removed' : 'Error unsaving recipe';
+                }
+            }
+        }
+
+        echo $response;
+    }
+
+    // rate recipe
+    public function rateRecipe($id, $rating) {
+        $logged = isUserLoggedIn() ? true : false;
+        $response = 'Error rating recipe';
+
+        // if user is logged in, rate recipe
+        if ($logged) {
+
+            // get recipe by id
+            $recipe = $this->recipes->getRecipeById($id);
+
+            // if no recipe found, redirect to recipes page
+            if (!$recipe) {
+                $response = 'Recipe not found';
+            }
+            else {
+                $rate = $this->recipes->rateRecipe($_SESSION['user_id'], $id, $rating);
+                $response = $rate ? 'Recipe rated' : 'Error rating recipe';
+            }
+        }
+
+        echo $response;
     }
 
     // search page
     public function search() {
         $title = pageTitle('Search');
         $param = isset($_GET['param']) ? $_GET['param'] : null;
-        $page = isset($_GET['page']) ? $_GET['page'] : 1;
         $per_page = 2;
         $search_results = $prev = $next = $total_results = null;
+
+        // check if page is set and page is numeric
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
 
         // check if search param is set
         if ($param) {
@@ -88,6 +226,71 @@ class homeController {
             'prev' => $prev ? $page-1 : null,
             'next' => $next ? $page+1 : null,
             'total_results' => $total_results,
+        );
+    }
+
+    // about page
+    public function about() {
+        $title = pageTitle('About');
+
+        return array(
+            'title' => $title,
+        );
+    }
+
+    // contact page
+    public function contact() {
+        $title = pageTitle('Contact Us');
+
+        return array(
+            'title' => $title,
+        );
+    }
+
+    // blog page
+    public function blog() {
+        $title = pageTitle('Blog');
+        $per_page = 3;
+
+        // check if page is set and page is numeric
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+
+        // get all posts
+        $all_posts = $this->blog->getAllPosts($page, $per_page);
+
+        // if no posts found, redirect to blog page
+        if (!$all_posts) {
+            redirect('blog');
+        }
+
+        // check if previous page and next page exist and set to null if not
+        $prev = $this->blog->getAllPosts($page-1, $per_page);
+        $next = $this->blog->getAllPosts($page+1, $per_page);
+
+        return array(
+            'title' => $title,
+            'all_posts' => $all_posts,
+            'prev' => $prev ? $page-1 : null,
+            'next' => $next ? $page+1 : null,
+        );
+    }
+
+    // single blog post page
+    public function post($id) {
+        // get post by id
+        $post = $this->blog->getPostById($id);
+
+        // if no post found, redirect to blog page
+        if (!$post) {
+            redirect('blog');
+            exit();
+        }
+
+        $title = pageTitle($post['title']);
+
+        return array(
+            'title' => $title,
+            'post' => $post,
         );
     }
 }
