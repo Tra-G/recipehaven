@@ -35,6 +35,7 @@ $routes = array(
     r('recipe/{id}/save') => router('homeController', 'saveRecipe'),
     r('recipe/{id}/unsave') => router('homeController', 'unsaveRecipe'),
     r('recipe/{id}/rate/{rating}') => router('homeController', 'rateRecipe'),
+    r('recipe/{id}/comment') => router('homeController', 'commentRecipe'),
 
     // Authentication
     r('login') => router('authController', 'login', 'auth/login'),

@@ -808,6 +808,16 @@ class Recipe {
         return $comments;
     }
 
+    // count total comments for a recipe
+    public function getRecipeCommentsCount($id) {
+        $sql = "SELECT COUNT(*) AS count FROM comments WHERE recipe_id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
     // save recipe (table: saved_recipes)
     public function saveRecipe($user_id, $recipe_id) {
         $sql = "INSERT INTO saved_recipes (user_id, recipe_id) VALUES (?, ?)";
@@ -838,6 +848,16 @@ class Recipe {
         return $row ? true : false;
     }
 
+    // total number of saves for a recipe
+    public function getRecipeSaves($recipe_id) {
+        $sql = "SELECT COUNT(*) AS count FROM saved_recipes WHERE recipe_id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['count'];
+    }
+
     // recipe rating (table: ratings) - save or update
     public function rateRecipe($user_id, $recipe_id, $rating) {
         $sql = "SELECT * FROM ratings WHERE user_id = ? AND recipe_id = ?";
@@ -857,6 +877,16 @@ class Recipe {
             $params = array($user_id, $recipe_id, $rating);
             $stmt = $this->executeQuery($sql, $params);
         }
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // save comment (table: comments)
+    public function saveComment($user_id, $recipe_id, $comment) {
+        $sql = "INSERT INTO comments (user_id, recipe_id, comment) VALUES (?, ?, ?)";
+        $params = array($user_id, $recipe_id, $comment);
+        $stmt = $this->executeQuery($sql, $params);
 
         // return true if successful
         return $stmt ? true : false;

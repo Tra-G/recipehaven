@@ -15,10 +15,25 @@
 
     <?php if ($logged): ?>
         <?php if ($saved): ?>
-            <a id="save-button" href="<?php echo route('recipe/' . $recipe['id'] . '/unsave'); ?>">Remove</a>
+            <a id="save-button" href="<?php echo route('recipe/' . $recipe['id'] . '/unsave'); ?>">Remove from saves</a>
         <?php else: ?>
-            <a id="save-button" href="<?php echo route('recipe/' . $recipe['id'] . '/save'); ?>">Save</a>
+            <a id="save-button" href="<?php echo route('recipe/' . $recipe['id'] . '/save'); ?>">Save Recipe</a>
         <?php endif; ?>
+        [Total Saves: <?php echo $total_saves; ?>]
+    <?php endif; ?>
+
+    <?php if ($logged): ?>
+        <p>
+        <div id="rating">
+            <b>Rate this recipe:</b>
+            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/1'); ?>">★</a>
+            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/2'); ?>">★</a>
+            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/3'); ?>">★</a>
+            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/4'); ?>">★</a>
+            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/5'); ?>">★</a>
+        </div>
+        <p id="message"></p>
+        </p>
     <?php endif; ?>
 
     <p>
@@ -46,20 +61,6 @@
         <?php echo $views; ?>
     </p>
 
-    <?php if ($logged): ?>
-        <p>
-        <div id="rating">
-            <b>Rate this recipe:</b>
-            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/1'); ?>">★</a>
-            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/2'); ?>">★</a>
-            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/3'); ?>">★</a>
-            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/4'); ?>">★</a>
-            <a href="<?php echo route('recipe/' . $recipe['id'] . '/rate/5'); ?>">★</a>
-        </div>
-        <p id="message"></p>
-        </p>
-    <?php endif; ?>
-
     <p>
         <b>Ratings (Total Count:
             <?php echo $ratings['total']; ?>)
@@ -70,14 +71,15 @@
             No ratings yet
         <?php endif; ?>
     </p>
+
     <p>
-        <b>Comments:</b><br>
+        <b>Comments: [Total: <?php echo $total_comments; ?>]</b><br>
         <?php if ($comments): ?>
             <?php foreach ($comments as $comment): ?>
             <p>
                 <b>
-                    <?php echo $comment['first_name'] . ' ' . $comment['last_name']; ?> [
-                    <?php echo $comment['created_at']; ?>]
+                    <?php echo $comment['first_name'] . ' ' . $comment['last_name']; ?>
+                    [<?php echo $comment['created_at']; ?>]
                 </b><br>
                 <?php echo $comment['comment']; ?>
             </p>
@@ -93,6 +95,15 @@
         <a href="<?php echo route('recipe/' . $recipe['id'], ['page' => $next]); ?>">Next</a>
     <?php endif; ?>
     </p>
+
+    <!-- Comment Form -->
+    <?php if ($logged): ?>
+        <form id="comment-form" action="<?php echo route('recipe/' . $recipe['id'] . '/comment'); ?>" method="POST">
+            <textarea name="comment" placeholder="Comment"></textarea><br>
+            <input type="submit" value="Submit">
+        </form>
+    <?php endif; ?>
+
 </body>
 
 <script>
@@ -118,7 +129,7 @@
                     }
                     // else alert response
                     else {
-                        document.getElementById('save-button').innerHTML = 'Error';
+                        alert(response);
                     }
                 }
             };
@@ -136,17 +147,42 @@
             xhr.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     var response = this.responseText;
-                    // if response is "Recipe rated" change link to "Remove"
+                    // if response is "Recipe rated" display message
                     if (response === 'Recipe rated') {
-                        document.getElementById('message').innerHTML = 'Recipe rated';
+                        document.getElementById('message').innerHTML = 'Ratings submitted successfully';
                     }
                     // else alert response
                     else {
-                        document.getElementById('message').innerHTML = response;
+                        alert(response);
                     }
                 }
             };
             xhr.send();
+        });
+    });
+
+    // Comment
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('comment-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // prevent default behavior of form
+            var url = this.getAttribute('action'); // get URL from action attribute
+            var formData = new FormData(this); // get form data
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', url, true);
+            xhr.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    var response = this.responseText;
+                    // if response is "Comment added" reload page
+                    if (response === 'Comment added') {
+                        location.reload();
+                    }
+                    // else alert response
+                    else {
+                        alert(response);
+                    }
+                }
+            };
+            xhr.send(formData);
         });
     });
 </script>

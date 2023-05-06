@@ -51,7 +51,7 @@ class homeController {
     // single recipe page
     public function singleRecipe($id) {
         $logged = isUserLoggedIn() ? true : false;
-        $per_page = 1;
+        $per_page = 10;
 
         // check if page is set and page is numeric
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
@@ -85,12 +85,18 @@ class homeController {
         // get recipe comments
         $comments = $this->recipes->getRecipeComments($id, $page, $per_page);
 
+        // total number of comments for recipe
+        $total_comments = $this->recipes->getRecipeCommentsCount($id);
+
         // check if previous page and next page exist and set to null if not
         $prev = $this->recipes->getRecipeComments($id, $page-1, $per_page);
         $next = $this->recipes->getRecipeComments($id, $page+1, $per_page);
 
         // check if recipe has already been saved by user
         $saved = $logged ? $this->recipes->isSaved($_SESSION['user_id'], $id) : false;
+
+        // total number of saves for recipe
+        $total_saves = $this->recipes->getRecipeSaves($id);
 
         return array(
             'title' => pageTitle($recipe['title']),
@@ -99,7 +105,9 @@ class homeController {
             'views' => $views,
             'ratings' => $ratings,
             'comments' => $comments,
+            'total_comments' => $total_comments,
             'saved' => $saved,
+            'total_saves' => $total_saves,
             'prev' => $prev ? $page-1 : null,
             'next' => $next ? $page+1 : null,
         );
@@ -191,6 +199,59 @@ class homeController {
             else {
                 $rate = $this->recipes->rateRecipe($_SESSION['user_id'], $id, $rating);
                 $response = $rate ? 'Recipe rated' : 'Error rating recipe';
+            }
+        }
+
+        echo $response;
+    }
+
+    // comment recipe
+    public function commentRecipe($id) {
+        $logged = isUserLoggedIn() ? true : false;
+        $response = 'Error commenting recipe';
+
+        // if user is logged in, comment recipe
+        if ($logged) {
+
+            // get recipe by id
+            $recipe = $this->recipes->getRecipeById($id);
+
+            // if no recipe found, redirect to recipes page
+            if (!$recipe) {
+                $response = 'Recipe not found';
+            }
+            else {
+
+                // get comment
+                $comment = isset($_POST['comment']) ? $_POST['comment'] : null;
+
+                // check if comment is set
+                if (!$comment) {
+                    $response = 'Comment is required';
+                }
+                else {
+                    $comment = trim($comment);
+
+                    // check if comment is empty
+                    if (empty($comment)) {
+                        $response = 'Comment is required';
+                    }
+                    else {
+                        $comment = strip_tags($comment);
+
+                        // check if comment is too long
+                        if (strlen($comment) > 200) {
+                            $response = 'Comment is too long';
+                        }
+                        else {
+                            $comment = htmlspecialchars($comment);
+
+                            // comment recipe
+                            $comment = $this->recipes->saveComment($_SESSION['user_id'], $id, $comment);
+                            $response = $comment ? 'Comment added' : 'Error commenting recipe';
+                        }
+                    }
+                }
             }
         }
 
