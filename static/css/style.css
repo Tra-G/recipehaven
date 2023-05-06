@@ -1,0 +1,491 @@
+/*
+color: #d54215;
+background-color: #191919;
+color: #F15025;  color 2
+background-color: #1D1D1D; - zerogym
+background: #F0F3F1; - form
+
+Google fonts
+font-family: 'Roboto', sans-serif;
+font-family: 'Sono', sans-serif;
+font-family: 'Ubuntu', sans-serif;
+
+*/
+
+*, ::before, ::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+/*MODAL BOX*/
+.background{
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    min-width: 100%;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    z-index: 7;
+}
+.closeicon{
+    display: none;
+    font-size: 3rem;
+    position: fixed;
+    left: 95%;
+    top: 5%;
+    color: #fff;
+    z-index: 7;
+}
+.modal{
+    background-color: #fff;
+    position: fixed;
+    top: 40%;
+    left: 30%;
+    z-index: 7;
+    width: 40%;
+    height: 30%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: .3rem;
+}
+.search-btn{
+    width: 90%;
+    margin: auto;
+    display: flex;
+}
+.search-btn input{
+    width: 75%;
+    padding: 1rem .5rem;
+    outline: none;
+    border: none;
+    color: #000;
+    font-size: 1rem;
+    background-color: #F3F2EF;
+}
+.search-btn button{
+    width: 15%;
+    padding: .8rem .5rem;
+    outline: none;
+    border: none;
+    background-color: #F15025;
+    color: #fff;
+    font-size: 1rem;
+}
+
+
+.nav-block{
+    display: block;
+}
+
+.nav1{
+    background-color: #191919;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .9rem;
+}
+.submit-icon{
+    display: flex;
+    align-items: center;
+}
+
+.nav-submit{
+    display: flex;
+    align-items: center;
+}
+
+.fa-brands{
+    padding-left: .2rem;
+}
+
+.fa-solid{
+    padding-left: .3rem;
+}
+
+.nav-submit{
+    font-weight: 500;
+    font-size: 1rem;
+}
+.wishlists p{
+    display: none;
+    font-weight: 500;
+    font-size: 1rem;
+}
+.nav-submit:hover{
+    color: #F15025;
+    cursor: pointer;
+}
+
+.nav2{
+    /*position: fixed;
+    z-index: 10;*/
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+}
+
+.nav-header {
+    display: flex;
+    align-items: center;
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-header p{
+    font-size: 1.2rem;
+}
+
+.fa-cutlery{
+    font-size: 1.5rem;
+}
+
+.navlink{
+    display: none;
+    background-color: #fff;
+    position: absolute;
+    width: 80%;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    box-shadow: 0 0 2px #232323;
+}
+
+
+.navlink a{
+    display: block;
+    color: #636161;
+    text-decoration: none;
+    margin: 1rem 0;
+    font-family: 'Ubuntu', sans-serif;
+    position: relative;
+    left: 2rem;
+    top: 4rem;
+    font-size: 1.1rem;
+    font-family: 'Ubuntu', sans-serif;
+    border-bottom: 1px solid #a9a2a2;
+    font-weight: 500;
+    padding: 1rem 0;
+}
+
+.navlink a:hover{
+    color: #000;
+}
+
+.navlink.show {
+    display: block;
+  }
+
+.fa-times{
+    position: absolute;
+    right: 2rem;
+    top: 1.4rem;
+    font-size: 1.8rem;
+}
+
+.nav-icon{
+    display: flex;
+    align-items: center;
+}
+.hamburger{
+    display: block;
+}
+
+.hamburger span{
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: #232323;
+    margin: 5px;
+}
+
+.line{
+    width: 2px;
+    margin: 0 .5rem;
+    height: 22px;
+    background-color: #a9a2a2;
+}
+
+.nav-search{
+    font-size: 1rem;
+    color: #232323;
+}
+.drop-down{
+    display: block;
+    position: absolute;
+    top: 8rem;
+    z-index: 5;
+    width: 10%;
+    padding: 0 .5rem;
+    background-color: #fff;
+}
+
+.drop-down a{
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: .6rem 0;
+    padding: .5rem .2rem;
+    color: #000;
+}
+.drop-down a:hover{
+    background-color: #F15025;
+    color: #fff;
+}
+
+/*nav 3*/
+.back-drop{
+    display: none;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100vh;
+}
+.nav3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    margin: auto;
+}
+.nav3 input{
+    width: 100%;
+}
+
+
+/*BACKGROUND
+.containerbox{
+    margin-top: 75px;
+}*/
+.sms{
+    width: 100%;
+    height: 60vh;
+}
+
+swiper-slide {
+    display: flex;
+    width: 90%;
+}  
+
+swiper-slide img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.slide1{
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../imag/img27.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.slide2{
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../imag/img1.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.slide3{
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../imag/img25.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.card-details{
+    width: 65%;
+    margin-left: 6rem;
+    margin-top: 15rem;
+    transform: translate(-14px, -32px);
+}
+
+.cardheader{
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: 600;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.cardtext{
+    font-size: 1.7rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    margin-bottom: 2.7rem;
+    color: #fff;
+}
+
+.cardbutton{
+    border: none;
+    outline: none;
+    background-color: #F15025;
+    padding: .5rem .5rem;
+    font-family: 'Sono', sans-serif;
+    font-weight: 500;
+    border-radius: 2rem;
+    font-size: .8rem;
+}
+
+.cardbutton a{
+    color: #fff; 
+}
+
+.cardbutton:hover{
+    background-color: #9d3c21;
+}
+
+.cardbutton:hover{
+    transition-duration: 0.3s;
+
+}
+
+
+/*SECT 1*/
+.recipe-sect1{
+    width: 90%;
+    margin: 1rem auto;
+}
+.recipeheader{
+    font-size: 1.5rem;
+    font-weight: 500;
+    font-family: 'Ubuntu', sans-serif;
+    margin: 2rem 0;
+    text-align: center;
+}
+.recipe-image img{
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+}
+
+.recipe-text{
+    margin: 1rem 0;
+}
+
+@media screen and (min-width: 1024px) {
+    .nav1{
+        justify-content: space-around;
+        padding: 1.1rem 0;
+    }
+    .wishlists p{
+        display: flex;
+    }
+    .wishlists > .fa-heart{
+        display: none;
+    }
+    .fa-brands{
+        padding: 0 .7rem;
+        font-size: 1rem;
+    }
+
+    .navlink{
+        display: block;
+    }
+
+    .navlink a{
+        display: flex;
+        font-size: 1.1rem;
+        margin: 0 1rem;
+        font-weight: 500;
+    }
+
+    .navlink{
+        background-color: unset;
+        position: unset;
+        width: unset;
+        height: unset;
+        top: unset;
+        right: unset;
+        box-shadow: unset;
+    }
+    
+    
+    .navlink a{
+        display: unset;
+        margin: 1rem 0;
+        font-family: 'Ubuntu', sans-serif;
+        position: unset;
+        left: unset;
+        top: unset;
+        font-size: 1.1rem;
+        font-family: 'Ubuntu', sans-serif;
+        border-bottom: unset;
+        font-weight: 500;
+        padding: 0 1rem;
+    }
+
+    .fa-times{
+        display: none;
+    }
+
+    .nav2{
+        justify-content: space-around;
+        padding: 1.4rem 0;
+    }
+
+    .hamburger{
+        display: none;
+    }
+
+    .fa-cutlery{
+        font-size: 1.7rem;
+    }
+
+    .nav-header p{
+        font-size: 1.5rem;
+    }
+
+    .nav-search{
+        font-size: 1.2rem;
+    }
+
+    .line1{
+        display: none;
+    }
+
+    .line{
+        width: 2px;
+        margin: 0 1.7rem;
+        height: 22px;
+        background-color: #a9a2a2;
+    
+}
+
+/*BACKGROUND*/
+.sms{
+    height: 84vh;
+}
+
+.card-details{
+    width: 35%;
+}
+
+.cardtext{
+    font-size: 1.7rem;
+}
+
+.cardheader{
+    font-size: 3.5rem;
+}
+
+.cardbutton{
+    padding: .8rem 1.7rem;
+}
+
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+      integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
+      crossorigin="anonymous"
+    />
+    <!-- <link rel="stylesheet" href="path/to/font-awesome/css/all.min.css"> -->
+    <link rel="stylesheet" href="../css/login.css" />
+    <!--ICON LINK-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="flex-item">
+      <div class="first-half">
+        <div class="container-flex">
+          <form action="#">
+
+            <div class="nav-title">
+                <a href="index.html">
+                    <i style="color: #F15025;" class="fa fa-cutlery" aria-hidden="true"></i>
+                  <p class="navtext">recipe<span style="color: #F15025;">haven</span></p>                 
+                </a>
+            </div>
+
+            <div class="titlehead">
+              <div>
+                <p class="titlehead1">
+                  Welcome to recipe<span style="color: #F15025">haven</span>
+                </p>
+                <p class="titlehead2">
+                  Login to view your favourite recipes
+                </p>
+              </div>
+            </div>
+
+            <div class="signup">
+              <div>
+                <div class="textinput">
+                  <i
+                    style="color: #F15025"
+                    class="fa icon fa-envelope"
+                    aria-hidden="true"
+                  ></i>
+                  <input type="text" placeholder="Email" />
+                </div>
+
+                <div class="textinput">
+                  <div><i
+                    style="color: #F15025"
+                    class="fa icon fa-unlock-alt"
+                    aria-hidden="true"
+                  ></i></div>
+
+                  <i onclick="toggleVisibility()"
+                  style="color: #F15025"
+                  class="fa-solid fa-eye"></i>
+                  <div class="input-wid">
+                    <input id="password" type="password" placeholder="Password" />
+                  </div>
+                  
+                </div>
+
+                <div class="reminder">
+                  <div>
+                    <input type="checkbox" checked/>
+                    <span>Remember me</span>
+                  </div>
+
+                  <div class="forgot-password">
+                    <a href="#">Forgot password?</a>
+                  </div>
+                </div>
+
+                <div class="signup-btn">
+                  <a href="#"> Login </a>
+                </div>
+
+                <div class="log">
+                  <span>Don't have an account?</span>
+                  <a style="color: #000; font-weight: 600;" href="#">Sign up</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="second-half"></div>
+    </div>
+
+
+
+    <script>
+      function toggleVisibility() {
+			let passwordInput = document.getElementById("password");
+			if (passwordInput.type === "password") {
+				passwordInput.type = "text";
+			} else {
+				passwordInput.type = "password";
+			}
+		}
+    </script>
+  </body>
+</html>

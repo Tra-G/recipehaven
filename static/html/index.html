@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Font icon links-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Sono:wght@400;500&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <!--Styling Link-->
+    <link rel="stylesheet" href="../css/style.css">
+    <title>recipehaven</title>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="closeicon">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="modal">
+        <form class="search-btn" action="#">
+            <input type="text" placeholder="Type a recipe">
+            <button>Search</button>
+        </form>
+    </div>
+    <div class="nav-menu">
+        <div class="nav-block">
+            <div class="nav1">
+                <div>
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-square-twitter"></i>
+                    <i class="fa-brands fa-linkedin"></i>
+                    <i class="fa-brands fa-youtube"></i>
+                </div>
+
+                <div class="submit-icon">
+                    <div class="nav-submit">
+                        <p>submit recipe</p>
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                    <div class="line"></div>
+                    <div class="wishlists">
+                        <p>wishlists</p>
+                        <i class="fa fa-heart" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav2">
+                <a class="nav-header" href="index.html">
+                    <i style="color: #F15025;" class="fa fa-cutlery" aria-hidden="true"></i>
+                    <p>recipe<span style="color: #F15025;">haven</span></p>
+                    <!--<span class="mdi mdi-chef-hat"></span>-->
+                </a>
+
+                <div class="navlink">
+                    <i style="color: #000;" class="fa fa-times"></i>
+                    <a href="index.html">
+                        Home
+                    </a>
+
+                    <a href="about.html">
+                        About
+                    </a>
+
+                    <a href="contact.html">
+                        Contact
+                    </a>
+
+                    <a href="blog.html">
+                        Blog
+                    </a>
+
+                    <a href="#">
+                        Recipes
+                    </a>
+
+                </div>
+
+                <div class="nav-icon">
+                    <a href="signup.html">
+                        <i style="color: #000;" class="fa-solid fa-user"></i>
+                        <div class="drop-down">
+                            <a href="login.html">Login</a>
+                            <a href="signup.html">Sign Up</a>
+                        </div>
+                    </a>
+                    
+                    <div class="line line1"></div>
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    
+                    <div class="line"></div>
+                    
+                    <div class="nav-search">
+                        <i class="fa searchIcon fa-search"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+
+    <!--Background-->
+    <div class="containerbox">
+        <swiper-container class="sms" navigation="false" fade="true" clickable="true" pagination="true" effect="fade" space-between="30"
+                centered-slides="true" autoplay-delay="5500" loop="true" autoplay-disable-on-interaction="false">
+                <swiper-slide class="slide1">
+                    <div class="card-details">
+                        <p class="cardheader">Vanilla Cake</p>
+                        <p class="cardtext">Sweeten Up Your Day with a Slice of Moist and Fluffy Cake</p>
+                        <span class="cardbutton">
+                            <a href="recipedetails.html">
+                                View Recipe
+                            </a>
+                        </span>
+                    </div>
+                </swiper-slide>
+
+                <swiper-slide class="slide2">
+                    <div class="card-details">
+                        <p class="cardheader">Browny Cookies</p>
+                        <p class="cardtext">Decadent Delight: Indulge in Rich and Fudgy Brownie Cookies</p>
+                        <span class="cardbutton">
+                            <a href="#">
+                                View Recipe
+                            </a>
+                        </span>
+                    </div>
+                </swiper-slide>
+
+                <swiper-slide class="slide3">
+                    <div class="card-details">
+                        <p class="cardheader">Caramel Cookies</p>
+                        <p class="cardtext">Experience Blissful Sweetness with Homemade Caramel Cookies</p>
+                        <span class="cardbutton">
+                            <a href="#">
+                                View Recipe
+                            </a>
+                        </span>
+                    </div>
+                </swiper-slide>
+                
+            </swiper-container>
+        </div>
+    </div>
+
+
+    <!--<div class="recipe-sect1">
+        <div>
+            <div class="recipeheader">
+                Top Recipes
+            </div>
+
+            <div class="recipe-container">
+                <div>
+                    <div class="recipe-image">
+                        <img src="imag/img19.jpg" alt="spagetti">
+                    </div>
+
+                    <div class="recipe-text">
+                        <div class="text1">
+                            <p>Bow Pie pasta</p>
+                        </div>
+                        <div>
+                            <p>Use bow tie pasta to dress up any dish that calls for small pasta shapes, such as penne or shells. </p>
+                        </div>
+
+                        <div>
+                            <button>View Recipe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const menu = document.querySelector(".navlink");
+        const closeIcon = document.querySelector('.fa-times');
+
+        hamburger.addEventListener("click", function() {
+            menu.classList.toggle("show");
+        });
+
+        closeIcon.addEventListener('click', () => {
+  menu.classList.remove('show');
+});
+
+
+
+    let modal = document.querySelector('.modal');
+    let background = document.querySelector('.background');
+    let searchBtn = document.querySelector('.searchIcon')
+    let closebtn = document.querySelector('.closeicon fa');
+
+    function searchBar() {
+        modal.style.display = 'flex';
+        background.style.display = 'block';
+        closeBtn.style.display = 'block';
+    }
+
+    function closeBar() {
+        modal.style.display = 'none';
+        background.style.display = 'none';
+        closeBtn.style.display = 'none';
+    }
+
+    searchBtn.onclick = searchBar;
+    closeBtn.onclick = closeBar;
+
+
+    </script>
+</body>
+</html>
