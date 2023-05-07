@@ -368,8 +368,23 @@ function isUserLoggedIn() {
     if(isset($_SESSION['user_id'])) {
         $userId = $_SESSION['user_id'];
         $user = getRowBySelector('users', 'id', $userId);
-        if($user)
+        // check if role is user
+        if ($user['role'] == 'user') {
             return true;
+        }
+    }
+    return false;
+}
+
+// Checks if admin is logged in
+function isAdminLoggedIn() {
+    if(isset($_SESSION['user_id'])) {
+        $userId = $_SESSION['user_id'];
+        $user = getRowBySelector('users', 'id', $userId);
+        // check if role is admin
+        if ($user['role'] == 'admin') {
+            return true;
+        }
     }
     return false;
 }
@@ -438,20 +453,6 @@ class FormValidator {
         $this->errors = array();
     }
 
-    public function validateName() {
-        if (empty($this->formData['name'])) {
-            $this->errors['name'] = 'Name is required';
-        } else {
-            $name = $this->sanitizeInput($this->formData['name']);
-            if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
-                $this->errors['name'] = 'Only letters and white space allowed';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
     public function validateEmail() {
         if (empty($this->formData['email'])) {
             $this->errors['email'] = 'Email is required';
@@ -466,112 +467,26 @@ class FormValidator {
         return $this;
     }
 
-    public function validateMessage() {
-        if (empty($this->formData['message'])) {
-            $this->errors['message'] = 'Message is required';
-        } else {
-            $message = $this->sanitizeInput($this->formData['message']);
-            if (strlen($message) < 10) {
-                $this->errors['message'] = 'Message must be at least 10 characters';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validatePhone() {
-        if (empty($this->formData['phone'])) {
-            $this->errors['phone'] = 'Phone is required';
-        } else {
-            $phone = $this->sanitizeInput($this->formData['phone']);
-            if (!preg_match("/^[0-9]{10}$/", $phone)) {
-                $this->errors['phone'] = 'Invalid phone number format';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
     public function validatePassword() {
-        if (empty($this->formData['password'])) {
-            $this->errors['password'] = 'Password is required';
-        } else {
-            $password = $this->sanitizeInput($this->formData['password']);
-            // if (strlen($password) < 8) {
-            //     $this->errors['password'] = 'Password must be at least 8 characters';
-            // }
+        if (empty($this->formData['current_password'])) {
+            $this->errors['current_password'] = 'Current password is required';
         }
 
-        // Return $this to enable method chaining
-        return $this;
-    }
+        if (empty($this->formData['new_password'])) {
+            $this->errors['new_password'] = 'New password is required';
+        } else {
+            $newPassword = $this->sanitizeInput($this->formData['new_password']);
+            if (strlen($newPassword) < 3) {
+                $this->errors['new_password'] = 'New password must be at least 3 characters';
+            }
+        }
 
-    public function validateConfirmPassword() {
         if (empty($this->formData['confirm_password'])) {
             $this->errors['confirm_password'] = 'Confirm password is required';
         } else {
             $confirmPassword = $this->sanitizeInput($this->formData['confirm_password']);
-            $password = $this->sanitizeInput($this->formData['password']);
-            if ($confirmPassword !== $password) {
+            if ($newPassword !== $confirmPassword) {
                 $this->errors['confirm_password'] = 'Passwords do not match';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validateAddress() {
-        if (empty($this->formData['address'])) {
-            $this->errors['address'] = 'Address is required';
-        } else {
-            $address = $this->sanitizeInput($this->formData['address']);
-            if (strlen($address) < 5) {
-                $this->errors['address'] = 'Address must be at least 5 characters';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validateCity() {
-        if (empty($this->formData['city'])) {
-            $this->errors['city'] = 'City is required';
-        } else {
-            $city = $this->sanitizeInput($this->formData['city']);
-            if (!preg_match("/^[a-zA-Z ]*$/", $city)) {
-                $this->errors['city'] = 'Only letters and white space allowed';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validateState() {
-        if (empty($this->formData['state'])) {
-            $this->errors['state'] = 'State is required';
-        } else {
-            $state = $this->sanitizeInput($this->formData['state']);
-            if (!preg_match("/^[a-zA-Z ]*$/", $state)) {
-                $this->errors['state'] = 'Only letters and white space allowed';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validateZip() {
-        if (empty($this->formData['zip'])) {
-            $this->errors['zip'] = 'Zip is required';
-        } else {
-            $zip = $this->sanitizeInput($this->formData['zip']);
-            if (!preg_match("/^[0-9]{5}$/", $zip)) {
-                $this->errors['zip'] = 'Invalid zip code format';
             }
         }
 
@@ -597,8 +512,8 @@ class FormValidator {
             $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' is required';
         } else {
             $longText = $this->sanitizeInput($this->formData[$fieldName]);
-            if (strlen($longText) < 20) {
-                $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' must be at least 20 characters';
+            if (strlen($longText) < 10) {
+                $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' must be at least 10 characters';
             }
         }
 
@@ -891,6 +806,106 @@ class Recipe {
         // return true if successful
         return $stmt ? true : false;
     }
+
+    // get all saved recipes for a user
+    public function getSavedRecipes($user_id, $page = 1, $perPage = 10, $orderby = 'saved_recipes.created_at', $direction = 'DESC') {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT recipes.*, users.first_name, users.last_name
+                FROM saved_recipes
+                LEFT JOIN recipes ON saved_recipes.recipe_id = recipes.id
+                LEFT JOIN users ON recipes.user_id = users.id
+                WHERE saved_recipes.user_id = ?
+                ORDER BY $orderby $direction
+                LIMIT ?, ?";
+        $params = array($user_id, $offset, $perPage);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $recipes = $result->fetch_all(MYSQLI_ASSOC);
+        return $recipes;
+    }
+
+    // get recipe by user id
+    public function getRecipeByUserId($user_id, $page = 1, $perPage = 10, $orderby = 'recipes.created_at', $direction = 'DESC') {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT recipes.*, users.first_name, users.last_name
+                FROM recipes
+                LEFT JOIN users ON recipes.user_id = users.id
+                WHERE recipes.user_id = ?
+                ORDER BY $orderby $direction
+                LIMIT ?, ?";
+        $params = array($user_id, $offset, $perPage);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $recipes = $result->fetch_all(MYSQLI_ASSOC);
+        return $recipes;
+    }
+
+    // delete recipe by id (delete all from saved_recipes, ratings, comments)
+    public function deleteRecipe($recipe_id) {
+        $sql = "DELETE FROM saved_recipes WHERE recipe_id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM ratings WHERE recipe_id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM comments WHERE recipe_id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM recipes WHERE id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // add new recipe
+    public function addRecipe($user_id, $title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $image) {
+        $sql = "INSERT INTO recipes (user_id, title, directions, ingredients, prep_time, servings, status, categories, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $params = array($user_id, $title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $image);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // update recipe
+    public function updateRecipe($recipe_id, $title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $image) {
+        $sql = "UPDATE recipes SET title = ?, directions = ?, ingredients = ?, prep_time = ?, servings = ?, status = ?, categories = ?, image = ? WHERE id = ?";
+        $params = array($title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $image, $recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // get categories and return as array
+    public function getCategories() {
+        $sql = "SELECT * FROM categories";
+        $stmt = $this->executeQuery($sql, array());
+        $result = $stmt->get_result();
+        $categories = $result->fetch_all(MYSQLI_ASSOC);
+        return $categories;
+    }
+
+    // check if categories (variadic) exists (category column is name)
+    public function categoryExists(...$categories) {
+        $sql = "SELECT * FROM categories WHERE name IN (";
+        $params = array();
+        foreach ($categories as $category) {
+            $sql .= "?, ";
+            $params[] = $category;
+        }
+        $sql = rtrim($sql, ', ');
+        $sql .= ")";
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $categories = $result->fetch_all(MYSQLI_ASSOC);
+        return $categories;
+    }
 }
 
 // Blog class
@@ -931,6 +946,68 @@ class Blog {
         $result = $stmt->get_result();
         $post = $result->fetch_assoc();
         return $post;
+    }
+}
+
+class User {
+
+    private $conn;
+
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+
+    // execute query
+    private function executeQuery($sql, $params) {
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+
+    // get user by id
+    public function getUserById($id) {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        return $user;
+    }
+
+    // edit user
+    public function editUser($id, $first_name, $last_name, $email) {
+        $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ?";
+        $params = array($first_name, $last_name, $email, $id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // change password
+    public function changePassword($id, $current_password, $new_password, $confirm_password) {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        // check if current password is correct
+        if (password_verify($current_password, $user['password'])) {
+            // check if new password and confirm password match
+            if ($new_password === $confirm_password) {
+                $sql = "UPDATE users SET password = ? WHERE id = ?";
+                $params = array(password_hash($new_password, PASSWORD_DEFAULT), $id);
+                $stmt = $this->executeQuery($sql, $params);
+
+                // return true if successful
+                return $stmt ? true : false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }
 

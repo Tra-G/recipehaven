@@ -112,28 +112,32 @@
         document.getElementById('save-button').addEventListener('click', function (event) {
             event.preventDefault(); // prevent default behavior of link
             var url = this.getAttribute('href'); // get URL from href attribute
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', url, true);
-            xhr.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    var response = this.responseText;
-                    // if response is "Recipe saved" change link to "Remove"
-                    if (response === 'Recipe saved') {
-                        document.getElementById('save-button').setAttribute('href', url.replace('/save', '/unsave'));
-                        document.getElementById('save-button').innerHTML = 'Remove';
+
+            // Add a confirmation dialog box to confirm save/remove
+            if (confirm("Are you sure you want to " + document.getElementById('save-button').innerHTML + "?")) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        var response = this.responseText;
+                        // if response is "Recipe saved" change link to "Remove"
+                        if (response === 'Recipe saved') {
+                            document.getElementById('save-button').setAttribute('href', url.replace('/save', '/unsave'));
+                            document.getElementById('save-button').innerHTML = 'Remove';
+                        }
+                        // if response is "Recipe removed" change link to "Save"
+                        else if (response === 'Recipe removed') {
+                            document.getElementById('save-button').setAttribute('href', url.replace('/unsave', '/save'));
+                            document.getElementById('save-button').innerHTML = 'Save';
+                        }
+                        // else alert response
+                        else {
+                            alert(response);
+                        }
                     }
-                    // if response is "Recipe removed" change link to "Save"
-                    else if (response === 'Recipe removed') {
-                        document.getElementById('save-button').setAttribute('href', url.replace('/unsave', '/save'));
-                        document.getElementById('save-button').innerHTML = 'Save';
-                    }
-                    // else alert response
-                    else {
-                        alert(response);
-                    }
-                }
-            };
-            xhr.send();
+                };
+                xhr.send();
+            }
         });
     });
 

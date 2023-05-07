@@ -9,9 +9,9 @@ class authController
         $title = pageTitle("Login");
         $errors = [];
 
-        // Go to dashboard if user is logged in
+        // Go to user profile if user is logged in
         if (isUserLoggedIn()) {
-            redirect("user/dashboard");
+            redirect("user/profile");
             exit();
         }
 
@@ -51,7 +51,7 @@ class authController
                         if ($user["role"] == "admin")
                             redirect("admin/dashboard");
                         else if ($user["role"] == "user")
-                            redirect("user/dashboard");
+                            redirect("user/profile");
                         else
                             $errors[] = "Incorrect details";
                     } else {
@@ -75,9 +75,9 @@ class authController
         $title = pageTitle("Sign Up");
         $errors = [];
 
-        // Go to dashboard if user is logged in
+        // Go to profile if user is logged in
         if (isUserLoggedIn()) {
-            redirect("user/dashboard");
+            redirect("user/profile");
             exit();
         }
 
@@ -123,7 +123,8 @@ class authController
                     // Set session variables
                     $_SESSION['user_id'] = $id;
 
-                    redirect("user/dashboard");
+                    // go to profile
+                    redirect("user/profile");
                 }
             }
         }
@@ -265,9 +266,9 @@ class authController
         $title = pageTitle("Change Password");
         $errors = [];
 
-        // Go to dashboard if user is logged in
+        // Go to profile if user is logged in
         if (isUserLoggedIn()) {
-            redirect("user/dashboard");
+            redirect("user/profile");
             exit();
         }
 

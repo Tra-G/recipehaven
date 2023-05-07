@@ -169,7 +169,7 @@ class homeController {
 
                 // unsave recipe
                 if (!$saved) {
-                    $response = 'Recipe not saved';
+                    $response = 'Recipe is not in saved recipes';
                 }
                 else {
                     $unsave = $this->recipes->unsaveRecipe($_SESSION['user_id'], $id);

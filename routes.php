@@ -36,6 +36,9 @@ $routes = array(
     r('recipe/{id}/unsave') => router('homeController', 'unsaveRecipe'),
     r('recipe/{id}/rate/{rating}') => router('homeController', 'rateRecipe'),
     r('recipe/{id}/comment') => router('homeController', 'commentRecipe'),
+    r('recipe/{id}/delete') => router('userController', 'deleteRecipe'),
+    r('recipe/{id}/edit') => router('userController', 'editRecipe', 'recipe/edit'),
+    r('recipe/new') => router('userController', 'addRecipe', 'recipe/new'),
 
     // Authentication
     r('login') => router('authController', 'login', 'auth/login'),
@@ -44,6 +47,11 @@ $routes = array(
     r('reset') => router('authController', 'forgotPassword', 'auth/reset/index'),
     r('reset/{string}') => router('authController', 'changePassword', 'auth/reset/change'),
     r('reset/{string}/change') => router('authController', 'changePasswordApi', 'auth/reset/api'),
+
+    // User
+    r('user/profile') => router('userController', 'profile', 'user/profile'),
+    r('user/edit') => router('userController', 'editProfile'),
+    r('user/password') => router('userController', 'changePassword'),
 );
 
 ?>
