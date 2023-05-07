@@ -468,6 +468,20 @@ class FormValidator {
     }
 
     public function validatePassword() {
+        if (empty($this->formData['password'])) {
+            $this->errors['password'] = 'Password is required';
+        } else {
+            $password = $this->sanitizeInput($this->formData['password']);
+            if (strlen($password) < 3) {
+                $this->errors['password'] = 'Password must be at least 8 characters';
+            }
+        }
+
+        // Return $this to enable method chaining
+        return $this;
+    }
+
+    public function validateAllPassword() {
         if (empty($this->formData['current_password'])) {
             $this->errors['current_password'] = 'Current password is required';
         }
@@ -1008,6 +1022,64 @@ class User {
         } else {
             return false;
         }
+    }
+}
+
+class Admin {
+
+    private $conn;
+
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+
+    // execute query
+    private function executeQuery($sql, $params) {
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+
+    // get admin by id
+    public function getAdminById($id) {
+        $sql = "SELECT * FROM users WHERE id = ? AND role = 'admin'";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $admin = $result->fetch_assoc();
+        return $admin;
+    }
+
+    // get total number of users
+    public function getTotalUsers() {
+        $sql = "SELECT COUNT(*) FROM users WHERE role = 'user'";
+        $stmt = $this->executeQuery($sql, array());
+        $result = $stmt->get_result();
+        $total_users = $result->fetch_assoc();
+        return $total_users['COUNT(*)'];
+    }
+
+    // get total number of recipes (optional: status)
+    public function getTotalRecipes($status = null) {
+        $sql = "SELECT COUNT(*) FROM recipes";
+        $params = array();
+        if ($status) {
+            $sql .= " WHERE status = ?";
+            $params[] = $status;
+        }
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $total_recipes = $result->fetch_assoc();
+        return $total_recipes['COUNT(*)'];
+    }
+
+    // get total number of posts
+    public function getTotalPosts() {
+        $sql = "SELECT COUNT(*) FROM blog_posts";
+        $stmt = $this->executeQuery($sql, array());
+        $result = $stmt->get_result();
+        $total_posts = $result->fetch_assoc();
+        return $total_posts['COUNT(*)'];
     }
 }
 

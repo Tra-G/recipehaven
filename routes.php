@@ -52,6 +52,12 @@ $routes = array(
     r('user/profile') => router('userController', 'profile', 'user/profile'),
     r('user/edit') => router('userController', 'editProfile'),
     r('user/password') => router('userController', 'changePassword'),
+
+    // Admin Dashboard
+    r('admin/dashboard') => router('adminController', 'index', 'admin/index'),
+
+    // Admin User Management
+    r('admin/users') => router('adminController', 'allUsers', 'admin/users/all'),
 );
 
 ?>

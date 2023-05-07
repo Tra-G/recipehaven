@@ -13,7 +13,7 @@ class userController {
 
         // check if user is properly logged in
         if (!isUserLoggedIn()) {
-            route("logout");
+            route("login");
             exit();
         }
     }
@@ -112,7 +112,7 @@ class userController {
 
             // validate data
             $errors = (new FormValidator($userData))
-                ->validatePassword()
+                ->validateAllPassword()
                 ->getErrors();
 
             if ($errors) {
