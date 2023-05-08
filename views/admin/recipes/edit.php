@@ -13,6 +13,9 @@
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
+    <?php if ($success): ?>
+        <p><?php echo $success; ?></p>
+    <?php endif; ?>
 
     <h1>Edit Recipe</h1>
     <form method="POST" enctype="multipart/form-data">

@@ -15,7 +15,9 @@
         <li>Total Posts: <?php echo $total_posts; ?></li>
     </ul>
 
-    <a href="<?php echo route('admin/users'); ?>">Manage Users</a>
+    <a href="<?php echo route('admin/users'); ?>">Manage Users</a><br>
+    <a href="<?php echo route('admin/recipes'); ?>">All Recipes</a><br>
+    <a href="<?php echo route('admin/recipe/new'); ?>">Add New Recipe</a><br>
 </body>
 
 </html>

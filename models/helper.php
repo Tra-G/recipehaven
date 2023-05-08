@@ -443,6 +443,15 @@ function send_email($to, $subject, $message, $headers = null) {
     }
 }
 
+// sanitize input
+function sanitize_input($input) {
+    $input = trim($input);
+    $input = stripslashes($input);
+    $input = htmlspecialchars($input);
+    $input = strip_tags($input);
+    return $input;
+}
+
 // Form input validator
 class FormValidator {
     private $formData;
@@ -643,9 +652,9 @@ class Recipe {
     }
 
     // get recipes by status
-    public function getRecipesByStatus($status, $page = 1, $perPage = 10) {
+    public function getRecipesByStatus($status, $page = 1, $perPage = 10, $orderBy = 'created_at', $direction = 'DESC') {
         $offset = ($page - 1) * $perPage;
-        $sql = "SELECT * FROM recipes WHERE status = ? LIMIT ?, ?";
+        $sql = "SELECT * FROM recipes WHERE status = ? ORDER BY $orderBy $direction LIMIT ?, ?";
         $params = array($status, $offset, $perPage);
         $stmt = $this->executeQuery($sql, $params);
         $result = $stmt->get_result();
@@ -920,6 +929,15 @@ class Recipe {
         $categories = $result->fetch_all(MYSQLI_ASSOC);
         return $categories;
     }
+
+    public function approveRecipe($recipe_id) {
+        $sql = "UPDATE recipes SET status = 'published' WHERE id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
 }
 
 // Blog class
@@ -1081,6 +1099,70 @@ class Admin {
         $total_posts = $result->fetch_assoc();
         return $total_posts['COUNT(*)'];
     }
+
+    // get all users (with optional orderby, page and perpage)
+    public function getAllUsers($page = 1, $perPage = 10, $orderBy = 'created_at', $orderDir = 'DESC') {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT * FROM users WHERE role = 'user' ORDER BY $orderBy $orderDir LIMIT ?, ?";
+        $params = array($offset, $perPage);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $users = $result->fetch_all(MYSQLI_ASSOC);
+        return $users;
+    }
+
+    // get user by id
+    public function getUserById($id) {
+        $sql = "SELECT * FROM users WHERE id = ? AND role = 'user'";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        return $user;
+    }
+
+    // edit user
+    public function editUser($id, $first_name, $last_name, $email) {
+        $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ?";
+        $params = array($first_name, $last_name, $email, $id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // delete user (delete from comments, ratings, saved_recipes, recipes and finally users)
+    public function deleteUser($id) {
+        $sql = "SET FOREIGN_KEY_CHECKS=0";
+        $this->executeQuery($sql, array());
+
+        $sql = "DELETE FROM comments WHERE user_id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM ratings WHERE user_id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM saved_recipes WHERE user_id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM recipes WHERE user_id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM users WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "SET FOREIGN_KEY_CHECKS=1";
+        $this->executeQuery($sql, array());
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
 }
 
 ?>

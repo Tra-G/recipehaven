@@ -58,6 +58,15 @@ $routes = array(
 
     // Admin User Management
     r('admin/users') => router('adminController', 'allUsers', 'admin/users/all'),
+    r('admin/user/{id}/edit') => router('adminController', 'editUser', 'admin/users/edit'),
+    r('admin/user/{id}/delete') => router('adminController', 'deleteUser'),
+
+    // Admin Recipe Management
+    r('admin/recipes') => router('adminController', 'allRecipes', 'admin/recipes/all'),
+    r('admin/recipe/new') => router('adminController', 'addRecipe', 'admin/recipes/new'),
+    r('admin/recipe/{id}/edit') => router('adminController', 'editRecipe', 'admin/recipes/edit'),
+    r('admin/recipe/{id}/approve') => router('adminController', 'approveRecipe'),
+    r('admin/recipe/{id}/delete') => router('adminController', 'deleteRecipe'),
 );
 
 ?>

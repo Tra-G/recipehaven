@@ -4,14 +4,16 @@ class adminController {
 
     public $admin;
     public $admin_model;
+    public $recipe_model;
 
     public function __construct() {
         $this->admin_model = new Admin(db_connect());
         $this->admin = $this->admin_model->getAdminById($_SESSION['user_id']);
+        $this->recipe_model = new Recipe(db_connect());
 
         // check if admin is properly logged in
         if (!isAdminLoggedIn()) {
-            route("login");
+            redirect("login");
             exit();
         }
     }
@@ -32,6 +34,299 @@ class adminController {
             'total_pending_recipes' => $total_pending_recipes,
             'total_posts' => $total_posts,
         );
+    }
+
+    public function allUsers() {
+        $title = pageTitle('All Users');
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+        $per_page = 10;
+
+        // get all users
+        $users = $this->admin_model->getAllUsers($page, $per_page);
+
+        // check if previous page and next page exist and set to null if not
+        $prev = $this->admin_model->getAllUsers($page-1, $per_page);
+        $next = $this->admin_model->getAllUsers($page+1, $per_page);
+
+        return array(
+            'title' => $title,
+            'users' => $users,
+            'prev' => $prev ? $page-1 : null,
+            'next' => $next ? $page+1 : null,
+        );
+    }
+
+    public function editUser($id) {
+        $title = pageTitle('Edit User');
+        $errors = [];
+        $user = $this->admin_model->getUserById($id);
+
+        // check if user exists
+        if (!$user) {
+            redirect("admin/users");
+            exit();
+        }
+
+        // check if form is submitted
+        if (is_post_set('first_name', 'last_name', 'email')) {
+            $editData = array(
+                'email' => sanitize_input($_POST['email']),
+                'first_name' => sanitize_input($_POST['first_name']),
+                'last_name' => sanitize_input($_POST['last_name']),
+            );
+
+            $errors = (new FormValidator($editData))
+                ->validateEmail()
+                ->validateText('first_name')
+                ->validateText('last_name')
+                ->getErrors();
+
+            if (empty($errors)) {
+                // update user
+                if ($this->admin_model->editUser($id, $editData['first_name'], $editData['last_name'], $editData['email'])) {
+                    $success = "User updated successfully.";
+                }
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'user' => $this->admin_model->getUserById($id),
+            'errors' => $errors,
+            'success' => isset($success) ? $success : null,
+        );
+    }
+
+    public function deleteUser($id) {
+        // check if user exists and delete user
+        if ($this->admin_model->getUserById($id) && $this->admin_model->deleteUser($id)) {
+            redirect("admin/users");
+            exit();
+        }
+        else {
+            redirect("admin/dashboard");
+            exit();
+        }
+    }
+
+    public function allRecipes() {
+        $title = pageTitle('All Recipes');
+        $pd_page = isset($_GET['pd_page']) && is_numeric($_GET['pd_page']) ? $_GET['pd_page'] : 1;
+        $pb_page = isset($_GET['pb_page']) && is_numeric($_GET['pb_page']) ? $_GET['pb_page'] : 1;
+        $pd_per_page = 5;
+        $pb_per_page = 5;
+
+        // get all recipes
+        $pending_recipes = $this->recipe_model->getRecipesByStatus('pending', $pd_page, $pd_per_page);
+        $published_recipes = $this->recipe_model->getRecipesByStatus('published', $pb_page, $pb_per_page);
+
+        // check if previous page and next page exist and set to null if not
+        $pd_prev = $this->recipe_model->getRecipesByStatus('pending', $pd_page-1, $pd_per_page);
+        $pd_next = $this->recipe_model->getRecipesByStatus('pending', $pd_page+1, $pd_per_page);
+        $pb_prev = $this->recipe_model->getRecipesByStatus('published', $pb_page-1, $pb_per_page);
+        $pb_next = $this->recipe_model->getRecipesByStatus('published', $pb_page+1, $pb_per_page);
+
+        return array(
+            'title' => $title,
+            'pending_recipes' => $pending_recipes,
+            'published_recipes' => $published_recipes,
+            'pd_prev' => $pd_prev ? $pd_page-1 : null,
+            'pd_next' => $pd_next ? $pd_page+1 : null,
+            'pb_prev' => $pb_prev ? $pb_page-1 : null,
+            'pb_next' => $pb_next ? $pb_page+1 : null,
+        );
+    }
+
+    public function addRecipe() {
+        $title = pageTitle("Add Recipe");
+        $errors = [];
+        $categories = $this->recipe_model->getCategories();
+
+        // check if form is submitted
+        if (is_post_set('title', 'directions', 'ingredients', 'prep_time', 'servings')) {
+            $recipeData = array(
+                'title' => sanitize_input($_POST['title']),
+                'directions' => sanitize_input($_POST['directions']),
+                'ingredients' => sanitize_input($_POST['ingredients']),
+                'prep_time' => sanitize_input($_POST['prep_time']),
+                'servings' => sanitize_input($_POST['servings']),
+                'categories' => isset($_POST['categories']) ? $_POST['categories'] : $errors[] = "Please select at least one category.",
+                'image' => $_FILES['image'],
+            );
+
+            // validate data
+            $errors = (new FormValidator($recipeData))
+                ->validateText('title')
+                ->validateLongText('directions')
+                ->validateLongText('ingredients')
+                ->validateNumber('prep_time')
+                ->validateNumber('servings')
+                ->validateImage('image')
+                ->getErrors();
+
+            // check if categories are valid by checking if they exist in the database
+            if (!$this->recipe_model->categoryExists(...$recipeData['categories'])) {
+                $errors[] = "Invalid categories.";
+            }
+
+            if (!$errors) {
+
+                // upload image
+                $image = $this->uploadImage($recipeData['image']);
+
+                // check if image was uploaded
+                if (!$image) {
+                    $errors[] = "Error uploading image.";
+                }
+                else {
+
+                    // make the categories into a string
+                    $stringed_categories = implode(", ", $recipeData['categories']);
+
+                    // add recipe
+                    if ($this->recipe_model->addRecipe($this->admin['id'], $recipeData['title'], $recipeData['directions'], $recipeData['ingredients'], $recipeData['prep_time'], $recipeData['servings'], 'pending', $stringed_categories, $image)) {
+                        // redirect to recipes page
+                        redirect('admin/recipes');
+                        exit();
+                    }
+                    else {
+                        $errors[] = "Error adding recipe.";
+                    }
+                }
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'user' => $this->admin,
+            'categories' => $categories,
+            'errors' => $errors,
+        );
+    }
+
+    public function editRecipe($id) {
+        $title = pageTitle("Edit Recipe");
+        $errors = [];
+        $recipe = $this->recipe_model->getRecipeById($id);
+        $all_categories = $this->recipe_model->getCategories();
+
+        // get recipe categories
+        $categories = explode(", ", $recipe['categories']);
+
+        // check if recipe exists
+        if (!$recipe) {
+            $errors[] = "Recipe does not exist.";
+        }
+        else {
+
+            // check if form is submitted
+            if (is_post_set('title', 'directions', 'ingredients', 'prep_time', 'servings')) {
+                $recipeData = array(
+                    'title' => sanitize_input($_POST['title']),
+                    'directions' => sanitize_input($_POST['directions']),
+                    'ingredients' => sanitize_input($_POST['ingredients']),
+                    'prep_time' => sanitize_input($_POST['prep_time']),
+                    'servings' => sanitize_input($_POST['servings']),
+                    'categories' => isset($_POST['categories']) ? $_POST['categories'] : $errors[] = "Please select at least one category.",
+                    'image' => $_FILES['image'],
+                );
+
+                // validate data but don't validate image if it's not set
+                $errors = (new FormValidator($recipeData))
+                    ->validateText('title')
+                    ->validateLongText('directions')
+                    ->validateLongText('ingredients')
+                    ->validateNumber('prep_time')
+                    ->validateNumber('servings')
+                    ->getErrors();
+
+                // check if categories are valid by checking if they exist in the database
+                if (!$this->recipe_model->categoryExists(...$recipeData['categories'])) {
+                    $errors[] = "Invalid categories.";
+                }
+
+                if (!$errors) {
+
+                    // validate image if it's set
+                    if (isset($_FILES['image']['name']) && $_FILES['image']['name']) {
+                        $errors = (new FormValidator($recipeData))
+                            ->validateImage('image')
+                            ->getErrors();
+
+                            // upload image
+                            $image = $this->uploadImage($recipeData['image']);
+
+                            // unlink old image if it exists
+                            if ($recipe['image'] && file_exists(__DIR__.'/../assets/recipe-images/'.$recipe['image'])) {
+                                unlink(__DIR__.'/../assets/recipe-images/'.$recipe['image']);
+                            }
+                    }
+                    else {
+                        $image = $recipe['image'];
+                    }
+
+                    // make the categories into a string
+                    $stringed_categories = implode(", ", $recipeData['categories']);
+
+                    // edit recipe
+                    if ($this->recipe_model->updateRecipe($id, $recipeData['title'], $recipeData['directions'], $recipeData['ingredients'], $recipeData['prep_time'], $recipeData['servings'], 'pending', $stringed_categories, $image)) {
+                        $success = "Recipe updated successfully.";
+                    }
+                    else {
+                        $errors[] = "Error adding recipe.";
+                    }
+                }
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'categories' => $categories,
+            'all_categories' => $all_categories,
+            'errors' => $errors,
+            'success' => isset($success) ? $success : null,
+            'recipe' => $this->recipe_model->getRecipeById($id),
+        );
+    }
+
+    public function deleteRecipe($id) {
+        $recipe = $this->recipe_model->getRecipeById($id);
+
+        // check if recipe exists
+        if (!$recipe) {
+            redirect("admin/recipes");
+            exit();
+        }
+
+        // delete recipe
+        if ($this->recipe_model->deleteRecipe($id)) {
+            redirect("admin/recipes");
+            exit();
+        }
+        else {
+            redirect("admin/recipes");
+            exit();
+        }
+    }
+
+    public function approveRecipe($id) {
+        $recipe = $this->recipe_model->getRecipeById($id);
+
+        // check if recipe exists
+        if (!$recipe) {
+            redirect("admin/recipes");
+            exit();
+        }
+
+        // approve recipe
+        if ($this->recipe_model->approveRecipe($id)) {
+            redirect("admin/recipes");
+            exit();
+        }
+        else {
+            redirect("admin/recipes");
+            exit();
+        }
     }
 
     private function uploadImage($file) {

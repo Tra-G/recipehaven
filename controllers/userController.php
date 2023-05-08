@@ -13,7 +13,7 @@ class userController {
 
         // check if user is properly logged in
         if (!isUserLoggedIn()) {
-            route("login");
+            redirect("login");
             exit();
         }
     }
@@ -64,9 +64,9 @@ class userController {
 
             // get data from form
             $userData = array(
-                'email' => $_POST['email'],
-                'first_name' => $_POST['first_name'],
-                'last_name' => $_POST['last_name'],
+                'email' => sanitize_input($_POST['email']),
+                'first_name' => sanitize_input($_POST['first_name']),
+                'last_name' => sanitize_input($_POST['last_name']),
             );
 
             // validate data
@@ -105,9 +105,9 @@ class userController {
 
             // get data from form
             $userData = array(
-                'current_password' => $_POST['current_password'],
-                'new_password' => $_POST['new_password'],
-                'confirm_password' => $_POST['confirm_password'],
+                'current_password' => sanitize_input($_POST['current_password']),
+                'new_password' => sanitize_input($_POST['new_password']),
+                'confirm_password' => sanitize_input($_POST['confirm_password']),
             );
 
             // validate data
@@ -155,12 +155,9 @@ class userController {
                 if ($this->recipe_model->deleteRecipe($id)) {
                     $response = "Recipe deleted";
 
-                    // delete recipe image
-                    if ($recipe['image']) {
-                        // check if image exists and delete
-                        if (file_exists(__DIR__."/../assets/recipe-images/" . $recipe['image'])) {
-                            unlink(__DIR__."/../assets/recipe-images/" . $recipe['image']);
-                        }
+                    // delete recipe image if exists
+                    if ($recipe['image'] && file_exists(__DIR__."/../assets/recipe-images/" . $recipe['image'])) {
+                        unlink(__DIR__."/../assets/recipe-images/" . $recipe['image']);
                     }
                 }
                 else {
@@ -181,12 +178,12 @@ class userController {
         // check if form is submitted
         if (is_post_set('title', 'directions', 'ingredients', 'prep_time', 'servings')) {
             $recipeData = array(
-                'title' => $_POST['title'],
-                'directions' => $_POST['directions'],
-                'ingredients' => $_POST['ingredients'],
-                'prep_time' => $_POST['prep_time'],
-                'servings' => $_POST['servings'],
-                'categories' => $_POST['categories'],
+                'title' => sanitize_input($_POST['title']),
+                'directions' => sanitize_input($_POST['directions']),
+                'ingredients' => sanitize_input($_POST['ingredients']),
+                'prep_time' => sanitize_input($_POST['prep_time']),
+                'servings' => sanitize_input($_POST['servings']),
+                'categories' => isset($_POST['categories']) ? $_POST['categories'] : $errors[] = "Please select at least one category.",
                 'image' => $_FILES['image'],
             );
 
@@ -264,12 +261,12 @@ class userController {
                 // check if form is submitted
                 if (is_post_set('title', 'directions', 'ingredients', 'prep_time', 'servings')) {
                     $recipeData = array(
-                        'title' => $_POST['title'],
-                        'directions' => $_POST['directions'],
-                        'ingredients' => $_POST['ingredients'],
-                        'prep_time' => $_POST['prep_time'],
-                        'servings' => $_POST['servings'],
-                        'categories' => $_POST['categories'],
+                        'title' => sanitize_input($_POST['title']),
+                        'directions' => sanitize_input($_POST['directions']),
+                        'ingredients' => sanitize_input($_POST['ingredients']),
+                        'prep_time' => sanitize_input($_POST['prep_time']),
+                        'servings' => sanitize_input($_POST['servings']),
+                        'categories' => isset($_POST['categories']) ? $_POST['categories'] : $errors[] = "Please select at least one category.",
                         'image' => $_FILES['image'],
                     );
 
@@ -298,8 +295,10 @@ class userController {
                                 // upload image
                                 $image = $this->uploadImage($recipeData['image']);
 
-                                // unlink old image
-                                unlink(__DIR__.'/../assets/recipe-images/'.$recipe['image']);
+                                // unlink old image if it exists
+                                if ($recipe['image'] && file_exists(__DIR__.'/../assets/recipe-images/'.$recipe['image'])) {
+                                    unlink(__DIR__.'/../assets/recipe-images/'.$recipe['image']);
+                                }
                         }
                         else {
                             $image = $recipe['image'];
