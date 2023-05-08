@@ -18,6 +18,9 @@
     <a href="<?php echo route('admin/users'); ?>">Manage Users</a><br>
     <a href="<?php echo route('admin/recipes'); ?>">All Recipes</a><br>
     <a href="<?php echo route('admin/recipe/new'); ?>">Add New Recipe</a><br>
+    <a href="<?php echo route('admin/blog'); ?>">Blog Management</a><br>
+    <a href="<?php echo route('admin/profile'); ?>">Edit Profile</a><br>
+    <a href="<?php echo route('admin/password'); ?>">Change Password</a><br>
 </body>
 
 </html>

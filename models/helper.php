@@ -1006,6 +1006,16 @@ class User {
         return $user;
     }
 
+    // get user by email
+    public function getUserByEmail($email) {
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $params = array($email);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        return $user;
+    }
+
     // edit user
     public function editUser($id, $first_name, $last_name, $email) {
         $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ?";
@@ -1121,6 +1131,17 @@ class Admin {
         return $user;
     }
 
+
+    // get user by email
+    public function getUserByEmail($email) {
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $params = array($email);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        return $user;
+    }
+
     // edit user
     public function editUser($id, $first_name, $last_name, $email) {
         $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ?";
@@ -1129,6 +1150,32 @@ class Admin {
 
         // return true if successful
         return $stmt ? true : false;
+    }
+
+    // change password
+    public function changePassword($id, $current_password, $new_password, $confirm_password) {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        // check if current password is correct
+        if (password_verify($current_password, $user['password'])) {
+            // check if new password and confirm password match
+            if ($new_password === $confirm_password) {
+                $sql = "UPDATE users SET password = ? WHERE id = ?";
+                $params = array(password_hash($new_password, PASSWORD_DEFAULT), $id);
+                $stmt = $this->executeQuery($sql, $params);
+
+                // return true if successful
+                return $stmt ? true : false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     // delete user (delete from comments, ratings, saved_recipes, recipes and finally users)

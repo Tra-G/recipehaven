@@ -329,6 +329,92 @@ class adminController {
         }
     }
 
+    public function editProfile() {
+        $title = pageTitle("Edit Profile");
+        $errors = [];
+
+        // check if form is submitted
+        if (is_post_set('first_name', 'last_name', 'email')) {
+            $userData = array(
+                'first_name' => sanitize_input($_POST['first_name']),
+                'last_name' => sanitize_input($_POST['last_name']),
+                'email' => sanitize_input($_POST['email']),
+            );
+
+            // validate data
+            $errors = (new FormValidator($userData))
+                ->validateText('first_name')
+                ->validateText('last_name')
+                ->validateEmail()
+                ->getErrors();
+
+            // check if email already exists and if it's not the current user's email
+            if ($this->admin_model->getUserByEmail($userData['email']) && $userData['email'] != $this->admin['email']) {
+                $errors[] = "Email already exists.";
+            }
+
+            if (!$errors) {
+
+                // update user
+                if ($this->admin_model->editUser($this->admin['id'], $userData['first_name'], $userData['last_name'], $userData['email'])) {
+                    $success = "Profile updated successfully.";
+                }
+                else {
+                    $errors[] = "Error updating profile.";
+                }
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'admin' => $this->admin,
+            'errors' => $errors,
+            'success' => isset($success) ? $success : null,
+        );
+    }
+
+    public function changePassword() {
+        $title = pageTitle("Change Password");
+        $errors = [];
+
+        // check if form is submitted
+        if (is_post_set('current_password', 'new_password', 'confirm_password')) {
+            $passwordData = array(
+                'current_password' => sanitize_input($_POST['current_password']),
+                'new_password' => sanitize_input($_POST['new_password']),
+                'confirm_password' => sanitize_input($_POST['confirm_password']),
+            );
+
+            // validate data
+            $errors = (new FormValidator($passwordData))
+                ->validateAllPassword()
+                ->getErrors();
+
+            // check if current password is correct
+            if (!password_verify($passwordData['current_password'], $this->admin['password'])) {
+                $errors[] = "Current password is incorrect.";
+            }
+
+            if (!$errors) {
+
+                // update password
+                if ($this->admin_model->changePassword($this->admin['id'], $passwordData['current_password'], $passwordData['new_password'], $passwordData['confirm_password'])) {
+                    $success = "Password changed successfully.";
+                }
+                else {
+                    $errors[] = "Error changing password.";
+                }
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'admin' => $this->admin,
+            'errors' => $errors,
+            'success' => isset($success) ? $success : null,
+        );
+    }
+
     private function uploadImage($file) {
         $target_dir = __DIR__."/../assets/recipe-images/";
         $target_file = $target_dir . basename($file["name"]);

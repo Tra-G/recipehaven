@@ -67,6 +67,10 @@ $routes = array(
     r('admin/recipe/{id}/edit') => router('adminController', 'editRecipe', 'admin/recipes/edit'),
     r('admin/recipe/{id}/approve') => router('adminController', 'approveRecipe'),
     r('admin/recipe/{id}/delete') => router('adminController', 'deleteRecipe'),
+
+    // Admin Profile Management
+    r('admin/profile') => router('adminController', 'editProfile', 'admin/profile'),
+    r('admin/password') => router('adminController', 'changePassword', 'admin/password'),
 );
 
 ?>

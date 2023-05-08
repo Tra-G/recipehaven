@@ -76,6 +76,12 @@ class userController {
                 ->validateText('last_name')
                 ->getErrors();
 
+
+            // check if email already exists and is not the user's email
+            if ($this->user_model->getUserByEmail($userData['email']) && $userData['email'] != $this->user['email']) {
+                $errors[] = "Email already exists.";
+            }
+
             if ($errors) {
                 $response = implode(" ", $errors);
             }
