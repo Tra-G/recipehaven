@@ -298,6 +298,8 @@ class userController {
                                 ->validateImage('image')
                                 ->getErrors();
 
+                            if (!$errors) {
+
                                 // upload image
                                 $image = $this->uploadImage($recipeData['image']);
 
@@ -305,6 +307,10 @@ class userController {
                                 if ($recipe['image'] && file_exists(__DIR__.'/../assets/recipe-images/'.$recipe['image'])) {
                                     unlink(__DIR__.'/../assets/recipe-images/'.$recipe['image']);
                                 }
+                            }
+                            else {
+                                $image = $recipe['image'];
+                            }
                         }
                         else {
                             $image = $recipe['image'];
@@ -314,7 +320,7 @@ class userController {
                         $stringed_categories = implode(", ", $recipeData['categories']);
 
                         // edit recipe
-                        if ($this->recipe_model->updateRecipe($id, $recipeData['title'], $recipeData['directions'], $recipeData['ingredients'], $recipeData['prep_time'], $recipeData['servings'], 'pending', $stringed_categories, $image)) {
+                        if ($this->recipe_model->updateRecipe($id, $recipeData['title'], $recipeData['directions'], $recipeData['ingredients'], $recipeData['prep_time'], $recipeData['servings'], 'pending', $stringed_categories, $image) && !$errors) {
                             // redirect to recipe page
                             redirect('recipe/'.$recipe['id']);
                             exit();

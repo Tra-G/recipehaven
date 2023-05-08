@@ -5,11 +5,13 @@ class adminController {
     public $admin;
     public $admin_model;
     public $recipe_model;
+    public $post_model;
 
     public function __construct() {
         $this->admin_model = new Admin(db_connect());
         $this->admin = $this->admin_model->getAdminById($_SESSION['user_id']);
         $this->recipe_model = new Recipe(db_connect());
+        $this->post_model = new Blog(db_connect());
 
         // check if admin is properly logged in
         if (!isAdminLoggedIn()) {
@@ -415,8 +417,272 @@ class adminController {
         );
     }
 
-    private function uploadImage($file) {
-        $target_dir = __DIR__."/../assets/recipe-images/";
+    public function allPosts() {
+        $title = pageTitle("All Posts");
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+        $per_page = 3;
+
+        // get all posts
+        $posts = $this->post_model->getAllPosts($page, $per_page);
+
+        // check if previous page and next page exist and set to null if not
+        $prev = $this->post_model->getAllPosts($page-1, $per_page);
+        $next = $this->post_model->getAllPosts($page+1, $per_page);
+
+        return array(
+            'title' => $title,
+            'posts' => $posts,
+            'prev' => $prev ? $page-1 : null,
+            'next' => $next ? $page+1 : null,
+        );
+    }
+
+    public function editPost($id) {
+        $title = pageTitle("Edit Post");
+        $post = $this->post_model->getPostById($id);
+        $errors = [];
+
+        // check if post exists
+        if (!$this->post_model->getPostById($id)) {
+            redirect("admin/blog");
+            exit();
+        }
+
+        // check if form is submitted
+        if (is_post_set('title', 'content')) {
+            $postData = array(
+                'title' => sanitize_input($_POST['title']),
+                'content' => sanitize_input($_POST['content']),
+                'image' => $_FILES['image'],
+            );
+
+            // validate data but don't validate image if it's not set
+            $errors = (new FormValidator($postData))
+                ->validateText('title')
+                ->validateLongText('content')
+                ->getErrors();
+
+            if (!$errors) {
+
+                // validate image if it's set
+                if (isset($_FILES['image']['name']) && $_FILES['image']['name']) {
+                    $errors = (new FormValidator($postData))
+                        ->validateImage('image')
+                        ->getErrors();
+
+                    if (!$errors) {
+
+                        // upload image
+                        $image = $this->uploadImage($postData['image'], __DIR__.'/../assets/blog-images/', 'post_');
+
+                        // unlink old image if it exists
+                        if ($post['thumbnail_path'] && file_exists(__DIR__.'/../assets/blog-images/'.$post['thumbnail_path'])) {
+                            unlink(__DIR__.'/../assets/blog-images/'.$post['thumbnail_path']);
+                        }
+                    }
+                    else {
+                        $image = $post['thumbnail_path'];
+                    }
+                }
+                else {
+                    $image = $post['thumbnail_path'];
+                }
+
+                // edit post
+                if ($this->post_model->editPost($id, $image, $postData['title'], $postData['content']) && !$errors) {
+                    $success = "Post updated successfully.";
+                }
+                else {
+                    $errors[] = "Error updating post.";
+                }
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'errors' => $errors,
+            'success' => isset($success) ? $success : null,
+            'post' => $this->post_model->getPostById($id),
+        );
+    }
+
+    public function addPost() {
+        $title = pageTitle("Add New Post");
+        $errors = [];
+
+        // check if form is submitted
+        if (is_post_set('title', 'content')) {
+            $postData = array(
+                'title' => sanitize_input($_POST['title']),
+                'content' => sanitize_input($_POST['content']),
+                'image' => $_FILES['image'],
+            );
+
+            // validate data
+            $errors = (new FormValidator($postData))
+                ->validateText('title')
+                ->validateLongText('content')
+                ->validateImage('image')
+                ->getErrors();
+
+            if (!$errors) {
+
+                // upload image
+                $image = $this->uploadImage($postData['image'], __DIR__.'/../assets/blog-images/', 'post_');
+
+                // add post
+                if ($this->post_model->addPost($this->admin['id'], $image, $postData['title'], $postData['content'])) {
+                    redirect("admin/blog");
+                    exit();
+                }
+                else {
+                    $errors[] = "Error adding post.";
+                }
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'errors' => $errors,
+        );
+    }
+
+    public function deletePost($id) {
+        $post = $this->post_model->getPostById($id);
+
+        // check if post exists
+        if (!$this->post_model->getPostById($id)) {
+            redirect("admin/blog");
+            exit();
+        }
+
+        // delete post
+        if ($this->post_model->deletePost($id)) {
+
+            // unlink image if it exists
+            if ($post['thumbnail_path'] && file_exists(__DIR__.'/../assets/blog-images/'.$post['thumbnail_path'])) {
+                unlink(__DIR__.'/../assets/blog-images/'.$post['thumbnail_path']);
+            }
+
+            redirect("admin/blog");
+            exit();
+        }
+        else {
+            redirect ("admin/post/".$id."/edit");
+            exit();
+        }
+    }
+
+    public function allCategories() {
+        $title = pageTitle("All Categories");
+        $categories = $this->recipe_model->getCategories();
+
+        return array(
+            'title' => $title,
+            'categories' => $categories,
+        );
+    }
+
+    public function editCategory($id) {
+        $title = pageTitle("Edit Category");
+        $category = $this->recipe_model->getCategoryById($id);
+        $errors = [];
+
+        // check if category exists
+        if (!$this->recipe_model->getCategoryById($id)) {
+            redirect("admin/categories");
+            exit();
+        }
+
+        // check if form is submitted
+        if (is_post_set('name')) {
+            $categoryData = array(
+                'name' => sanitize_input($_POST['name']),
+            );
+
+            // validate data
+            $errors = (new FormValidator($categoryData))
+                ->validateText('name')
+                ->getErrors();
+
+            if (!$errors) {
+
+                // edit category
+                if ($this->recipe_model->editCategory($id, $categoryData['name'])) {
+                    redirect("admin/categories");
+                    exit();
+                }
+                else {
+                    $errors[] = "Error updating category.";
+                }
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'errors' => $errors,
+            'category' => $this->recipe_model->getCategoryById($id),
+        );
+    }
+
+    public function addCategory() {
+        $title = pageTitle("Add New Category");
+        $errors = [];
+
+        // check if form is submitted
+        if (is_post_set('name')) {
+            $categoryData = array(
+                'name' => sanitize_input($_POST['name']),
+            );
+
+            // validate data
+            $errors = (new FormValidator($categoryData))
+                ->validateText('name')
+                ->getErrors();
+
+            if (!$errors) {
+
+                // add category
+                if ($this->recipe_model->addCategory($categoryData['name'])) {
+                    redirect("admin/categories");
+                    exit();
+                }
+                else {
+                    $errors[] = "Error adding category.";
+                }
+            }
+        }
+
+        return array(
+            'title' => $title,
+            'errors' => $errors,
+        );
+    }
+
+    public function deleteCategory($id) {
+        $category = $this->recipe_model->getCategoryById($id);
+
+        // check if category exists
+        if (!$this->recipe_model->getCategoryById($id)) {
+            redirect("admin/categories");
+            exit();
+        }
+
+        // delete category
+        if ($this->recipe_model->deleteCategory($id)) {
+            redirect("admin/categories");
+            exit();
+        }
+        else {
+            redirect ("admin/category/".$id."/edit");
+            exit();
+        }
+    }
+
+    private function uploadImage($file, $target_dir = null, $prefix = 'recipe_') {
+        if (!$target_dir) {
+            $target_dir = __DIR__."/../assets/recipe-images/";
+        }
         $target_file = $target_dir . basename($file["name"]);
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -449,7 +715,7 @@ class adminController {
             return false;
         } else {
             // rename file to unique name
-            $new_file_name = uniqid('recipe_').".".$imageFileType;
+            $new_file_name = uniqid($prefix).".".$imageFileType;
             $target_file = $target_dir . $new_file_name;
 
             // if everything is ok, try to upload file

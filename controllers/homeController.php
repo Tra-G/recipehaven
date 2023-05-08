@@ -319,11 +319,6 @@ class homeController {
         // get all posts
         $all_posts = $this->blog->getAllPosts($page, $per_page);
 
-        // if no posts found, redirect to blog page
-        if (!$all_posts) {
-            redirect('blog');
-        }
-
         // check if previous page and next page exist and set to null if not
         $prev = $this->blog->getAllPosts($page-1, $per_page);
         $next = $this->blog->getAllPosts($page+1, $per_page);

@@ -71,6 +71,18 @@ $routes = array(
     // Admin Profile Management
     r('admin/profile') => router('adminController', 'editProfile', 'admin/profile'),
     r('admin/password') => router('adminController', 'changePassword', 'admin/password'),
+
+    // Admin Blog Management
+    r('admin/blog') => router('adminController', 'allPosts', 'admin/blog/all'),
+    r('admin/post/new') => router('adminController', 'addPost', 'admin/blog/new'),
+    r('admin/post/{id}/edit') => router('adminController', 'editPost', 'admin/blog/edit'),
+    r('admin/post/{id}/delete') => router('adminController', 'deletePost'),
+
+    // Admin Category Management
+    r('admin/categories') => router('adminController', 'allCategories', 'admin/categories/all'),
+    r('admin/category/new') => router('adminController', 'addCategory', 'admin/categories/new'),
+    r('admin/category/{id}/edit') => router('adminController', 'editCategory', 'admin/categories/edit'),
+    r('admin/category/{id}/delete') => router('adminController', 'deleteCategory'),
 );
 
 ?>

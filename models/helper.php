@@ -546,13 +546,23 @@ class FormValidator {
     public function validateImage($fieldName) {
         if (empty($_FILES[$fieldName]['name'])) {
             $this->errors[$fieldName] = 'Please upload an image';
+        } else if ($_FILES[$fieldName]['error'] !== UPLOAD_ERR_OK) {
+            $this->errors[$fieldName] = 'There was an error uploading the file';
         } else {
-            $allowedTypes = array('jpg', 'jpeg', 'png', 'gif');
-            $fileType = strtolower(pathinfo($_FILES[$fieldName]['name'], PATHINFO_EXTENSION));
+            $allowedTypes = array('image/jpeg', 'image/png', 'image/gif');
+            $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+            $fileType = finfo_file($fileInfo, $_FILES[$fieldName]['tmp_name']);
+            finfo_close($fileInfo);
+
             if (!in_array($fileType, $allowedTypes)) {
                 $this->errors[$fieldName] = 'Only JPG, JPEG, PNG, and GIF images are allowed';
             } else if ($_FILES[$fieldName]['size'] > 5000000) {
                 $this->errors[$fieldName] = 'File size should not exceed 5MB';
+            } else {
+                list($width, $height) = getimagesize($_FILES[$fieldName]['tmp_name']);
+                if ($width < 100 || $height < 100) {
+                    $this->errors[$fieldName] = 'Image dimensions should be at least 100x100 pixels';
+                }
             }
         }
 
@@ -930,6 +940,46 @@ class Recipe {
         return $categories;
     }
 
+    // get category by id
+    public function getCategoryById($category_id) {
+        $sql = "SELECT * FROM categories WHERE id = ?";
+        $params = array($category_id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $category = $result->fetch_assoc();
+        return $category;
+    }
+
+    // add new category
+    public function addCategory($name) {
+        $sql = "INSERT INTO categories (name) VALUES (?)";
+        $params = array($name);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // edit category
+    public function editCategory($category_id, $name) {
+        $sql = "UPDATE categories SET name = ? WHERE id = ?";
+        $params = array($name, $category_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // delete category
+    public function deleteCategory($category_id) {
+        $sql = "DELETE FROM categories WHERE id = ?";
+        $params = array($category_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
     public function approveRecipe($recipe_id) {
         $sql = "UPDATE recipes SET status = 'published' WHERE id = ?";
         $params = array($recipe_id);
@@ -978,6 +1028,36 @@ class Blog {
         $result = $stmt->get_result();
         $post = $result->fetch_assoc();
         return $post;
+    }
+
+    // edit blog post
+    public function editPost($id, $image, $title, $content) {
+        $sql = "UPDATE blog_posts SET thumbnail_path = ?, title = ?, content = ? WHERE id = ?";
+        $params = array($image, $title, $content, $id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // add blog post
+    public function addPost($user_id, $image, $title, $content) {
+        $sql = "INSERT INTO blog_posts (user_id, thumbnail_path, title, content) VALUES (?, ?, ?, ?)";
+        $params = array($user_id, $image, $title, $content);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // delete blog post
+    public function deletePost($id) {
+        $sql = "DELETE FROM blog_posts WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
     }
 }
 
