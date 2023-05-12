@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Sono:wght@400;500&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
     <!--Styling Link-->
     <link rel="stylesheet" href="../css/style.css">
+    <!--<link rel="stylesheet" href="../css/about.css">-->
     <title>recipehaven</title>
 </head>
 <body>
@@ -27,23 +28,25 @@
     </div>
     <div class="nav-menu">
         <div class="nav-block">
-            <div class="nav1">
-                <div>
-                    <i class="fa-brands fa-facebook"></i>
-                    <i class="fa-brands fa-square-twitter"></i>
-                    <i class="fa-brands fa-linkedin"></i>
-                    <i class="fa-brands fa-youtube"></i>
-                </div>
-
-                <div class="submit-icon">
-                    <div class="nav-submit">
-                        <p>submit recipe</p>
-                        <i class="fa-solid fa-plus"></i>
+            <div class="nav-1">
+                <div class="nav1">
+                    <div>
+                        <i class="fa-brands fa-facebook"></i>
+                        <i class="fa-brands fa-square-twitter"></i>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-youtube"></i>
                     </div>
-                    <div class="line"></div>
-                    <div class="wishlists">
-                        <p>wishlists</p>
-                        <i class="fa fa-heart" aria-hidden="true"></i>
+    
+                    <div class="submit-icon">
+                        <div class="nav-submit">
+                            <p>submit recipe</p>
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                        <div class="line"></div>
+                        <div class="wishlists">
+                            <p>wishlists</p>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,7 +55,6 @@
                 <a class="nav-header" href="index.html">
                     <i style="color: #F15025;" class="fa fa-cutlery" aria-hidden="true"></i>
                     <p>recipe<span style="color: #F15025;">haven</span></p>
-                    <!--<span class="mdi mdi-chef-hat"></span>-->
                 </a>
 
                 <div class="navlink">
@@ -73,32 +75,27 @@
                         Blog
                     </a>
 
-                    <a href="#">
-                        Recipes
+                    <a href="login.html">
+                        Login
+                    </a>
+
+                    <a href="userboard.html">
+                        Recipe
                     </a>
 
                 </div>
 
-                <div class="nav-icon">
-                    <a href="signup.html">
-                        <i style="color: #000;" class="fa-solid fa-user"></i>
-                        <div class="drop-down">
-                            <a href="login.html">Login</a>
-                            <a href="signup.html">Sign Up</a>
-                        </div>
-                    </a>
-                    
-                    <div class="line line1"></div>
+                <div class="nav-icon">                   
+                    <div class="nav-search">
+                        <i class="fa searchIcon fa-search"></i>
+                    </div>
+
+                    <div class="line navline"></div>
+
                     <div class="hamburger">
                         <span></span>
                         <span></span>
                         <span></span>
-                    </div>
-                    
-                    <div class="line"></div>
-                    
-                    <div class="nav-search">
-                        <i class="fa searchIcon fa-search"></i>
                     </div>
                 </div>
             </div>
@@ -200,22 +197,22 @@
     let modal = document.querySelector('.modal');
     let background = document.querySelector('.background');
     let searchBtn = document.querySelector('.searchIcon')
-    let closebtn = document.querySelector('.closeicon fa');
+    let closebtn = document.querySelector('.closeicon');
 
     function searchBar() {
         modal.style.display = 'flex';
         background.style.display = 'block';
-        closeBtn.style.display = 'block';
+        closebtn.style.display = 'block';
     }
 
     function closeBar() {
         modal.style.display = 'none';
         background.style.display = 'none';
-        closeBtn.style.display = 'none';
+        closebtn.style.display = 'none';
     }
 
     searchBtn.onclick = searchBar;
-    closeBtn.onclick = closeBar;
+    closebtn.onclick = closeBar;
 
 
     </script>

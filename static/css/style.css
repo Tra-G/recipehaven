@@ -2,14 +2,10 @@
 color: #d54215;
 background-color: #191919;
 color: #F15025;  color 2
-background-color: #1D1D1D; - zerogym
 background: #F0F3F1; - form
 
 Google fonts
-font-family: 'Roboto', sans-serif;
-font-family: 'Sono', sans-serif;
 font-family: 'Ubuntu', sans-serif;
-
 */
 
 *, ::before, ::after{
@@ -37,9 +33,9 @@ a{
 }
 .closeicon{
     display: none;
-    font-size: 3rem;
+    font-size: 2rem;
     position: fixed;
-    left: 95%;
+    left: 92%;
     top: 5%;
     color: #fff;
     z-index: 7;
@@ -47,10 +43,11 @@ a{
 .modal{
     background-color: #fff;
     position: fixed;
-    top: 40%;
-    left: 30%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 7;
-    width: 40%;
+    width: 80%;
     height: 30%;
     display: none;
     justify-content: center;
@@ -73,7 +70,7 @@ a{
     background-color: #F3F2EF;
 }
 .search-btn button{
-    width: 15%;
+    width: 20%;
     padding: .8rem .5rem;
     outline: none;
     border: none;
@@ -83,13 +80,18 @@ a{
 }
 
 
+/*NAV LINK*/
 .nav-block{
     display: block;
 }
-
-.nav1{
+.nav-1{
     background-color: #191919;
     color: #fff;
+}
+
+.nav1{
+    width: 90%;
+    margin: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -146,7 +148,6 @@ a{
     text-decoration: none;
     font-weight: 500;
 }
-
 .nav-header p{
     font-size: 1.2rem;
 }
@@ -226,28 +227,6 @@ a{
     font-size: 1rem;
     color: #232323;
 }
-.drop-down{
-    display: block;
-    position: absolute;
-    top: 8rem;
-    z-index: 5;
-    width: 10%;
-    padding: 0 .5rem;
-    background-color: #fff;
-}
-
-.drop-down a{
-    display: block;
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin: .6rem 0;
-    padding: .5rem .2rem;
-    color: #000;
-}
-.drop-down a:hover{
-    background-color: #F15025;
-    color: #fff;
-}
 
 /*nav 3*/
 .back-drop{
@@ -310,21 +289,21 @@ swiper-slide img {
 }
 
 .card-details{
-    width: 65%;
-    margin-left: 6rem;
-    margin-top: 15rem;
-    transform: translate(-14px, -32px);
+    width: 70%;
+    margin: auto;
+    /*transform: translate(-50% -50%);*/
 }
 
 .cardheader{
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #fff;
     font-weight: 600;
     font-family: 'Ubuntu', sans-serif;
+    margin-bottom: 1rem;
 }
 
 .cardtext{
-    font-size: 1.7rem;
+    font-size: 1.2rem;
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     margin-bottom: 2.7rem;
@@ -335,11 +314,11 @@ swiper-slide img {
     border: none;
     outline: none;
     background-color: #F15025;
-    padding: .5rem .5rem;
+    padding: .7rem .9rem;
     font-family: 'Sono', sans-serif;
     font-weight: 500;
     border-radius: 2rem;
-    font-size: .8rem;
+    font-size: .9rem;
 }
 
 .cardbutton a{
@@ -379,6 +358,14 @@ swiper-slide img {
 }
 
 @media screen and (min-width: 1024px) {
+    .modal{
+        width: 40%;
+    }
+    .closeicon{
+        font-size: 3rem;
+    }
+
+    /*NAV LINK*/
     .nav1{
         justify-content: space-around;
         padding: 1.1rem 0;
@@ -413,8 +400,7 @@ swiper-slide img {
         top: unset;
         right: unset;
         box-shadow: unset;
-    }
-    
+    }   
     
     .navlink a{
         display: unset;
@@ -437,6 +423,10 @@ swiper-slide img {
     .nav2{
         justify-content: space-around;
         padding: 1.4rem 0;
+    }
+
+    .navline{
+        display: none;
     }
 
     .hamburger{
@@ -464,8 +454,9 @@ swiper-slide img {
         margin: 0 1.7rem;
         height: 22px;
         background-color: #a9a2a2;
-    
 }
+
+
 
 /*BACKGROUND*/
 .sms{
@@ -477,7 +468,7 @@ swiper-slide img {
 }
 
 .cardtext{
-    font-size: 1.7rem;
+    font-size: 1.4rem;
 }
 
 .cardheader{
@@ -485,7 +476,8 @@ swiper-slide img {
 }
 
 .cardbutton{
-    padding: .8rem 1.7rem;
+    padding: 1.1rem 2rem;
+    font-size: 1rem;
 }
 
 }

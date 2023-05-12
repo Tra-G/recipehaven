@@ -4,9 +4,98 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Font icon links-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Sono:wght@400;500&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <!--Styling Link-->
+    <link rel="stylesheet" href="../css/userboard.css">
     <title>Document</title>
 </head>
 <body>
     
+    <div class="sidebar">
+        <div class="flex-sidebar">
+            <i style="font-size: 1.5rem;" class="fa-solid fa-xmark"></i>
+            
+            <header class="side-header">
+                <i style="background-color: #F15025; padding: .5rem .7rem; border-radius: 1rem; font-size: 1rem;" class="fa-solid fa-user"></i>
+                <div class="header-names">
+                    <p>Tester Johnson</p>
+                    <p>tester@gmail.com</p>
+                </div>
+            </header>
+
+            <div class="user-details">
+                
+                <div class="users" style="display: flex; align-items: center;">
+                    <i style="color: #F15025;"; class="fa-solid fa-user"></i>
+                    <span>Personal Info</span> 
+                </div>
+
+                <div class="users" style="display: flex; align-items: center;">
+                    <i style="color: #F15025;" class="fa-solid fa-heart"></i>
+                    <span>Saved Recipes</span>
+                </div>
+                
+                <div class="users" style="display: flex; align-items: center;">
+                    <i style="color: #F15025;" class="fa-solid fa-bowl-food"></i>
+                    <span>Personal Recipe</span>
+                </div>
+
+                <div class="users" style="display: flex; align-items: center;">
+                    <i style="color: #F15025;" class="fa-solid fa-message"></i>
+                    <span>Review</span>
+                </div>
+            </div>
+
+            <form action="#">
+                <button class="sidebar-btn">Log Out</button>
+            </form>
+        </div>
+    </div> 
+
+    <div class="main-body">
+        <header class="main-header">
+            <div class="hamburger">
+                <i style="font-size: 1.6rem; color: #000;" class="fa-solid fa-bars"></i>
+            </div>
+
+            <a class="nav-header" href="index.html">
+                <i style="color: #F15025;" class="fa fa-cutlery"></i>
+                <p>recipe<span style="color: #F15025;">haven</span></p>
+            </a>
+        </header>
+
+        <div class="main-container">
+            <div class="personal-info">
+                <header>
+                    <p>Personal Info</p>
+                </header>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const menu = document.querySelector(".flex-sidebar");
+        const closeIcon = document.querySelector('.fa-xmark');
+
+        hamburger.addEventListener("click", function() {
+            menu.classList.toggle("show");
+            hamburger.classList.toggle("hide");
+        });
+
+        closeIcon.addEventListener('click', () => {
+            menu.classList.remove('show');
+            hamburger.classList.remove('hide');
+        });
+    </script> 
 </body>
 </html>
+
+
+

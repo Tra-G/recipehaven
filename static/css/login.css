@@ -120,6 +120,13 @@ form{
     text-align: center;
     color: #6a686a;
 }
+.log a{
+    font-weight: 600;
+    color: #000;
+}
+.log a:hover{
+    color: #F15025;
+}
 
 .second-half{
     display: none;
@@ -149,6 +156,9 @@ form{
     .titlehead1{
         font-size: 1.8rem;
     }
+    .textinput input{
+        padding: .3rem 1rem;
+    }
 }
 
 
@@ -174,6 +184,9 @@ form{
 
     .fa-eye{
         left: 95%;
+    }
+    .textinput input{
+        padding: .3rem 1rem;
     }
 }
 
