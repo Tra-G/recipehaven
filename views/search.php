@@ -26,10 +26,10 @@
                     <a href="<?php echo route('recipe/' . $result['id']); ?>"><?php echo $result['title']; ?></a>
                 </h3>
                 <p><b>Directions:</b>
-                    <?php echo $result['directions']; ?>
+                    <?php echo nl2br($result['directions']); ?>
                 </p>
                 <p><b>Ingredients:</b>
-                    <?php echo $result['ingredients']; ?>
+                    <?php echo nl2br($result['ingredients']); ?>
                 </p>
                 <p><b>Categories:</b>
                     <?php echo $result['categories']; ?>

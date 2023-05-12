@@ -368,8 +368,23 @@ function isUserLoggedIn() {
     if(isset($_SESSION['user_id'])) {
         $userId = $_SESSION['user_id'];
         $user = getRowBySelector('users', 'id', $userId);
-        if($user)
+        // check if role is user
+        if ($user['role'] == 'user') {
             return true;
+        }
+    }
+    return false;
+}
+
+// Checks if admin is logged in
+function isAdminLoggedIn() {
+    if(isset($_SESSION['user_id'])) {
+        $userId = $_SESSION['user_id'];
+        $user = getRowBySelector('users', 'id', $userId);
+        // check if role is admin
+        if ($user['role'] == 'admin') {
+            return true;
+        }
     }
     return false;
 }
@@ -428,6 +443,15 @@ function send_email($to, $subject, $message, $headers = null) {
     }
 }
 
+// sanitize input
+function sanitize_input($input) {
+    $input = trim($input);
+    $input = stripslashes($input);
+    $input = htmlspecialchars($input);
+    $input = strip_tags($input);
+    return $input;
+}
+
 // Form input validator
 class FormValidator {
     private $formData;
@@ -436,20 +460,6 @@ class FormValidator {
     public function __construct($formData) {
         $this->formData = $formData;
         $this->errors = array();
-    }
-
-    public function validateName() {
-        if (empty($this->formData['name'])) {
-            $this->errors['name'] = 'Name is required';
-        } else {
-            $name = $this->sanitizeInput($this->formData['name']);
-            if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
-                $this->errors['name'] = 'Only letters and white space allowed';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
     }
 
     public function validateEmail() {
@@ -466,112 +476,40 @@ class FormValidator {
         return $this;
     }
 
-    public function validateMessage() {
-        if (empty($this->formData['message'])) {
-            $this->errors['message'] = 'Message is required';
-        } else {
-            $message = $this->sanitizeInput($this->formData['message']);
-            if (strlen($message) < 10) {
-                $this->errors['message'] = 'Message must be at least 10 characters';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validatePhone() {
-        if (empty($this->formData['phone'])) {
-            $this->errors['phone'] = 'Phone is required';
-        } else {
-            $phone = $this->sanitizeInput($this->formData['phone']);
-            if (!preg_match("/^[0-9]{10}$/", $phone)) {
-                $this->errors['phone'] = 'Invalid phone number format';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
     public function validatePassword() {
         if (empty($this->formData['password'])) {
             $this->errors['password'] = 'Password is required';
         } else {
             $password = $this->sanitizeInput($this->formData['password']);
-            // if (strlen($password) < 8) {
-            //     $this->errors['password'] = 'Password must be at least 8 characters';
-            // }
+            if (strlen($password) < 3) {
+                $this->errors['password'] = 'Password must be at least 8 characters';
+            }
         }
 
         // Return $this to enable method chaining
         return $this;
     }
 
-    public function validateConfirmPassword() {
+    public function validateAllPassword() {
+        if (empty($this->formData['current_password'])) {
+            $this->errors['current_password'] = 'Current password is required';
+        }
+
+        if (empty($this->formData['new_password'])) {
+            $this->errors['new_password'] = 'New password is required';
+        } else {
+            $newPassword = $this->sanitizeInput($this->formData['new_password']);
+            if (strlen($newPassword) < 3) {
+                $this->errors['new_password'] = 'New password must be at least 3 characters';
+            }
+        }
+
         if (empty($this->formData['confirm_password'])) {
             $this->errors['confirm_password'] = 'Confirm password is required';
         } else {
             $confirmPassword = $this->sanitizeInput($this->formData['confirm_password']);
-            $password = $this->sanitizeInput($this->formData['password']);
-            if ($confirmPassword !== $password) {
+            if ($newPassword !== $confirmPassword) {
                 $this->errors['confirm_password'] = 'Passwords do not match';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validateAddress() {
-        if (empty($this->formData['address'])) {
-            $this->errors['address'] = 'Address is required';
-        } else {
-            $address = $this->sanitizeInput($this->formData['address']);
-            if (strlen($address) < 5) {
-                $this->errors['address'] = 'Address must be at least 5 characters';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validateCity() {
-        if (empty($this->formData['city'])) {
-            $this->errors['city'] = 'City is required';
-        } else {
-            $city = $this->sanitizeInput($this->formData['city']);
-            if (!preg_match("/^[a-zA-Z ]*$/", $city)) {
-                $this->errors['city'] = 'Only letters and white space allowed';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validateState() {
-        if (empty($this->formData['state'])) {
-            $this->errors['state'] = 'State is required';
-        } else {
-            $state = $this->sanitizeInput($this->formData['state']);
-            if (!preg_match("/^[a-zA-Z ]*$/", $state)) {
-                $this->errors['state'] = 'Only letters and white space allowed';
-            }
-        }
-
-        // Return $this to enable method chaining
-        return $this;
-    }
-
-    public function validateZip() {
-        if (empty($this->formData['zip'])) {
-            $this->errors['zip'] = 'Zip is required';
-        } else {
-            $zip = $this->sanitizeInput($this->formData['zip']);
-            if (!preg_match("/^[0-9]{5}$/", $zip)) {
-                $this->errors['zip'] = 'Invalid zip code format';
             }
         }
 
@@ -597,8 +535,8 @@ class FormValidator {
             $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' is required';
         } else {
             $longText = $this->sanitizeInput($this->formData[$fieldName]);
-            if (strlen($longText) < 20) {
-                $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' must be at least 20 characters';
+            if (strlen($longText) < 10) {
+                $this->errors[$fieldName] = ucfirst(str_replace("_", " ", $fieldName)) . ' must be at least 10 characters';
             }
         }
 
@@ -608,13 +546,23 @@ class FormValidator {
     public function validateImage($fieldName) {
         if (empty($_FILES[$fieldName]['name'])) {
             $this->errors[$fieldName] = 'Please upload an image';
+        } else if ($_FILES[$fieldName]['error'] !== UPLOAD_ERR_OK) {
+            $this->errors[$fieldName] = 'There was an error uploading the file';
         } else {
-            $allowedTypes = array('jpg', 'jpeg', 'png', 'gif');
-            $fileType = strtolower(pathinfo($_FILES[$fieldName]['name'], PATHINFO_EXTENSION));
+            $allowedTypes = array('image/jpeg', 'image/png', 'image/gif');
+            $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+            $fileType = finfo_file($fileInfo, $_FILES[$fieldName]['tmp_name']);
+            finfo_close($fileInfo);
+
             if (!in_array($fileType, $allowedTypes)) {
                 $this->errors[$fieldName] = 'Only JPG, JPEG, PNG, and GIF images are allowed';
             } else if ($_FILES[$fieldName]['size'] > 5000000) {
                 $this->errors[$fieldName] = 'File size should not exceed 5MB';
+            } else {
+                list($width, $height) = getimagesize($_FILES[$fieldName]['tmp_name']);
+                if ($width < 100 || $height < 100) {
+                    $this->errors[$fieldName] = 'Image dimensions should be at least 100x100 pixels';
+                }
             }
         }
 
@@ -714,9 +662,9 @@ class Recipe {
     }
 
     // get recipes by status
-    public function getRecipesByStatus($status, $page = 1, $perPage = 10) {
+    public function getRecipesByStatus($status, $page = 1, $perPage = 10, $orderBy = 'created_at', $direction = 'DESC') {
         $offset = ($page - 1) * $perPage;
-        $sql = "SELECT * FROM recipes WHERE status = ? LIMIT ?, ?";
+        $sql = "SELECT * FROM recipes WHERE status = ? ORDER BY $orderBy $direction LIMIT ?, ?";
         $params = array($status, $offset, $perPage);
         $stmt = $this->executeQuery($sql, $params);
         $result = $stmt->get_result();
@@ -891,6 +839,155 @@ class Recipe {
         // return true if successful
         return $stmt ? true : false;
     }
+
+    // get all saved recipes for a user
+    public function getSavedRecipes($user_id, $page = 1, $perPage = 10, $orderby = 'saved_recipes.created_at', $direction = 'DESC') {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT recipes.*, users.first_name, users.last_name
+                FROM saved_recipes
+                LEFT JOIN recipes ON saved_recipes.recipe_id = recipes.id
+                LEFT JOIN users ON recipes.user_id = users.id
+                WHERE saved_recipes.user_id = ?
+                ORDER BY $orderby $direction
+                LIMIT ?, ?";
+        $params = array($user_id, $offset, $perPage);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $recipes = $result->fetch_all(MYSQLI_ASSOC);
+        return $recipes;
+    }
+
+    // get recipe by user id
+    public function getRecipeByUserId($user_id, $page = 1, $perPage = 10, $orderby = 'recipes.created_at', $direction = 'DESC') {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT recipes.*, users.first_name, users.last_name
+                FROM recipes
+                LEFT JOIN users ON recipes.user_id = users.id
+                WHERE recipes.user_id = ?
+                ORDER BY $orderby $direction
+                LIMIT ?, ?";
+        $params = array($user_id, $offset, $perPage);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $recipes = $result->fetch_all(MYSQLI_ASSOC);
+        return $recipes;
+    }
+
+    // delete recipe by id (delete all from saved_recipes, ratings, comments)
+    public function deleteRecipe($recipe_id) {
+        $sql = "DELETE FROM saved_recipes WHERE recipe_id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM ratings WHERE recipe_id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM comments WHERE recipe_id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM recipes WHERE id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // add new recipe
+    public function addRecipe($user_id, $title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $image) {
+        $sql = "INSERT INTO recipes (user_id, title, directions, ingredients, prep_time, servings, status, categories, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $params = array($user_id, $title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $image);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // update recipe
+    public function updateRecipe($recipe_id, $title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $image) {
+        $sql = "UPDATE recipes SET title = ?, directions = ?, ingredients = ?, prep_time = ?, servings = ?, status = ?, categories = ?, image = ? WHERE id = ?";
+        $params = array($title, $directions, $ingredients, $prep_time, $servings, $status, $categories, $image, $recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // get categories and return as array
+    public function getCategories() {
+        $sql = "SELECT * FROM categories";
+        $stmt = $this->executeQuery($sql, array());
+        $result = $stmt->get_result();
+        $categories = $result->fetch_all(MYSQLI_ASSOC);
+        return $categories;
+    }
+
+    // check if categories (variadic) exists (category column is name)
+    public function categoryExists(...$categories) {
+        $sql = "SELECT * FROM categories WHERE name IN (";
+        $params = array();
+        foreach ($categories as $category) {
+            $sql .= "?, ";
+            $params[] = $category;
+        }
+        $sql = rtrim($sql, ', ');
+        $sql .= ")";
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $categories = $result->fetch_all(MYSQLI_ASSOC);
+        return $categories;
+    }
+
+    // get category by id
+    public function getCategoryById($category_id) {
+        $sql = "SELECT * FROM categories WHERE id = ?";
+        $params = array($category_id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $category = $result->fetch_assoc();
+        return $category;
+    }
+
+    // add new category
+    public function addCategory($name) {
+        $sql = "INSERT INTO categories (name) VALUES (?)";
+        $params = array($name);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // edit category
+    public function editCategory($category_id, $name) {
+        $sql = "UPDATE categories SET name = ? WHERE id = ?";
+        $params = array($name, $category_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // delete category
+    public function deleteCategory($category_id) {
+        $sql = "DELETE FROM categories WHERE id = ?";
+        $params = array($category_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    public function approveRecipe($recipe_id) {
+        $sql = "UPDATE recipes SET status = 'published' WHERE id = ?";
+        $params = array($recipe_id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
 }
 
 // Blog class
@@ -932,6 +1029,267 @@ class Blog {
         $post = $result->fetch_assoc();
         return $post;
     }
+
+    // edit blog post
+    public function editPost($id, $image, $title, $content) {
+        $sql = "UPDATE blog_posts SET thumbnail_path = ?, title = ?, content = ? WHERE id = ?";
+        $params = array($image, $title, $content, $id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // add blog post
+    public function addPost($user_id, $image, $title, $content) {
+        $sql = "INSERT INTO blog_posts (user_id, thumbnail_path, title, content) VALUES (?, ?, ?, ?)";
+        $params = array($user_id, $image, $title, $content);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // delete blog post
+    public function deletePost($id) {
+        $sql = "DELETE FROM blog_posts WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+}
+
+class User {
+
+    private $conn;
+
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+
+    // execute query
+    private function executeQuery($sql, $params) {
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+
+    // get user by id
+    public function getUserById($id) {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        return $user;
+    }
+
+    // get user by email
+    public function getUserByEmail($email) {
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $params = array($email);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        return $user;
+    }
+
+    // edit user
+    public function editUser($id, $first_name, $last_name, $email) {
+        $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ?";
+        $params = array($first_name, $last_name, $email, $id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // change password
+    public function changePassword($id, $current_password, $new_password, $confirm_password) {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        // check if current password is correct
+        if (password_verify($current_password, $user['password'])) {
+            // check if new password and confirm password match
+            if ($new_password === $confirm_password) {
+                $sql = "UPDATE users SET password = ? WHERE id = ?";
+                $params = array(password_hash($new_password, PASSWORD_DEFAULT), $id);
+                $stmt = $this->executeQuery($sql, $params);
+
+                // return true if successful
+                return $stmt ? true : false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+}
+
+class Admin {
+
+    private $conn;
+
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+
+    // execute query
+    private function executeQuery($sql, $params) {
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt;
+    }
+
+    // get admin by id
+    public function getAdminById($id) {
+        $sql = "SELECT * FROM users WHERE id = ? AND role = 'admin'";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $admin = $result->fetch_assoc();
+        return $admin;
+    }
+
+    // get total number of users
+    public function getTotalUsers() {
+        $sql = "SELECT COUNT(*) FROM users WHERE role = 'user'";
+        $stmt = $this->executeQuery($sql, array());
+        $result = $stmt->get_result();
+        $total_users = $result->fetch_assoc();
+        return $total_users['COUNT(*)'];
+    }
+
+    // get total number of recipes (optional: status)
+    public function getTotalRecipes($status = null) {
+        $sql = "SELECT COUNT(*) FROM recipes";
+        $params = array();
+        if ($status) {
+            $sql .= " WHERE status = ?";
+            $params[] = $status;
+        }
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $total_recipes = $result->fetch_assoc();
+        return $total_recipes['COUNT(*)'];
+    }
+
+    // get total number of posts
+    public function getTotalPosts() {
+        $sql = "SELECT COUNT(*) FROM blog_posts";
+        $stmt = $this->executeQuery($sql, array());
+        $result = $stmt->get_result();
+        $total_posts = $result->fetch_assoc();
+        return $total_posts['COUNT(*)'];
+    }
+
+    // get all users (with optional orderby, page and perpage)
+    public function getAllUsers($page = 1, $perPage = 10, $orderBy = 'created_at', $orderDir = 'DESC') {
+        $offset = ($page - 1) * $perPage;
+        $sql = "SELECT * FROM users WHERE role = 'user' ORDER BY $orderBy $orderDir LIMIT ?, ?";
+        $params = array($offset, $perPage);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $users = $result->fetch_all(MYSQLI_ASSOC);
+        return $users;
+    }
+
+    // get user by id
+    public function getUserById($id) {
+        $sql = "SELECT * FROM users WHERE id = ? AND role = 'user'";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        return $user;
+    }
+
+
+    // get user by email
+    public function getUserByEmail($email) {
+        $sql = "SELECT * FROM users WHERE email = ?";
+        $params = array($email);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        return $user;
+    }
+
+    // edit user
+    public function editUser($id, $first_name, $last_name, $email) {
+        $sql = "UPDATE users SET first_name = ?, last_name = ?, email = ? WHERE id = ?";
+        $params = array($first_name, $last_name, $email, $id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
+    // change password
+    public function changePassword($id, $current_password, $new_password, $confirm_password) {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        // check if current password is correct
+        if (password_verify($current_password, $user['password'])) {
+            // check if new password and confirm password match
+            if ($new_password === $confirm_password) {
+                $sql = "UPDATE users SET password = ? WHERE id = ?";
+                $params = array(password_hash($new_password, PASSWORD_DEFAULT), $id);
+                $stmt = $this->executeQuery($sql, $params);
+
+                // return true if successful
+                return $stmt ? true : false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    // delete user (delete from comments, ratings, saved_recipes, recipes and finally users)
+    public function deleteUser($id) {
+        $sql = "SET FOREIGN_KEY_CHECKS=0";
+        $this->executeQuery($sql, array());
+
+        $sql = "DELETE FROM comments WHERE user_id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM ratings WHERE user_id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM saved_recipes WHERE user_id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM recipes WHERE user_id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "DELETE FROM users WHERE id = ?";
+        $params = array($id);
+        $stmt = $this->executeQuery($sql, $params);
+
+        $sql = "SET FOREIGN_KEY_CHECKS=1";
+        $this->executeQuery($sql, array());
+
+        // return true if successful
+        return $stmt ? true : false;
+    }
+
 }
 
 ?>

@@ -169,7 +169,7 @@ class homeController {
 
                 // unsave recipe
                 if (!$saved) {
-                    $response = 'Recipe not saved';
+                    $response = 'Recipe is not in saved recipes';
                 }
                 else {
                     $unsave = $this->recipes->unsaveRecipe($_SESSION['user_id'], $id);
@@ -318,11 +318,6 @@ class homeController {
 
         // get all posts
         $all_posts = $this->blog->getAllPosts($page, $per_page);
-
-        // if no posts found, redirect to blog page
-        if (!$all_posts) {
-            redirect('blog');
-        }
 
         // check if previous page and next page exist and set to null if not
         $prev = $this->blog->getAllPosts($page-1, $per_page);

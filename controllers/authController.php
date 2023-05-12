@@ -9,9 +9,9 @@ class authController
         $title = pageTitle("Login");
         $errors = [];
 
-        // Go to dashboard if user is logged in
+        // Go to user profile if user is logged in
         if (isUserLoggedIn()) {
-            redirect("user/dashboard");
+            redirect("user/profile");
             exit();
         }
 
@@ -20,8 +20,8 @@ class authController
 
             // get data from form
             $loginData = array(
-                'email' => $_POST['email'],
-                'password' => $_POST['password'],
+                'email' => sanitize_input($_POST['email']),
+                'password' => sanitize_input($_POST['password']),
             );
 
             // validate data
@@ -51,7 +51,7 @@ class authController
                         if ($user["role"] == "admin")
                             redirect("admin/dashboard");
                         else if ($user["role"] == "user")
-                            redirect("user/dashboard");
+                            redirect("user/profile");
                         else
                             $errors[] = "Incorrect details";
                     } else {
@@ -75,9 +75,9 @@ class authController
         $title = pageTitle("Sign Up");
         $errors = [];
 
-        // Go to dashboard if user is logged in
+        // Go to profile if user is logged in
         if (isUserLoggedIn()) {
-            redirect("user/dashboard");
+            redirect("user/profile");
             exit();
         }
 
@@ -86,10 +86,10 @@ class authController
 
             // get data from form
             $registerData = array(
-                'email' => $_POST['email'],
-                'first_name' => $_POST['first_name'],
-                'last_name' => $_POST['last_name'],
-                'password' => $_POST['password'],
+                'email' => sanitize_input($_POST['email']),
+                'first_name' => sanitize_input($_POST['first_name']),
+                'last_name' => sanitize_input($_POST['last_name']),
+                'password' => sanitize_input($_POST['password']),
             );
 
             // validate data
@@ -123,7 +123,8 @@ class authController
                     // Set session variables
                     $_SESSION['user_id'] = $id;
 
-                    redirect("user/dashboard");
+                    // go to profile
+                    redirect("user/profile");
                 }
             }
         }
@@ -164,7 +165,7 @@ class authController
 
             // get data from form
             $forgotData = array(
-                'email' => $_POST['email'],
+                'email' => sanitize_input($_POST['email']),
             );
 
             // validate data
@@ -265,9 +266,9 @@ class authController
         $title = pageTitle("Change Password");
         $errors = [];
 
-        // Go to dashboard if user is logged in
+        // Go to profile if user is logged in
         if (isUserLoggedIn()) {
-            redirect("user/dashboard");
+            redirect("user/profile");
             exit();
         }
 
@@ -311,7 +312,7 @@ class authController
             }
         } else {
             // return to login
-            route("login");
+            redirect("login");
             exit();
         }
 

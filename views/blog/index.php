@@ -8,9 +8,13 @@
 <body>
     <h1>All Blog Posts</h1>
     <ul>
-        <?php foreach ($all_posts as $post): ?>
-            <li><a href="<?php echo route('blog/'.$post['id']); ?>"><?php echo $post['title']; ?></a></li>
-        <?php endforeach; ?>
+        <?php if (empty($all_posts)): ?>
+            <li>No posts found.</li>
+        <?php else: ?>
+            <?php foreach ($all_posts as $post): ?>
+                <li><a href="<?php echo route('blog/'.$post['id']); ?>"><?php echo $post['title']; ?></a></li>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </ul>
 
     <?php if ($prev): ?>
