@@ -8,6 +8,7 @@
 body{
     color: #fff;
     font-family: 'Ubuntu', sans-serif;
+    display: flex;
 }
 
 .fa-xmark{
@@ -67,7 +68,7 @@ body{
   }
 
 /*MAIN BODY*/
-.main-body{
+.main{
     background-color: #d0cfd0;
     width: 100%;
     height: 100vh; 
@@ -93,7 +94,24 @@ body{
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-@media screen and (min-width: 700px) {
+/*PERSONAL INFO*/
+.main-container{
+    width: 95%;
+    margin: 2rem auto;
+    height: 50vh;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.info-header{
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #000;
+}
+
+@media screen and (min-width: 1024px) {
+    .main{
+        width: 100% - 23%;
+    }
     .side-header{
         margin: 3rem 0;
     }

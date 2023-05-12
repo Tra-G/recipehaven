@@ -149,6 +149,7 @@ form{
     background-size: cover;
 }
 
+
 @media screen and (min-width: 750px) {
     .first-half{
         width: calc(100% - 40%);
