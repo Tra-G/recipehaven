@@ -142,6 +142,32 @@ a{
 
 
 
+@media screen and (min-width: 750px) {
+    .bg-text{
+        font-size: 3rem;
+    }
+
+    /*sect 1*/
+    .sect1-head{
+        font-size: 1.9rem;
+    }
+
+    /*sect 2*/
+    .sect2-image img{
+        height: 67vh;
+    }
+
+    .sect2-header{
+        font-size: 1.9rem;
+    }
+
+    .sect2-text1{
+        font-size: 1.5rem;
+    }
+}
+
+
+
 @media screen and (min-width: 1024px) {
     
 /*BACKGROUND*/

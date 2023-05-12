@@ -238,8 +238,8 @@
                 <div class="anchor-link">
                     <a href="home.html">Home</a>
                     <a href="about.html">About</a>
-                    <a href="#">Blog</a>
-                    <a href="#">Contact Us</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="contact.html">Contact Us</a>
                 </div>
 
             </div>
@@ -262,6 +262,30 @@
         closeIcon.addEventListener('click', () => {
   menu.classList.remove('show');
 });
+
+
+
+    let modal = document.querySelector('.modal');
+    let background = document.querySelector('.background');
+    let searchBtn = document.querySelector('.searchIcon')
+    let closebtn = document.querySelector('.closeicon');
+
+    function searchBar() {
+        modal.style.display = 'flex';
+        background.style.display = 'block';
+        closebtn.style.display = 'block';
+    }
+
+    function closeBar() {
+        modal.style.display = 'none';
+        background.style.display = 'none';
+        closebtn.style.display = 'none';
+    }
+
+    searchBtn.onclick = searchBar;
+    closebtn.onclick = closeBar;
+
+
     </script>
 </body>
 </html>

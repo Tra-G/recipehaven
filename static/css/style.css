@@ -425,6 +425,16 @@ footer{
 }
 
 
+
+@media screen and (min-width: 750px) {
+    .navlink{
+        width: 60%;
+    }
+}
+
+
+
+
 @media screen and (min-width: 1024px) {
     .modal{
         width: 40%;
