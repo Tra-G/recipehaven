@@ -44,9 +44,9 @@ $routes = array(
     r('login') => router('authController', 'login', 'auth/login'),
     r('register') => router('authController', 'register', 'auth/register'),
     r('logout') => router('authController', 'logout'),
-    r('reset') => router('authController', 'forgotPassword', 'auth/reset/index'),
+    r('reset') => router('authController', 'forgotPassword'),
     r('reset/{string}') => router('authController', 'changePassword', 'auth/reset/change'),
-    r('reset/{string}/change') => router('authController', 'changePasswordApi', 'auth/reset/api'),
+    r('reset/{string}/change') => router('authController', 'changePasswordApi'),
 
     // User
     r('user/profile') => router('userController', 'profile', 'user/profile'),

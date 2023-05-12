@@ -1,0 +1,83 @@
+body{
+    font-family: 'Ubuntu', sans-serif;
+}
+.submitrecipe-container{
+    width: 90%;
+    margin: 10rem auto;
+    padding: 1rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.submitrecipe-header{
+    font-size: 1.5rem;
+    margin: 1.5rem 0;
+    font-weight: 500;
+}
+label{
+    display: block;
+    margin-bottom: .5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+.submitrecipe-form{
+    margin: 1rem 0 2rem;
+}
+.submitrecipe-form input{
+    width: 100%;
+    padding: .8rem .4rem;
+    outline: none;
+    font-size: .9rem;
+}
+.submitrecipe-form input:hover{
+    outline: 2px solid #F15025;
+    border: none;
+}
+.ingredients-recipe div{
+    margin-bottom: 2rem;
+}
+.submitrecipe-btn{
+    outline: none;
+    border: none;
+    background-color: #F15025;
+    color: #fff;
+    padding: .5rem 2rem;
+    border-radius: 2rem;
+    font-size: .9rem;
+}
+.cancelrecipe-btn{
+    padding: .5rem 2rem;
+    border-radius: 2rem;
+    font-size: .9rem;
+    outline: none;
+    border: 1px solid #F15025;
+}
+.ingredients-btn{
+    padding: .5rem 1rem;
+    border: 2px solid #F15025;
+    background-color: transparent;
+}
+.ingredients-btn:hover{
+    background-color: #F15025;
+    color: #fff;
+}
+
+
+@media screen and (min-width: 1024px) {
+    .submitrecipe-container{
+        width: 40%;
+    }
+    .submitrecipe-header{
+        font-size: 2.2rem;
+    }
+    .submitrecipe-form input{
+        font-size: 1rem;
+        padding: 1rem .4rem;
+    }
+    .submitrecipe-btn, .cancelrecipe-btn{
+        font-size: 1rem;
+        padding: .9rem 2.4rem;
+    }
+    .fa-xmark{
+        font-size: 1.6rem;
+    }
+}

@@ -1,14 +1,297 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>About Us</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $title; ?></title>
+    <!--Font icon links-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <!--Google Fonts-->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Sono:wght@400;500&family=Ubuntu:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!--Styling Link-->
+    <link rel="stylesheet" href="<?php echo assets('css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo assets('css/about.css'); ?>">
 </head>
 
 <body>
-    <h1>About Us</h1>
-    <p>Welcome to our recipe website! We are a team of passionate foodies who love to share our favorite recipes with
-        the world. Our goal is to provide you with delicious, easy-to-follow recipes that you can make at home.</p>
+    <div class="background"></div>
+    <div class="closeicon">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="modal">
+        <form class="search-btn" action="<?php echo route('search'); ?>" method="get">
+            <input type="text" name="param" placeholder="Type a recipe">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="nav-menu">
+        <div class="nav-block">
+            <div class="nav-1">
+                <div class="nav1">
+                    <div>
+                        <i class="fa-brands fa-facebook"></i>
+                        <i class="fa-brands fa-square-twitter"></i>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+
+                    <div class="submit-icon">
+                        <a class="nav-submit" href="<?php echo route('recipe/new'); ?>">
+                            <p>submit recipe</p>
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav2">
+                <a class="nav-header" href="<?php echo route(''); ?>">
+                    <i style="color: #F15025;" class="fa fa-cutlery"></i>
+                    <p>recipe<span style="color: #F15025;">haven</span></p>
+                </a>
+
+                <div class="navlink">
+                    <i style="color: #000;" class="fa fa-times"></i>
+                    <a href="<?php echo route(''); ?>">
+                        Home
+                    </a>
+
+                    <a href="<?php echo route('about'); ?>">
+                        About
+                    </a>
+
+                    <a href="<?php echo route('contact'); ?>">
+                        Contact
+                    </a>
+
+                    <a href="<?php echo route('blog'); ?>">
+                        Blog
+                    </a>
+
+                    <a href="<?php echo route('login'); ?>">
+                        Login
+                    </a>
+
+                    <a href="<?php echo route('register'); ?>">
+                        Sign Up
+                    </a>
+
+                </div>
+
+                <div class="nav-icon">
+                    <div class="nav-search">
+                        <i class="fa searchIcon fa-search"></i>
+                    </div>
+
+                    <div class="line navline"></div>
+
+                    <div class="hamburger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!--BACKGROUND-->
+    <div class="bg-contact">
+        <div class="bg-text">
+            <p>About Us</p>
+        </div>
+    </div>
+
+
+    <div class="sect1">
+        <div class="sect1-flex">
+            <div class="sect1-item">
+                <div class="sect1-head">
+                    Who we are?
+                </div>
+
+                <div class="sect1-item2">
+                    <p>Home cooks are our heroes—it's as simple as that. reciperaven is a community built by and for
+                        kitchen experts: reciperaven connects home cooks with their greatest sources of inspiration —
+                        other home cooks. </p> <br>
+
+                    <p>We're the world's leading digital food brand, and that inspires us to do everything possible to
+                        keep our community connected.</p><br>
+
+                    <p>Every day, cooks from around the world publish recipes and inspire one another through recipe
+                        photos, ratings, reviews, and videos. The combination of the Allrecipes community with our team
+                        of editorial and kitchen professionals provides authority found nowhere else on the internet and
+                        has turned the brand into an indispensable resource for cooks of all skill levels.</p>
+                </div>
+
+
+                <ul>
+                    <li style="list-style: none; font-weight: 500; font-size: 1.3rem; color: #000;">We are:</li>
+                    <li>Friendly We love trading ideas and hanging out with fellow home cooks. </li>
+                    <li>Supportive Struggling with dinner inspo? We’re here to help!</li>
+                    <li>Creative Cooking is an art. We like to experiment and express ourselves.</li>
+                    <li>Approachable We don't judge—all cooking levels and recipes are welcome. </li>
+                    <li>Down-to-Earth We love good food, period. It doesn’t need to be fussy to be great.</li>
+                </ul>
+
+            </div>
+            <div class="sect1-image">
+                <img src="<?php echo assets('imag/img39.jpeg'); ?>" alt="people cooking">
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="sect2">
+        <div class="sect2-header">
+            <p>Top Recipe <span style="color: #F15025;">Authors</span></p>
+        </div>
+
+        <div class="sect2-flex">
+
+            <div class="sect2-item">
+                <div class="sect2-image">
+                    <img src="<?php echo assets('imag/img36.webp'); ?>" alt="male chef">
+                </div>
+
+                <div class="sect2-title">
+                    <p class="sect2-text1">Mark Von</p>
+                    <p class="sect2-text2">Sushi Chef</p>
+                </div>
+
+                <div style="text-align: center;" class="sect2-icon">
+                    <i class="fa-brands icon fa-facebook-f"></i>
+                    <i class="fa-brands icon fa-twitter"></i>
+                    <i class="fa-brands icon fa-linkedin-in"></i>
+                    <i class="fa-brands icon fa-instagram"></i>
+                </div>
+            </div>
+
+            <div class="sect2-item">
+                <div class="sect2-image">
+                    <img src="<?php echo assets('imag/img34.webp'); ?>" alt="female chef baking">
+                </div>
+
+                <div class="sect2-title">
+                    <p class="sect2-text1">Anna King</p>
+                    <p class="sect2-text2">Kitchen Porter</p>
+                </div>
+
+                <div style="text-align: center;" class="sect2-icon">
+                    <i class="fa-brands icon fa-facebook-f"></i>
+                    <i class="fa-brands icon fa-twitter"></i>
+                    <i class="fa-brands icon fa-linkedin-in"></i>
+                    <i class="fa-brands icon fa-instagram"></i>
+                </div>
+            </div>
+
+            <div class="sect2-item">
+                <div class="sect2-image">
+                    <img src="<?php echo assets('imag/img35.jpeg'); ?>" alt="male chef cooking">
+                </div>
+
+                <div class="sect2-title">
+                    <p class="sect2-text1">Mitchelle John</p>
+                    <p class="sect2-text2">Exexutive Chef</p>
+                </div>
+
+                <div style="text-align: center;" class="sect2-icon">
+                    <i class="fa-brands icon fa-facebook-f"></i>
+                    <i class="fa-brands icon fa-twitter"></i>
+                    <i class="fa-brands icon fa-linkedin-in"></i>
+                    <i class="fa-brands icon fa-instagram"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer>
+        <div class="footer-item">
+            <div class="footer-text news">
+                <div class="footer-head">
+                    <p>Join Our Newsletter</p>
+                </div>
+
+                <div class="footer-link">
+                    <p>subscribe to get notified about all the news & updates</p>
+                </div>
+
+                <div class="input-flex">
+                    <input type="text" placeholder="Your email address">
+                    <button>sign up</button>
+                </div>
+            </div>
+
+
+            <div class="footer-text">
+                <div class="footer-head">
+                    <p>Quick Links</p>
+                </div>
+
+                <div class="anchor-link">
+                    <a href="<?php echo route(''); ?>">Home</a>
+                    <a href="<?php echo route('about'); ?>">About</a>
+                    <a href="<?php echo route('blog'); ?>">Blog</a>
+                    <a href="<?php echo route('contact'); ?>">Contact Us</a>
+                </div>
+
+            </div>
+
+        </div>
+    </footer>
+
+
+
+
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const menu = document.querySelector(".navlink");
+        const closeIcon = document.querySelector('.fa-times');
+
+        hamburger.addEventListener("click", function () {
+            menu.classList.toggle("show");
+        });
+
+        closeIcon.addEventListener('click', () => {
+            menu.classList.remove('show');
+        });
+
+
+
+        let modal = document.querySelector('.modal');
+        let background = document.querySelector('.background');
+        let searchBtn = document.querySelector('.searchIcon')
+        let closebtn = document.querySelector('.closeicon');
+
+        function searchBar() {
+            modal.style.display = 'flex';
+            background.style.display = 'block';
+            closebtn.style.display = 'block';
+        }
+
+        function closeBar() {
+            modal.style.display = 'none';
+            background.style.display = 'none';
+            closebtn.style.display = 'none';
+        }
+
+        searchBtn.onclick = searchBar;
+        closebtn.onclick = closeBar;
+
+
+    </script>
 </body>
 
 </html>

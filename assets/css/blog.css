@@ -1,0 +1,126 @@
+*, 
+*::before, 
+*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+
+/*BACKGROUND*/
+.bg-contact img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.bg-contact{
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../imag/img37.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 45vh;
+    width: 100%; 
+}
+
+.bg-text{
+    font-size: 2.5rem;
+    color: #fff;
+    text-align: center;
+    padding: 12rem 0;
+}
+
+
+/*SECT 1*/
+.sect1blog{
+    width: 90%;
+    margin: 3rem auto;
+}
+.sect1blog-image img{
+    width: 100%;
+    height: 40vh;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+.sect1blog-flex{
+    display: flex;
+    flex-direction: column;
+}
+.flex-card{
+    width: 100%;
+    margin: 1.5rem 0;
+    box-shadow: 0 0 3px;
+    border-radius: .5rem;
+    overflow: hidden;
+}
+.sect1blog-header{
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #000;
+}
+.sect1blog-header:hover{
+    color: #F15025;
+}
+.sect1blog-date{
+    font-weight: 500;
+    margin: 1em 0;
+}
+.sect1blog-text{
+    color: #636161;
+    font-weight: 500;
+}
+
+.sect1blogtexthead{
+    width: 90%;
+    margin: auto;
+    padding-bottom: 1.5rem;
+}
+
+
+@media screen and (min-width: 750px) {
+    .bg-text p{
+        font-size: 3rem;
+    }
+    .sect1blog-image img{
+        height: 60vh;
+    }
+    .sect1blogtexthead a{
+        text-align: center;
+    }
+}
+
+
+@media screen and (min-width: 1024px) {
+/*BACKGROUND*/
+.bg-contact{
+    height: 60vh;
+}
+
+.bg-text{
+    font-size: 4rem;
+    font-weight: 600;
+}
+
+
+/*SECT 1*/
+.sect1blog{
+    width: 90%;
+}
+.sect1blog-flex{
+    flex-direction: row;
+}
+.flex-card{
+    margin: 1rem;
+}
+.sect1blog-header{
+    text-align: center;
+}
+
+}
