@@ -357,6 +357,74 @@ swiper-slide img {
     margin: 1rem 0;
 }
 
+
+
+
+/*FOOTER*/
+footer{
+    padding: 1.5rem 0;
+    background-color: #191919;
+}
+
+.footer-item{
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-text{
+    margin: 1rem 0;
+}
+
+.footer-head{
+    font-size: 1.3rem;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    color: #fff;
+}
+
+.footer-link{
+    font-size: .9rem;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    margin: 1rem 0;
+    color: #fff;
+}
+.anchor-link a{
+    display: block;
+    margin: .7rem 0;
+    color: #fff;
+    font-weight: 500;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: .9rem;
+}
+
+.input-flex{
+    display: flex;
+    align-items: center;
+}
+
+.input-flex input{
+    width: 70%;
+    padding: .7rem .5rem;
+    outline: none;
+    border: none;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.input-flex button{
+    padding: .7rem .5rem;
+    outline: none;
+    border: none;
+    background-color: #F15025;
+    color: #fff;
+    font-weight: 500;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
 @media screen and (min-width: 1024px) {
     .modal{
         width: 40%;
@@ -477,6 +545,32 @@ swiper-slide img {
 
 .cardbutton{
     padding: 1.1rem 2rem;
+    font-size: 1rem;
+}
+
+
+/*FOOTER*/
+.footer-item{
+    width: 80%;
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.footer-head{
+    font-size: 1.5rem;
+}
+
+.news{
+    width: 30%;
+}
+
+.footer-link {
+    font-size: 1rem;
+}
+
+.anchor-link a{
     font-size: 1rem;
 }
 

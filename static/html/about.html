@@ -12,41 +12,53 @@
      <!--Google Fonts-->
      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Sono:wght@400;500&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
      <!--Styling Link-->
+     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/about.css">
 </head>
 <body>
+    <div class="background"></div>
+    <div class="closeicon">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="modal">
+        <form class="search-btn" action="#">
+            <input type="text" placeholder="Type a recipe">
+            <button>Search</button>
+        </form>
+    </div>
     <div class="nav-menu">
         <div class="nav-block">
-            <div class="nav1">
-                <div>
-                    <i class="fa-brands fa-facebook"></i>
-                    <i class="fa-brands fa-square-twitter"></i>
-                    <i class="fa-brands fa-linkedin"></i>
-                    <i class="fa-brands fa-youtube"></i>
-                </div>
-
-                <div class="submit-icon">
-                    <div class="nav-submit">
-                        <p>submit recipe</p>
-                        <i class="fa-solid fa-plus"></i>
+            <div class="nav-1">
+                <div class="nav1">
+                    <div>
+                        <i class="fa-brands fa-facebook"></i>
+                        <i class="fa-brands fa-square-twitter"></i>
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-youtube"></i>
                     </div>
-                    <div class="line"></div>
-                    <div class="wishlists">
-                        <p>wishlists</p>
-                        <i class="fa fa-heart" aria-hidden="true"></i>
+    
+                    <div class="submit-icon">
+                        <div class="nav-submit">
+                            <p>submit recipe</p>
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                        <div class="line"></div>
+                        <div class="wishlists">
+                            <p>wishlists</p>
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="nav2">
                 <a class="nav-header" href="index.html">
-                    <i style="color: #F15025;" class="fa fa-cutlery" aria-hidden="true"></i>
+                    <i style="color: #F15025;" class="fa fa-cutlery"></i>
                     <p>recipe<span style="color: #F15025;">haven</span></p>
-                    
                 </a>
 
                 <div class="navlink">
-                    <i style="color: #000;" class="fa fa-times" aria-hidden="true"></i>
+                    <i style="color: #000;" class="fa fa-times"></i>
                     <a href="index.html">
                         Home
                     </a>
@@ -64,27 +76,26 @@
                     </a>
 
                     <a href="login.html">
-                        Recipes
+                        Login
+                    </a>
+
+                    <a href="userboard.html">
+                        Recipe
                     </a>
 
                 </div>
 
-                <div class="nav-icon">
-                    <a href="signup.html">
-                        <i class="fa-solid fa-user"></i>
-                    </a>
-                    
-                    <div class="line line1"></div>
+                <div class="nav-icon">                   
+                    <div class="nav-search">
+                        <i class="fa searchIcon fa-search"></i>
+                    </div>
+
+                    <div class="line navline"></div>
+
                     <div class="hamburger">
                         <span></span>
                         <span></span>
                         <span></span>
-                    </div>
-                    
-                    <div class="line"></div>
-                    
-                    <div class="nav-search">
-                        <i class="fa fa-search" aria-hidden="true"></i>
                     </div>
                 </div>
             </div>
@@ -94,6 +105,7 @@
 
 
 
+    <!--BACKGROUND-->
     <div class="bg-contact">
         <div class="bg-text">
             <p>About Us</p>
@@ -116,16 +128,17 @@
                     <p>Every day, cooks from around the world publish recipes and inspire one another through recipe photos, ratings, reviews, and videos. The combination of the Allrecipes community with our team of editorial and kitchen professionals provides authority found nowhere else on the internet and has turned the brand into an indispensable resource for cooks of all skill levels.</p>
                 </div>
 
+                
                 <ul>
-                    <span>We are:</span>
+                    <li style="list-style: none; font-weight: 500; font-size: 1.3rem; color: #000;">We are:</li>
                     <li>Friendly We love trading ideas and hanging out with fellow home cooks. </li>
                     <li>Supportive Struggling with dinner inspo? We’re here to help!</li>
                     <li>Creative Cooking is an art. We like to experiment and express ourselves.</li>
                     <li>Approachable We don't judge—all cooking levels and recipes are welcome. </li>
                     <li>Down-to-Earth We love good food, period. It doesn’t need to be fussy to be great.</li>
                 </ul>
-            </div>           
-
+                       
+            </div>    
             <div class="sect1-image">
                 <img src="../imag/img39.jpeg" alt="people cooking">
             </div>
