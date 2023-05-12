@@ -1,0 +1,185 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Ubuntu', sans-serif;
+    color: #000;
+}
+
+.flex-item{
+    display: flex;
+}
+.nav-title a{
+    display: flex;
+    align-items: center;
+    justify-content: start;   
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+
+.titlehead{
+    display: flex;
+    flex-direction: column;
+    margin: 3rem 0;
+}
+
+a{
+    text-decoration: none;
+    color: #000;
+}
+
+
+.first-half{
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+}
+
+.container-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem 0;
+}
+
+.titlehead1{
+    margin: .6rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.titlehead2{
+    font-size: 1rem;
+    color:#6a686a;
+    font-weight: 500;
+}
+
+form{
+    width: 90%;
+    margin: auto;
+}
+
+.signup{
+    width: 100%;
+}
+
+.textinput{
+    display: flex;
+    align-items: center;
+    margin: 3rem 0;
+    width: 100%;
+}
+
+.textinput{
+    width: 100%;
+    background-color: #F3F2EF;
+    padding: .8rem .6rem;
+}
+.fa-eye{
+    padding-bottom: .6rem;
+    position: relative;
+    left: 90%;
+}
+.textinput input{
+    background-color: transparent;
+    border: none;
+    outline: none;    
+    color: #000;
+    font-size: 1rem;
+    padding: 0 .6rem;
+}
+/*.textinput:hover{
+    border: 2px solid #F15025;
+}*/
+
+.icon{
+    padding-bottom: .5rem;
+}
+
+.reminder{
+    display: flex;
+    justify-content: center;
+    color: #6a686a;
+}
+
+.reminder span{
+    margin-left: 5px;
+}
+
+.signup-btn{
+    background-color: #F15025;
+    margin: 1rem 0;
+    padding: .8rem 0;
+    border-radius: .3rem;
+    text-align: center;
+}
+
+.signup-btn button{
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #fff;
+    text-align: center;
+    font-family: 'Sono', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.log{
+    text-align: center;
+    color: #6a686a;
+    margin: 2rem 0;
+}
+.log a:hover{
+    color: #F15025;
+}
+
+.second-half{
+    display: none;
+    width: 40%;
+    height: 120vh;
+    background-color: #fff;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(../imag/img13.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+@media screen and (min-width: 750px) {
+    .first-half{
+        width: calc(100% - 40%);
+    }
+
+    .second-half{
+        display: block;
+    }
+    form{
+        width: 65%;
+    }
+    .titlehead1{
+        font-size: 1.8rem;
+    }
+}
+
+
+@media screen and (min-width: 1024px) {
+    .first-half{
+        width: calc(100% - 40%);
+    }
+
+    .second-half{
+        display: block;
+    }
+    form{
+        width: 65%;
+    }
+    .titlehead1{
+        font-size: 1.8rem;
+    }
+}
+

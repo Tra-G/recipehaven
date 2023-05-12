@@ -149,51 +149,50 @@ class authController
     }
 
     // forgot password
-    public function forgotPassword()
-    {
-        $title = pageTitle("Forgot Password");
+    public function forgotPassword() {
         $errors = [];
 
-        // Go to dashboard if user is logged in
+        // exit if user is logged in
         if (isUserLoggedIn()) {
-            redirect("user/dashboard");
-            exit();
+            $errors[] = "You are already logged in.";
         }
 
         // check if form is submitted
-        if (is_post_set('email')) {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $email = trim($_POST['email']);
 
-            // get data from form
-            $forgotData = array(
-                'email' => sanitize_input($_POST['email']),
-            );
+            if (empty($email)) {
+                $errors[] = "Email is required.";
+            }
 
-            // validate data
-            $errors = (new FormValidator($forgotData))
-                ->validateEmail()
-                ->getErrors();
+            // Validate email
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $errors[] = "Invalid email format.";
+            }
 
             // check if email exists
-            if (!getRowBySelector('users', 'email', $forgotData['email'])) {
-                $errors['email'] = "Email not found.";
+            if (!getRowBySelector('users', 'email', $email)) {
+                $errors[] = "Email not found.";
             }
 
             if (empty($errors)) {
                 // check if user has pending token
-                $token = getRowBySelector('password_resets', 'email', $forgotData['email']);
+                $token = getRowBySelector('password_resets', 'email', $email);
 
                 if ($token) {
                     // check if there is a token that has not expired
                     if (strtotime($token['expires_at']) > strtotime(date('Y-m-d H:i:s'))) {
-                        $result = "A password reset link has already been sent to your email.";
+                        echo "A password reset link has already been sent to your email.";
+                    } else {
+                        echo "The previous password reset link has expired. Please request a new one.";
                     }
                 } else {
                     // generate token
-                    $user = getRowBySelector('users', 'email', $forgotData['email']);
+                    $user = getRowBySelector('users', 'email', $email);
                     $token = generate_token(16);
                     $data_array = array(
                         'user_id' => $user['id'],
-                        'email' => $forgotData['email'],
+                        'email' => $email,
                         'token' => $token,
                         'expires_at' => date('Y-m-d H:i:s', strtotime('+30 minutes'))
                     );
@@ -203,44 +202,38 @@ class authController
                         // send email
                         $subject = "Password Reset";
                         $message = "Click the link below to reset your password. The link expires in 30 minutes<br><br>";
-                        $message .= "<a href='" . redirect('reset/' . $token . '') . "'>Reset Password</a>";
+                        $message .= "<a href='".route('reset/'. $token .'')."'>Reset Password</a>";
                         $message .= "<br><br> If you did not request a password reset, please ignore this email.";
-                        $headers = "From: " . getenv('SITE_NAME') . " <" . getenv('SMTP_FROM_EMAIL') . "> \r\n";
+                        $headers = "From: ".getenv('SITE_NAME')." <".getenv('SMTP_FROM_EMAIL')."> \r\n";
                         $headers .= "MIME-Version: 1.0" . "\r\n";
                         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
                         // send the email using smtp or mail
-                        if (send_email($forgotData['email'], $subject, $message, $headers)) {
-                            $result = "A password reset link has been sent to your email.";
+                        if (send_email($email, $subject, $message, $headers)) {
+                            echo "A password reset link has been sent to your email.";
                         } else {
-                            $result = "Email not sent. Please try again.";
+                            $errors[] = "Email not sent. Please try again.";
                             // delete token
-                            deleteRowBySelector('password_resets', 'email', $forgotData['email']);
+                            deleteRowBySelector('password_resets', 'email', $email);
                         }
                     } else {
-                        $result = "Something went wrong. Please try again.";
+                        $errors[] = "Something went wrong. Please try again.";
                         // delete token
-                        deleteRowBySelector('password_resets', 'email', $forgotData['email']);
+                        deleteRowBySelector('password_resets', 'email', $email);
                     }
                 }
+            } else {
+                echo $errors[0];
             }
         } else {
-            // return to login
-            redirect("login");
-            exit();
+            $errors[] = "Please enter your email address.";
+            echo $errors[0];
         }
-
-        return array(
-            'title' => $title,
-            'result' => $result ?? $errors[0],
-        );
     }
 
     // reset password form
     public function changePassword($token)
     {
-        $title = pageTitle("Reset Password");
-
         // check if token is valid
         $token = trim($token);
         $token_row = getRowBySelector('password_resets', 'token', $token);
@@ -255,7 +248,6 @@ class authController
         }
 
         return array(
-            'title' => $title,
             'token' => $token,
         );
     }
@@ -263,13 +255,11 @@ class authController
     // change password from reset link
     public function changePasswordApi($token)
     {
-        $title = pageTitle("Change Password");
         $errors = [];
 
-        // Go to profile if user is logged in
+        // exit if user is logged in
         if (isUserLoggedIn()) {
-            redirect("user/profile");
-            exit();
+            $errors[] = "You are already logged in.";
         }
 
         // check if token is valid and has not expired
@@ -310,16 +300,16 @@ class authController
                     $errors[] = "Something went wrong. Please try again.";
                 }
             }
-        } else {
-            // return to login
-            redirect("login");
-            exit();
+        }
+        else {
+            $errors[] = "All fields are required.";
         }
 
-        return array(
-            'title' => $title,
-            'result' => $result ?? $errors[0],
-        );
+        if ($result) {
+            echo $result;
+        } else {
+            echo $errors[0];
+        }
     }
 }
 

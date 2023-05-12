@@ -1,0 +1,149 @@
+*, ::before, ::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+/*nav 3*/
+.back-drop{
+    display: none;
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100vh;
+}
+.nav3{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    margin: auto;
+}
+.nav3 input{
+    width: 100%;
+}
+
+
+/*BACKGROUND*/
+.bg-contact img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.bg-contact{
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../imag/img30.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 45vh;
+    width: 100%; 
+}
+
+.bg-text{
+    font-size: 2rem;
+    font-family: 'Ubuntu', sans-serif;
+    color: #fff;
+    text-align: center;
+    padding: 12rem 0;
+}
+
+
+/*SECT 1*/
+.search-container{
+    margin: 2rem auto;
+    width: 90%;
+}
+.search-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-btn input{
+    width: 100%;
+    padding: .8rem .4rem;
+    outline: none;
+    border: none;
+    background-color: #F3F2EF;
+    font-size: .9rem;
+    font-weight: 500;
+}
+.search-btn button{
+    padding: .8rem .4rem;
+    outline: none;
+    border: none;
+    background-color: #F15025;
+    color: #fff;
+    font-weight: 500;
+}
+
+
+/*SECT 2*/
+.card-container{
+    width: 90%;
+    margin: 1rem auto;
+}
+.flex-item{
+    display: flex;
+    flex-direction: column;
+}
+.card{
+    margin: .4rem 0;
+}
+.card img{
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+    position: relative;
+}
+.card-text{
+    margin: 1rem;
+}
+
+/*
+.fa-heart{
+    font-size: 1.8rem;
+    position: absolute;
+    right: 1.5rem;
+}
+*/
+
+
+@media screen and (min-width: 1024px) {
+
+/*BACKGROUND*/
+.bg-contact{
+    height: 50vh;
+}
+
+.bg-text{
+    font-size: 4rem;
+    font-weight: 600;
+}
+
+/*SECT 1*/
+.search-btn input{
+    width: 40%;
+    padding: 1rem .4rem;
+    font-size: 1rem;
+}
+
+.search-btn button{
+    font-size: 1rem;
+    padding: .9rem .4rem;
+}
+
+/*SECT 2*/
+.flex-item{
+    flex-direction: row;
+}
+.card{
+    margin: .4rem .7rem;
+}
+}

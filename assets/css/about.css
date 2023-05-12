@@ -1,0 +1,232 @@
+*, ::before, ::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+
+/*BACKGROUND*/
+.bg-contact img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.bg-contact{
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../imag/img30.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 45vh;
+    width: 100%; 
+}
+
+.bg-text{
+    font-size: 2rem;
+    color: #fff;
+    text-align: center;
+    padding: 12rem 0;
+}
+
+
+
+/*SECT 1*/
+.sect1{
+    width: 90%;
+    margin: 4rem auto;
+    
+}
+.sect1-image img{
+    width: 100%;
+    height: 60vh;
+    object-fit: cover;
+}
+.sect1-flex{
+    display: flex;
+    flex-direction: column;
+}
+
+.sect1-head{
+    font-size: 1.6rem;
+    text-align: center;
+    font-weight: 500;
+    margin: 1rem 0;
+}
+
+.sect1-item{
+    margin-bottom: 2rem;
+}
+
+.sect1-item2{
+    margin-bottom: 2rem;  
+}
+.sect1-item p{
+    font-weight: 500;
+    color: #636161;
+}
+.sect1-item ul{
+    color: #636161;   
+}
+
+.sect1-item li{
+    list-style-position: inside;
+    margin: .7rem 0;
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+
+
+/*SECT 2*/
+.sect2{
+    margin: 2rem auto;
+    padding: 1rem 0;
+    width: 90%;
+}
+
+.sect2-header{
+    font-size: 1.6rem;
+    margin: 1rem 0;
+    text-align: center;
+    font-weight: 500;
+}
+
+.sect2-flex{
+    display: flex;
+    flex-direction: column;
+}
+
+.sect2-image img{
+    width: 100%;
+    height: 43vh;
+    object-fit: cover; 
+}
+.sect2-item{
+    margin: 1.5rem 0;
+}
+.sect2-title{
+    display: block;
+    margin: .5rem 0;
+    text-align: center;
+}
+
+.sect2-title p{
+    margin: .8rem 0;
+    font-weight: 500;
+}
+.sect2-text1{
+    font-size: 1.2rem;
+}
+.sect2-text2{
+    color: #636161;
+}
+.icon{
+    margin: 0 .3rem;
+    border: 1px solid #F15025;
+    padding: .6rem .8rem;
+    border-radius: 2rem;
+    color: #F15025;
+}
+.icon:hover{
+    background-color: #F15025;
+    color: #fff;
+}
+
+
+
+@media screen and (min-width: 750px) {
+    .bg-text{
+        font-size: 3rem;
+    }
+
+    /*sect 1*/
+    .sect1-head{
+        font-size: 1.9rem;
+    }
+
+    /*sect 2*/
+    .sect2-image img{
+        height: 67vh;
+    }
+
+    .sect2-header{
+        font-size: 1.9rem;
+    }
+
+    .sect2-text1{
+        font-size: 1.5rem;
+    }
+}
+
+
+
+@media screen and (min-width: 1024px) {
+    
+/*BACKGROUND*/
+.bg-contact{
+    height: 60vh;
+}
+
+.bg-text{
+    font-size: 4rem;
+    font-weight: 600;
+}
+
+
+/*SECT 1*/
+.sect1{
+    width: 80%;
+}
+.sect1-flex{
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sect1-item{
+    width: 40%;
+}
+
+.sect1-image img{
+    height: 75vh;
+    width: 110%;
+}
+
+.sect1-head{
+    font-size: 2rem;
+}
+
+
+/*SECT 2*/
+.sect2{
+    width: 80%;
+}
+.sect2-header{
+    font-size: 2.2rem;
+}
+.sect2-flex{
+    flex-direction: row;
+    align-items: center;
+}
+.sect2-item{
+    margin: 1rem;
+    width: 32%;
+}
+.sect2-image img{
+    height: 50vh;
+}
+.icon{
+    padding: .6rem .8rem;
+    border-radius: 2rem;
+}
+
+
+}
