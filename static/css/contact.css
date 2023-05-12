@@ -16,7 +16,7 @@ a{
 }
 
 .bg-contact{
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/imag/img29.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../imag/img29.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -26,6 +26,7 @@ a{
 
 .bg-text{
     font-size: 2rem;
+    font-weight: 500;
     font-family: 'Ubuntu', sans-serif;
     color: #fff;
     text-align: center;
@@ -155,6 +156,40 @@ a{
     color: #a9a2a2;
     margin: .7rem 1.9rem;
 }
+
+
+@media screen and (min-width: 750px) {
+    .bg-text{
+        font-size: 3rem;
+    }
+
+    /*form*/
+    .form-header, .form2-header{
+        font-size: 2.2rem;
+    }
+    .flex-item input{
+        padding: 1.2rem .7rem;
+        font-size: .9rem;
+    }
+    #text{
+        font-size: .9rem;
+    }
+
+    .form-btn button{
+        padding: .8rem 2.5rem;
+        font-size: .9rem;
+    }
+    .container2-text{
+        font-size: 1.4rem;
+    }
+    .flex-text2{
+        font-size: 1.1rem;
+    }
+
+}
+
+
+
 
 @media screen and (min-width: 1024px) {
 
