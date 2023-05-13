@@ -1,0 +1,79 @@
+*,
+*::before,
+*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Ubuntu', sans-serif;
+}
+.post{
+    width: 90%;
+    margin: auto;
+}
+.bg{
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../imag/img22.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 45vh;
+    width: 100%; 
+}
+.post-header{
+    margin: 1rem 0;
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+.post-page{
+    margin-top: 1.2rem;
+}
+.post-page p{
+    margin: 1rem 0;
+}
+
+
+@media screen and (min-width: 750px) {
+    .bg{
+        height: 60vh;
+    }
+    .post{
+        width: 80%;
+    }
+    .post-header{
+        font-size: 2rem;
+    }
+
+    .post1 {
+        font-size: 1.1rem;
+        color: rgb(74, 71, 71);
+    }
+
+    .post1 span{
+        color: #000;
+    }
+}
+
+
+
+@media screen and (min-width: 1024px) {
+    .bg{
+        height: 60vh;
+    }
+    .post{
+        width: 80%;
+    }
+    .post-header{
+        font-size: 3rem;
+    }
+
+    .post1 {
+        font-size: 1.2rem;
+        color: rgb(74, 71, 71);
+    }
+
+    .post1 span{
+        color: #000;
+    }
+}

@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <!--Font icon links-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
     <!--Google Fonts-->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Sono:wght@400;500&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
-    <!--Styling Link-->
     <link rel="stylesheet" href="../css/userboard.css">
-    <title>Document</title>
 </head>
 <body>
-    
-    <div class="sidebar">
+    <div class="sidemenu">
         <div class="flex-sidebar">
             <i style="font-size: 1.5rem;" class="fa-solid fa-xmark"></i>
             
@@ -30,7 +27,7 @@
 
             <div class="user-details">
                 
-                <div class="users" style="display: flex; align-items: center;">
+                <div class="users personal-info" style="display: flex; align-items: center;">
                     <i style="color: #F15025;"; class="fa-solid fa-user"></i>
                     <span>Personal Info</span> 
                 </div>
@@ -56,13 +53,14 @@
             </form>
         </div>
     </div> 
+    
 
-    <div class="main">
+    <div class="bodymenu">
         <header class="main-header">
             <div class="hamburger">
                 <i style="font-size: 1.6rem; color: #000;" class="fa-solid fa-bars"></i>
             </div>
-
+    
             <a class="nav-header" href="index.html">
                 <i style="color: #F15025;" class="fa fa-cutlery"></i>
                 <p>recipe<span style="color: #F15025;">haven</span></p>
@@ -73,15 +71,88 @@
             <div class="personal-info">
                 <header class="info-header">
                     <p>Personal Info</p>
+
+                    <form action="">
+                        <button>Edit changes</button>
+                    </form>
                 </header>
+
+
+                <form action="#">
+                    <div class="form">
+                        <label for="email">Email</label>
+                        <input type="email" placeholder="example@gmail.com" required>
+                    </div>
+
+                    <div class="form">
+                        <label for="first-name">First name</label>
+                        <input type="first-name" placeholder="Your first name" required>
+                    </div>
+
+                    <div class="form">
+                        <label for="lst-name">Last name</label>
+                        <input type="last-name" placeholder="Your last name">
+                    </div>
+
+                    <div class="form">
+                        <label for="birthday">Birth Date</label>
+                        <input type="date" placeholder="">
+                    </div>
+
+                    <div class="form">
+                        <label for="zipcode">Zip Code</label>
+                        <input type="text" placeholder="Zip code">
+                    </div>
+
+                    <button class="save-changes">Save Changes</button>
+                </form>
+            </div>
+
+        </div>
+
+
+        <div class="saved-recipe">
+            <div class="saved-container">
+                <header class="saved-header">
+                    <p style="font-size: 1.6rem;">Personal Recipe</p>
+                    <p>Recipe you save will be stored here</p>
+                </header>
+
+            </div>
+
+
+            <div>
+                <p style="color: #747374; text-align: center; font-weight: 600; font-size: 1.3rem;">You haven't created any recipes yet.</p>
+            </div>
+            
+            <form style="text-align: center;" action="#">
+                <button style="padding: .8rem 1.5rem; outline: none; border: none; background-color: #F15025; color: #fff; margin: 1rem 0;"><i class="fa-sharp fa-solid fa-plus"></i> Submit a recipe</button>
+            </form>
+
+            <div>
+                <div class="saved-recipe-image">
+                    <img src="../imag/img21.jpeg" alt="rice and stew">
+                    <p>Rice and tomatoes sauce</p>
+                </div>
+
+                <div class="saved-recipe-image">
+                    <img src="../imag/img19.jpeg" alt="">
+                    <p>Mexican Spagetti</p>
+                </div>
+
+                <div class="saved-recipe-image">
+                    <img src="../imag/img17.jpeg" alt="">
+                    <p>pizza</p>
+                </div>
             </div>
         </div>
     </div>
 
 
+
     <script>
         const hamburger = document.querySelector(".hamburger");
-        const menu = document.querySelector(".flex-sidebar");
+        const menu = document.querySelector(".sidemenu");
         const closeIcon = document.querySelector('.fa-xmark');
 
         hamburger.addEventListener("click", function() {
@@ -93,16 +164,19 @@
             menu.classList.remove('show');
             hamburger.classList.remove('hide');
         });
+
+
+
+        /*PERSONAL INFO*/
+        let personalInfo = document.querySelector('.personal-info');
+        let modalBox = document.querySelector('.main-container');
+
+        function personalInfoModal() {
+            modalBox.style.display = 'block';
+            personalInfo.style.color = '#d54215';
+        }
+
+        personalInfo.onclick = personalInfoModal;
     </script> 
 </body>
 </html>
-
-
-<div class="sect1-list">
-    <header>We are:</header>
-    <span>Friendly We love trading ideas and hanging out with fellow home cooks.</span>
-    <span>Supportive Struggling with dinner inspo? We’re here to help!</span>
-    <span>Creative Cooking is an art. We like to experiment and express ourselves.</span>
-    <span>Approachable We don't judge—all cooking levels and recipes are welcome.</span>
-    <span>Down-to-Earth We love good food, period. It doesn’t need to be fussy to be great.</span>
-</div>   
