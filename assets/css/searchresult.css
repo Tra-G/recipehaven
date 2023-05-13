@@ -56,17 +56,19 @@ a{
 
 
 /*SECT 1*/
-.search-container{
+.result-container{
     margin: 2rem auto;
     width: 90%;
-}
-.search-btn{
     display: flex;
-    align-items: center;
     justify-content: center;
 }
-.search-btn input{
+.result-btn{
     width: 100%;
+    display: flex;
+}
+
+.result-btn input{
+    width: 70%;
     padding: .8rem .4rem;
     outline: none;
     border: none;
@@ -74,13 +76,14 @@ a{
     font-size: .9rem;
     font-weight: 500;
 }
-.search-btn button{
-    padding: .8rem .4rem;
+.result-btn button{
+    padding: .7rem .4rem;
     outline: none;
     border: none;
     background-color: #F15025;
     color: #fff;
     font-weight: 500;
+    font-size: .9rem;
 }
 
 
@@ -92,27 +95,51 @@ a{
 .flex-item{
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 .card{
     margin: .4rem 0;
+    width: 100%;
+    height: 20%;
 }
 .card img{
     width: 100%;
-    height: 50vh;
+    height: 40vh;
     object-fit: cover;
     position: relative;
 }
 .card-text{
     margin: 1rem;
 }
-
-/*
-.fa-heart{
-    font-size: 1.8rem;
-    position: absolute;
-    right: 1.5rem;
+.love{
+    font-size: .8rem;
+    padding: .4rem;
+    color: #fff;
+    background-color: #F15025;
+    border-radius: 1rem;
 }
-*/
+.card-text button{
+    padding: .5rem 1rem;
+    outline: none;
+    border: none;
+    background-color: #F15025;
+    color: #fff;
+    margin: 1rem 0;
+    border-radius: 5px;
+}
+
+@media screen and (min-width: 750px) {
+    .card{
+        width: 48%;
+        margin: 8px;
+    }
+
+    .flex-item{
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+ 
 
 
 @media screen and (min-width: 1024px) {
@@ -128,14 +155,13 @@ a{
 }
 
 /*SECT 1*/
-.search-btn input{
+.result-btn input{
     width: 40%;
     padding: 1rem .4rem;
     font-size: 1rem;
 }
 
-.search-btn button{
-    font-size: 1rem;
+.result-btn button{
     padding: .9rem .4rem;
 }
 
@@ -145,5 +171,7 @@ a{
 }
 .card{
     margin: .4rem .7rem;
+    width: 21%;
 }
+
 }
