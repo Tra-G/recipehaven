@@ -23,7 +23,7 @@
     <div class="modal">
         <form class="search-btn" action="#">
             <input type="text" placeholder="Type a recipe">
-            <button>Search</button>
+            <button><i style="font-size: 1.2rem;" class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
     <div class="nav-menu">
@@ -226,6 +226,30 @@
         closeIcon.addEventListener('click', () => {
   menu.classList.remove('show');
 });
+
+
+
+    let modal = document.querySelector('.modal');
+    let background = document.querySelector('.background');
+    let searchBtn = document.querySelector('.searchIcon')
+    let closebtn = document.querySelector('.closeicon');
+
+    function searchBar() {
+        modal.style.display = 'flex';
+        background.style.display = 'block';
+        closebtn.style.display = 'block';
+    }
+
+    function closeBar() {
+        modal.style.display = 'none';
+        background.style.display = 'none';
+        closebtn.style.display = 'none';
+    }
+
+    searchBtn.onclick = searchBar;
+    closebtn.onclick = closeBar;
+
+
     </script>
 </body>
 </html>
