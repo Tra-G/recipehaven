@@ -29,7 +29,7 @@
     <div class="modal">
         <form class="search-btn" action="<?php echo route('search'); ?>" method="get">
             <input type="text" name="param" placeholder="Type a recipe">
-            <button type="submit">Search</button>
+            <button><i style="font-size: 1.2rem;" class="fa-solid fa-magnifying-glass"></i></button>
         </form>
     </div>
     <div class="nav-menu">

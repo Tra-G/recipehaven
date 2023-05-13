@@ -262,7 +262,7 @@ class homeController {
     public function search() {
         $title = pageTitle('Search');
         $param = isset($_GET['param']) ? $_GET['param'] : null;
-        $per_page = 2;
+        $per_page = 4;
         $search_results = $prev = $next = $total_results = null;
 
         // check if page is set and page is numeric
