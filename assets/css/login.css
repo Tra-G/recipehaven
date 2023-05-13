@@ -9,7 +9,6 @@ body{
 }
 
 /*forgot password*/
-/*MODAL STYLE*/
 .background{
     display: none;
     background-color: rgba(0, 0, 0, 0.8);
@@ -177,10 +176,14 @@ form{
     text-align: center;
 }
 
-.signup-btn a{
+.signup-btn button{
+    background-color: #F15025;
     color: #fff;
+    font-size: 1rem;
     text-align: center;
-    font-weight: 500;
+    font-weight: 600;
+    outline: none;
+    border: none;
 }
 .log{
     text-align: center;

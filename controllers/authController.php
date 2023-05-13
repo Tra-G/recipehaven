@@ -234,6 +234,8 @@ class authController
     // reset password form
     public function changePassword($token)
     {
+        $title = "Reset Password";
+
         // check if token is valid
         $token = trim($token);
         $token_row = getRowBySelector('password_resets', 'token', $token);
@@ -248,6 +250,7 @@ class authController
         }
 
         return array(
+            'title' => $title,
             'token' => $token,
         );
     }
@@ -295,7 +298,7 @@ class authController
                     deleteRowBySelector('password_resets', 'user_id', $token_row['user_id']);
 
                     // set result message
-                    $result = "Password changed successfully. You can now login.";
+                    $result = "Password changed successfully. You will be redirected to the login page.";
                 } else {
                     $errors[] = "Something went wrong. Please try again.";
                 }
@@ -305,7 +308,7 @@ class authController
             $errors[] = "All fields are required.";
         }
 
-        if ($result) {
+        if (isset($result)) {
             echo $result;
         } else {
             echo $errors[0];
