@@ -118,8 +118,8 @@ a{
     text-align: center;
 }
 .admin-list{
-    width: 60%;
-    margin: auto;
+    width: 50%;
+    margin: 1rem auto;
 }
 
 .admin-list li{
@@ -143,8 +143,12 @@ a{
         display: none;
     }
     .main-item{
-        width: 45%;
-        height: 50vh;
+        width: 70%;
+        height: 70vh;
         margin: 5rem auto 2rem;
+    }
+
+    .admin-list{
+        width: 30%;
     }
 }

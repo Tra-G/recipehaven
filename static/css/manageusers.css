@@ -1,0 +1,53 @@
+*,
+*::before,
+*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Ubuntu', sans-serif;
+    display: flex;
+}
+
+.modal-container{
+    width: 90%;
+    margin: 2rem auto;
+}
+.container-item{
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    height: 50vh;
+    width: 90%;
+    margin: auto;
+}
+.manage-header2{
+    text-align: center;
+    padding: 2rem 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+.modal-list{
+    width: 60%;
+    margin: auto;
+}
+.modal-list li{
+    margin: 1rem 0;
+    font-weight: 500;
+}
+
+
+
+
+@media screen and (min-width: 1024px) {
+    .container-item{
+        width: 70%;
+        height: 70vh;
+        margin: 5rem auto 2rem;
+    }
+    .modal-list{
+        width: 40%;
+        margin: .5rem auto;
+    }
+    
+}
