@@ -110,11 +110,12 @@
             </header>
 
             <?php if ($errors): ?>
-                <ul>
-                    <?php foreach ($errors as $error): ?>
-                        <script>alert('<?php echo $error; ?>')</script>
-                    <?php endforeach; ?>
-                </ul>
+                <?php if (!empty($errors)): ?>
+                    <script>
+                        var errorList = "<?php echo implode('\n', $errors); ?>";
+                        alert("Errors:\n" + errorList);
+                    </script>
+                <?php endif; ?>
             <?php endif; ?>
 
             <div class="submitrecipe-item">

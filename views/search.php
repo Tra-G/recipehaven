@@ -134,6 +134,10 @@
                             </div>
                         </div>
                     <?php endforeach; ?>
+                <?php else: ?>
+                    <script>
+                        alert('No results found');
+                    </script>
                 <?php endif; ?>
             <?php endif; ?>
 
