@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
     <!--Google Fonts-->
     <link rel="stylesheet" href="../css/useradmin.css">
+    <link rel="stylesheet" href="../css/userchangepassword.css">
+    <link rel="stylesheet" href="../css/useraddnewpost.css">
 </head>
 <body>
     <div class="admin-sidemenu">
@@ -38,7 +40,7 @@
                 </div>
 
                 <div>
-                    <a href="useraddnewpost.html">Add New Post</a>
+                    <a href="addnewpost.html">Add New Post</a>
                 </div>
 
                 <div>
@@ -65,6 +67,7 @@
     </div>
 
 
+
     <div class="admin-main">
         <div class="main-container">
             <header class="main-head">
@@ -78,26 +81,42 @@
                 </a>
             </header>
 
-            <div class="main-item">
+
+            <div class="main-item2">
                 <div class="container-item">
                     <header class="admin-header2">
-                        <p>Admin Dashboard</p>
+                        <p>Add New Post</p>
                     </header>
 
-                    <ul class="admin-list">
-                        <li>Total Users: 2</li>
-                        <li>Total Recipes: 23</li>
-                        <li>Total Published: 15</li>
-                        <li>Total Pending: 8</li>
-                        <li>Total Posts: 3</li>
-                    </ul>
+
+                    <div class="admin-list2">
+                        <form action="#">
+                            <div class="form-input">
+                                <label for="title">Title</label>
+                                <input type="text" placeholder="Enter the title of your post">
+                            </div>
+
+                            <div class="form-input">
+                                <label for="content">Content</label>
+                                <textarea name="content" id="content" cols="30" rows="13"></textarea>
+                            </div>
+
+                            <div style="margin: 1rem 0;">
+                                <label style="display: block; margin-bottom: .5rem;" for="image">Image</label>
+                                <input type="file">
+                            </div>
+
+                            <button class="edit-btn">Edit Post</button>
+                        </form>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 
 
-    
+
 
 
     <script>
