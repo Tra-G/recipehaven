@@ -12,6 +12,7 @@
     <!--Google Fonts-->
     <link rel="stylesheet" href="../css/board.css">
     <link rel="stylesheet" href="../css/useradmin.css">
+    <link rel="stylesheet" href="../css/user">
 </head>
 <body>
     <div class="sidemenu">
@@ -43,9 +44,14 @@
                     <span>Personal Recipe</span>
                 </div>
 
-                <div class="users" style="display: flex; align-items: center;">
+                <div class="users editLink" style="display: flex; align-items: center;">
                     <i style="color: #F15025;" class="fa-solid fa-message"></i>
-                    <span>Review</span>
+                    <span>Edit Profile</span>
+                </div>
+
+                <div class="users changeBtn" style="display: flex; align-items: center;">
+                    <i style="color: #F15025;"  class="fa-solid fa-lock"></i>
+                    <span>Change Password</span>
                 </div>
             </div>
 
@@ -140,10 +146,68 @@
                 <div class="next">
                     <a href="#">Next</a>
                 </div>
-            </div>
-
-            
+            </div>           
         </div>
+
+        <div class="edit-profile">
+            <div class="profile-container">
+                <header class="edit-header">
+                    <p>Edit Profile</p>
+                </header>
+
+                <form class="edit-form" action="#">
+                    <div>
+                        <label for="first-name">First Name</label>
+                        <input type="text" placeholder="Enter your first name">
+                    </div>
+
+                    <div>
+                        <label for="last-name">Last Name</label>
+                        <input type="text" placeholder="Enter your last name">
+                    </div>
+
+                    <div>
+                        <label for="email">Email </label>
+                        <input type="text" placeholder="Enter your Email">
+                    </div>
+
+                    <button class="edit-btn">
+                        Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="change-password">
+            <div class="password-container">
+                <header class="password-header">
+                    <p>Change Password</p>
+                </header>
+
+
+                <form class="change-form">
+                    <div>
+                        <label for="current-password">Current Password</label>
+                        <input type="text" placeholder="Enter your password">
+                    </div>
+
+                    <div>
+                        <label for="new-password">New Password</label>
+                        <input type="text" placeholder="Enter your New Password">
+                    </div>
+
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="text" placeholder="Enter your email">
+                    </div>
+
+                    <button class="changebtn">Confirm password</button>
+                </form>
+
+            </div>
+        </div>
+
     </div>
 
 
@@ -172,12 +236,22 @@
         let myRecipeInfo = document.querySelector('.myrecipe');
         let savemodal = document.querySelector('.savedrecipe');
         let savebtn = document.querySelector('.savebtn');
+        let editbtn = document.querySelector('.editLink');
+        let editModal = document.querySelector('.edit-profile');
+        let changeModal = document.querySelector('.change-password');
+        let changelink = document.querySelector('.changeBtn')
 
         function personalInfoModal() {
             modalBox.style.display = 'block';
             personalInfo.style.color = '#d54215';
             myRecipeInfo.style.display = 'none';
             myRecipe.style.color = 'unset';
+            savemodal.style.display = 'none';
+            savebtn.style.color = 'unset;'
+            editModal.style.display = 'none';
+            editbtn.style.color = 'unset';
+            changeModal.style.display = 'none';
+            changelink.style.color = 'unset';
         }
 
         
@@ -189,6 +263,10 @@
             personalInfo.style.color = 'unset';
             savemodal.style.display = 'none';
             savebtn.style.color = 'unset;'
+            editModal.style.display = 'none';
+            editbtn.style.color = 'unset';
+            changeModal.style.display = 'none';
+            changelink.style.color = 'unset';
         }
 
         function saveBtn() {
@@ -198,11 +276,44 @@
             myRecipe.style.color = 'unset';
             modalBox.style.display = 'none';
             personalInfo.style.color = 'unset';
+            editModal.style.display = 'none';
+            editbtn.style.color = 'unset';
+            changeModal.style.display = 'none';
+            changelink.style.color = 'unset';
+        }
+
+        function editBtn() {
+            editModal.style.display = 'block';
+            editbtn.style.color = '#d54215';
+            savemodal.style.display = 'none';
+            savebtn.style.color = 'unset';
+            myRecipeInfo.style.display = 'none';
+            myRecipe.style.color = 'unset';
+            modalBox.style.display = 'none';
+            personalInfo.style.color = 'unset';
+            changeModal.style.display = 'none';
+            changelink.style.color = 'unset';
+        }
+
+        function changeBtn() {
+            changeModal.style.display = 'block';
+            changelink.style.color = '#d54215';
+            editModal.style.display = 'none';
+            editbtn.style.color = '#unset';
+            savemodal.style.display = 'none';
+            savebtn.style.color = 'unset';
+            myRecipeInfo.style.display = 'none';
+            myRecipe.style.color = 'unset';
+            modalBox.style.display = 'none';
+            personalInfo.style.color = 'unset';
         }
 
         personalInfo.onclick = personalInfoModal;
         myRecipe.onclick = myRecipeBtn;
         savebtn.onclick = saveBtn;
+        editbtn.onclick = editBtn;
+        changelink.onclick = changeBtn;
+
     </script> 
 </body>
 </html>

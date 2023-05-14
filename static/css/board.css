@@ -141,7 +141,7 @@ form label{
 
 /*My RECIPE*/
 .myrecipe{
-    display: none;
+    display: block;
     width: 90%;
     height: 100vh;
     margin: 1rem auto;
@@ -200,6 +200,109 @@ form label{
     text-align: center;
 }
 
+
+
+
+/*Edit profile*/
+.edit-profile{
+    display: none;
+    width: 90%;
+    height: 100vh;
+    margin: 1rem auto;
+    height: 55vh;
+    color: #000;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.edit-header p{
+    margin: .2rem 0;
+    font-weight: 600;
+    font-size: 1.5rem;
+    padding: 2rem 0;
+    text-align: center;
+}
+.edit-form{
+    width: 90%;
+    margin: auto;
+}
+.user-form{
+    width: 90%;
+    margin: auto;
+}
+.edit-form label{
+    display: block;
+    margin-top: .5rem;
+    font-weight: 500;
+}
+.edit-form input{
+    width: 100%;
+    padding: .9rem .3rem;
+    font-size: .9rem;
+    outline: none;
+}
+.edit-form input:focus{
+    outline: 2px solid #d54215;
+    border: none;
+}
+.edit-btn{
+    padding: .7rem 1.4rem;
+    margin: 1.5rem 0;
+    outline: none;
+    border: none;
+    color: #fff;
+    background-color: #d54215;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+
+/*Change Password*/
+.change-password{
+    display: none;
+    width: 90%;
+    height: 100vh;
+    margin: 1rem auto;
+    height: 55vh;
+    color: #000;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.password-header p{
+    margin: .2rem 0;
+    font-weight: 600;
+    font-size: 1.5rem;
+    padding: 2rem 0;
+    text-align: center;
+}
+.change-form{
+    width: 90%;
+    margin: auto;
+}
+.change-form label{
+    display: block;
+    margin-top: .5rem;
+    font-weight: 500;
+}
+.change-form input{
+    width: 100%;
+    padding: .9rem .3rem;
+    font-size: .9rem;
+    outline: none;
+}
+.change-form input:focus{
+    outline: 2px solid #d54215;
+    border: none;
+}
+.changebtn{
+    padding: .7rem 1.4rem;
+    margin: 1.5rem 0;
+    outline: none;
+    border: none;
+    color: #fff;
+    background-color: #d54215;
+    border-radius: 4px;
+    font-weight: 600;
+}
 
 @media screen and (min-width: 750px) {
     .fa-xmark{
@@ -287,6 +390,21 @@ form label{
         height: 85vh;
     }
 
+    /*Edit profile*/
+    .edit-profile{
+        width: 50%;
+        height: 70vh;
+    }
+    .edit-btn{
+        padding: .7rem 1.7rem;
+    }
+
+
+    /*change password*/
+    .change-password{
+        width: 50%;
+        height: 70vh;
+    }
 
 }
 
