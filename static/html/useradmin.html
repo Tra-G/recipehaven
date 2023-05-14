@@ -10,20 +10,19 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
     <!--Google Fonts-->
-    <link rel="stylesheet" href="../css/admin.css">
-    <link rel="stylesheet" href="../css/manageusers.css">
+    <link rel="stylesheet" href="../css/useradmin.css">
 </head>
 <body>
     <div class="admin-sidemenu">
         <i style="font-size: 1.5rem;" class="fa-solid fa-xmark"></i>
         <div class="admin-container">
             <header class="admin-header">
-                <a href="admin.html">Admin Dashboard</a>
+                <a href="useradmin.html">Admin Dashboard</a>
             </header>
 
             <div class="admin-link">
-                <div class="manageusers">
-                    <a href="manageusers.html">Manage Users</a>
+                <div>
+                    <a href="usermanageusers.html">Manage Users</a>
                 </div>
 
                 <div>
@@ -35,7 +34,7 @@
                 </div>
 
                 <div>
-                    <a href="blogmanagement.html">Blog Management</a>
+                    <a href="userblogmanagement.html">Blog Management</a>
                 </div>
 
                 <div>
@@ -47,7 +46,7 @@
                 </div>
 
                 <div>
-                    <a href="changepassword.html">Change Password</a>
+                    <a href="userchangepassword.html">Change Password</a>
                 </div>
 
                 <div>
@@ -79,26 +78,26 @@
                 </a>
             </header>
 
-            <div class="modal-container">
+            <div class="main-item">
                 <div class="container-item">
-                    <header class="manage-header2">
-                        <p>Users List</p>
+                    <header class="admin-header2">
+                        <p>Admin Dashboard</p>
                     </header>
 
-                    <ul class="modal-list">
-                        <li>Ogunsona Adeleke (ade@ade.com) [Edit] [Delete]</li>
-                        <li>User Tester (user@user.com) [Edit] [Delete]</li>
+                    <ul class="admin-list">
+                        <li>Total Users: 2</li>
+                        <li>Total Recipes: 23</li>
+                        <li>Total Published: 15</li>
+                        <li>Total Pending: 8</li>
+                        <li>Total Posts: 3</li>
                     </ul>
                 </div>
             </div>
-
         </div>
     </div>
 
 
-
-
-
+    
 
 
     <script>
@@ -115,10 +114,6 @@
             menu.classList.remove('show');
             hamburger.classList.remove('hide');
         });
-
-
-
-    
     </script>
 </body>
 </html>
