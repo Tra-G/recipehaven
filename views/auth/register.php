@@ -29,21 +29,17 @@
                         </a>
                     </div>
 
+                    <?php if (!empty($errors)): ?>
+                        <script>
+                            var errorList = "<?php echo implode('\n', $errors); ?>";
+                            alert("Errors:\n" + errorList);
+                        </script>
+                    <?php endif; ?>
+
                     <div class="titlehead">
                         <div>
                             <p class="titlehead1">Welcome to recipe<span style="color: #F15025;">haven</span></p>
-
-                            <?php if (isset($errors) && count($errors) > 0): ?>
-                                <div class="alert alert-danger">
-                                    <?php foreach ($errors as $error): ?>
-                                        <p class="titlehead2">
-                                            <?php echo $error ?>
-                                        </p>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php else: ?>
                             <p class="titlehead2">Sign up to view your favourite recipe</p>
-                            <?php endif; ?>
                         </div>
                     </div>
 
