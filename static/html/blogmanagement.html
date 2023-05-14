@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
     <!--Google Fonts-->
     <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/blogmanagement.css">
 </head>
 <body>
     <div class="admin-sidemenu">
@@ -63,6 +64,59 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <div class="admin-main">
+        <div class="main-container">
+            <header class="main-head">
+                <div class="hamburger">
+                    <i style="font-size: 1.6rem; color: #000;" class="fa-solid fa-bars"></i>
+                </div>
+        
+                <a class="nav-header" href="index.html">
+                    <i style="color: #F15025;" class="fa fa-cutlery"></i>
+                    <p>recipe<span style="color: #F15025;">haven</span></p>
+                </a>
+            </header>
+
+            <div class="main-item">
+                <header class="admin-header2">
+                    <p>All Post</p>
+                </header>
+
+                <ul class="admin-list">
+                    <li>Our Top 10 Salmon Recipe [Edit] [Delete]</li>
+                    <li>12 Budget-Friendly Dinners [Edit] [Delete]</li>
+                    <li>8 Vegan Recipe [Edit] [Delete]</li>
+                </ul>
+
+                <form class="admin-list" action="#">
+                    <button>Next</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const menu = document.querySelector(".admin-sidemenu");
+        const closeIcon = document.querySelector('.fa-xmark');
+
+        hamburger.addEventListener("click", function() {
+            menu.classList.toggle("show");
+            hamburger.classList.toggle("hide");
+        });
+
+        closeIcon.addEventListener('click', () => {
+            menu.classList.remove('show');
+            hamburger.classList.remove('hide');
+        });
+    </script>
 
 </body>
 </html>
