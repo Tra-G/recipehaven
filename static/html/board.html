@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
     <!--Google Fonts-->
     <link rel="stylesheet" href="../css/board.css">
+    <link rel="stylesheet" href="../css/useradmin.css">
 </head>
 <body>
     <div class="sidemenu">
@@ -32,12 +33,12 @@
                     <span>Personal Info</span> 
                 </div>
 
-                <div class="users" style="display: flex; align-items: center;">
+                <div class="users savebtn" style="display: flex; align-items: center;">
                     <i style="color: #F15025;" class="fa-solid fa-heart"></i>
                     <span>Saved Recipes</span>
                 </div>
                 
-                <div class="users" style="display: flex; align-items: center;">
+                <div class="users personal-recipe" style="display: flex; align-items: center;">
                     <i style="color: #F15025;" class="fa-solid fa-bowl-food"></i>
                     <span>Personal Recipe</span>
                 </div>
@@ -111,40 +112,37 @@
         </div>
 
 
-        <div class="saved-recipe">
-            <div class="saved-container">
-                <header class="saved-header">
-                    <p style="font-size: 1.6rem;">Personal Recipe</p>
-                    <p>Recipe you save will be stored here</p>
+        <div class="savedrecipe">
+            <div class="savecontainer">
+                <header class="saveheader">
+                    <p>Saved Recipes</p>
                 </header>
 
+                <ul class="admin-list1">
+                    <li>[Remove]</li>
+                </ul>
             </div>
+        </div>
 
 
-            <div>
-                <p style="color: #747374; text-align: center; font-weight: 600; font-size: 1.3rem;">You haven't created any recipes yet.</p>
+        <div class="myrecipe">
+            <div class="saved-container">
+                <header class="saved-header">
+                    <p style="font-size: 1.6rem; font-weight: 600; margin-top: 2rem;">My Recipe</p>
+                    <p style="font-size: 1rem;">Recipes you save will be stored here</p>
+                </header>
+
+                <ul class="admin-list1">
+                    <li>Veggie Burger [Status: published [Delete] [Edit]</li>
+                    <li>Spaghetti Carbonara [Status: pending [Delete] [Edit]</li>
+                </ul>
+
+                <div class="next">
+                    <a href="#">Next</a>
+                </div>
             </div>
+
             
-            <form style="text-align: center;" action="#">
-                <button style="padding: .8rem 1.5rem; outline: none; border: none; background-color: #F15025; color: #fff; margin: 1rem 0;"><i class="fa-sharp fa-solid fa-plus"></i> Submit a recipe</button>
-            </form>
-
-            <div>
-                <div class="saved-recipe-image">
-                    <img src="../imag/img21.jpeg" alt="rice and stew">
-                    <p>Rice and tomatoes sauce</p>
-                </div>
-
-                <div class="saved-recipe-image">
-                    <img src="../imag/img19.jpeg" alt="">
-                    <p>Mexican Spagetti</p>
-                </div>
-
-                <div class="saved-recipe-image">
-                    <img src="../imag/img17.jpeg" alt="">
-                    <p>pizza</p>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -170,13 +168,41 @@
         /*PERSONAL INFO*/
         let personalInfo = document.querySelector('.personal-info');
         let modalBox = document.querySelector('.main-container');
+        let myRecipe = document.querySelector('.personal-recipe');
+        let myRecipeInfo = document.querySelector('.myrecipe');
+        let savemodal = document.querySelector('.savedrecipe');
+        let savebtn = document.querySelector('.savebtn');
 
         function personalInfoModal() {
             modalBox.style.display = 'block';
             personalInfo.style.color = '#d54215';
+            myRecipeInfo.style.display = 'none';
+            myRecipe.style.color = 'unset';
+        }
+
+        
+
+        function myRecipeBtn() {
+            myRecipeInfo.style.display = 'block';
+            myRecipe.style.color = '#d54215';
+            modalBox.style.display = 'none';
+            personalInfo.style.color = 'unset';
+            savemodal.style.display = 'none';
+            savebtn.style.color = 'unset;'
+        }
+
+        function saveBtn() {
+            savemodal.style.display = 'block';
+            savebtn.style.color = '#d54215;'
+            myRecipeInfo.style.display = 'none';
+            myRecipe.style.color = 'unset';
+            modalBox.style.display = 'none';
+            personalInfo.style.color = 'unset';
         }
 
         personalInfo.onclick = personalInfoModal;
+        myRecipe.onclick = myRecipeBtn;
+        savebtn.onclick = saveBtn;
     </script> 
 </body>
 </html>
