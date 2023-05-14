@@ -186,7 +186,7 @@ class adminController {
                     $stringed_categories = implode(", ", $recipeData['categories']);
 
                     // add recipe
-                    if ($this->recipe_model->addRecipe($this->admin['id'], $recipeData['title'], $recipeData['directions'], $recipeData['ingredients'], $recipeData['prep_time'], $recipeData['servings'], 'pending', $stringed_categories, $image)) {
+                    if ($this->recipe_model->addRecipe($this->admin['id'], $recipeData['title'], $recipeData['directions'], $recipeData['ingredients'], $recipeData['prep_time'], $recipeData['servings'], 'published', $stringed_categories, $image)) {
                         // redirect to recipes page
                         redirect('admin/recipes');
                         exit();
@@ -369,7 +369,7 @@ class adminController {
 
         return array(
             'title' => $title,
-            'admin' => $this->admin,
+            'admin' => $this->admin_model->getAdminById($_SESSION['user_id']),
             'errors' => $errors,
             'success' => isset($success) ? $success : null,
         );
@@ -420,7 +420,7 @@ class adminController {
     public function allPosts() {
         $title = pageTitle("All Posts");
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
-        $per_page = 3;
+        $per_page = 5;
 
         // get all posts
         $posts = $this->post_model->getAllPosts($page, $per_page);

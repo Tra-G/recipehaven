@@ -223,7 +223,7 @@ class userController {
                     $stringed_categories = implode(", ", $recipeData['categories']);
 
                     // add recipe
-                    if ($this->recipe_model->addRecipe($this->user['id'], $recipeData['title'], $recipeData['directions'], $recipeData['ingredients'], $recipeData['prep_time'], $recipeData['servings'], 'pending', $stringed_categories, $image)) {
+                    if ($this->recipe_model->addRecipe($this->user['id'], $recipeData['title'], $recipeData['directions'], $recipeData['ingredients'], $recipeData['prep_time'], $recipeData['servings'], 'published', $stringed_categories, $image)) {
                         // redirect to profile
                         redirect('user/profile');
                         exit();
