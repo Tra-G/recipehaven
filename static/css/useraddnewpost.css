@@ -24,20 +24,34 @@ body{
     background-color: #F15025;
     color: #fff;
     border-radius: 4px;
+    font-weight: 600;
     margin: 1rem 0;
+    font-size: .9rem;
 }
 #content{
     width: 100%;
 }
 
+.edit-btn2{
+    padding: .5rem 1.6rem;
+    color: #000;
+    border: 1px solid #000;
+    font-weight: 600;
+    border-radius: 4px;
+}
+.edit-btn2:hover{
+    background-color: #F15025;
+    color: #fff;
+    border: none;
+}
 
 @media screen and (min-width: 1024px) {
     .main-item2{
         width: 50%;
         height: 75vh;
     }
-    .edit-btn{
+    .edit-btn, .edit-btn2{
         padding: .7rem 1.8rem;
-        font-size: .9rem;
+        font-size: 1rem;
     }
 }
