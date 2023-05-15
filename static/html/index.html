@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--Font icon links-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
     <!--Google Fonts-->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Sono:wght@400;500&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
     <!--Styling Link-->
     <link rel="stylesheet" href="../css/style.css">
-    <!--<link rel="stylesheet" href="../css/about.css">-->
+    <!--Swiper link-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    
     <title>recipehaven</title>
 </head>
 <body>
@@ -76,11 +77,11 @@
                         Blog
                     </a>
 
-                    <a href="useradmin.html">
+                    <a href="login.html">
                         Login
                     </a>
 
-                    <a href="board.html">
+                    <a href="#">
                         Recipe
                     </a>
 
@@ -103,7 +104,7 @@
         </div>
         
     </div>
-
+    
 
     <!--Background-->
     <div class="containerbox">
@@ -152,122 +153,178 @@
 
 
     <!--First Container-->
-    
-
-
-    <!--SECOND CONTAINER-->
-    <div>
-        <header style="margin: 2rem 0 0; text-align: center;">
-            <h1>Beef Meal Choice</h1>
+    <section class="slider-container">
+        <header class="slidehead">
+            <p>Beef Meal Recipe</p>
         </header>
-        <div class="slide-container">
-            <swiper-container class="mySwiper" navigation="true" loop="true" space-between="30"
-                slides-per-view="4">
-                <swiper-slide style="display: block;">
-                <img src="../imag/img4.jpeg">
-                <div>
-                    <p style="font-size: 1.5rem;">Roasted Pork</p>
+        <div class="container">
+            <div class="swiper card">
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img12.jpeg" alt="">
+                            <header class="swiper-header">
+                                <h1>burger with spinach</h1>
+                            </header>
+                            <div class="viewbtn">
+                                <a class="viewrecipe" href="#">View recipe</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img5.jpeg">
+                            <header class="swiper-header">
+                                <h1>Cheeseburger</h1>
+                            </header>
+                            <div class="viewbtn">
+                                <a class="viewrecipe" href="#">View recipe</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img3.jpeg" alt="">
+                            <header class="swiper-header">
+                                <h1>Streak food</h1>
+                            </header>
+                            <div class="viewbtn">
+                                <a class="viewrecipe" href="#">View recipe</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img24.jpeg">
+                            <header class="swiper-header">
+                                <h1>Grilled meat</h1>
+                            </header>
+                            <div class="viewbtn">
+                                <a class="viewrecipe" href="#">View recipe</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img4.jpeg">
+                            <header class="swiper-header">
+                                <h1>Barbecue</h1>
+                            </header>
+                            <div class="viewbtn">
+                                <a class="viewrecipe" href="#">View recipe</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img7.jpeg">
+                            <header class="swiper-header">
+                                <h1>beef steak vegetables</h1>
+                            </header>
+                            <div class="viewbtn">
+                                <a class="viewrecipe" href="#">View recipe</a>
+                            </div>
+                        </div>                       
+                    </div>
                 </div>
-                </swiper-slide>
-                
-                <swiper-slide>
-                <img src="../imag/img24.jpeg">
-                </swiper-slide>
-                
-                <swiper-slide>
-                <img src="../imag/img23.webp">
-                </swiper-slide>
-                
-                <swiper-slide>
-                <img src="../imag/img7.jpeg">
-                </swiper-slide>
-                
-                <swiper-slide><img src="../imag/img6.jpeg"></swiper-slide>
-            </swiper-container>
+                <div style="color: #000; background-color: #fff; padding: .3rem;" class="swiper-button-next"></div>
+                <div style="color: #000; background-color: #fff; padding: .3rem;" class="swiper-button-prev"></div>
+            </div>
         </div>
+    </section>
+
     
-    </div>
 
     <!--SUBCRIBE-->
         <div class="sub-container">
             <div class="sub-item">
-                <header>
-                    <p>Subscribe to our Newsletter</p>
-                    <p>To receive updates on the latest recipe</p>
+                <header class="sub-head">
+                    <p class="head1">Check Out The Latest From our Blog</p>
+                    <p class="head2" style="margin-bottom: .5rem; padding: .5rem 0;">To receive updates on the latest recipe</p>
                 </header>
 
-                <form action="#">
-                    <button>Subscribe</button>
-                </form>
+                <a class="sub-btn" style="color: #fff;" href="blog.html">View updates</a>
             </div>
         </div>
 
 
     <!--THIRD CONTAINER-->
-    <div>
-        <header style="margin: 2rem 0 0; text-align: center;">
-            <h1>Vegan Meal</h1>
+    <section class="slider-container">
+        <header class="slidehead">
+            <p>Vegan Meal Recipe</p>
         </header>
-        <div class="slide-container">
-            <swiper-container class="mySwiper" navigation="true" loop="true" space-between="30"
-                slides-per-view="4">
-                <swiper-slide style="display: block;">
-                <img src="../imag/img38.jpeg">
-                <div>
-                    <p style="font-size: 1.5rem;">Roasted Pork</p>
-                </div>
-                </swiper-slide>
-                
-                <swiper-slide>
-                <img src="../imag/img18.jpeg">
-                </swiper-slide>
-                
-                <swiper-slide>
-                <img src="../imag/img14.jpeg">
-                </swiper-slide>
-                
-                <swiper-slide>
-                <img src="../imag/img42.jpeg">
-                </swiper-slide>
-                
-                <swiper-slide><img src="../imag/img6.jpeg"></swiper-slide>
-            </swiper-container>
-        </div>
-    
-    </div>
+        <div class="container">
+            <div class="swiper card">
+                <div class="swiper-wrapper">
 
-    <!--<div class="recipe-sect1">
-        <div>
-            <div class="recipeheader">
-                
-            </div>
-
-            <div class="recipe-container">
-                <div>
-                    <div class="recipe-image">
-                        <img src="imag/img19.jpg" alt="spagetti">
-                    </div>
-
-                    <div class="recipe-text">
-                        <div class="text1">
-                            <p>Bow Pie pasta</p>
-                        </div>
-                        <div>
-                            <p>Use bow tie pasta to dress up any dish that calls for small pasta shapes, such as penne or shells. </p>
-                        </div>
-
-                        <div>
-                            <button>View Recipe</button>
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img14.jpeg" alt="">
+                            <header class="swiper-header">
+                                <h1>Italian Salad</h1>
+                            </header>
+                            <a class="viewrecipe" href="#">View recipe</a>
                         </div>
                     </div>
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img42.jpeg">
+                            <header class="swiper-header">
+                                <h1>Tomato and avocado</h1>
+                            </header>
+                            <a class="viewrecipe" href="#">View recipe</a>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img6.jpeg" alt="">
+                            <header class="swiper-header">
+                                <h1>Caesar salad</h1>
+                            </header>
+                            <a class="viewrecipe" href="#">View recipe</a>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img18.jpeg">
+                            <header class="swiper-header">
+                                <h1>Egg and salad</h1>
+                            </header>
+                            <a class="viewrecipe" href="#">View recipe</a>
+                        </div>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <div class="img-box">
+                            <img src="../imag/img38.jpeg">
+                            <header class="swiper-header">
+                                <h1>Vegetable salad</h1>
+                            </header>
+                            <a class="viewrecipe" href="#">View recipe</a>
+                        </div>
+                    </div>
+
+                    
                 </div>
+                <div style="color: #000; background-color: #fff; padding: .3rem;" class="swiper-button-next"></div>
+                <div style="color: #000; background-color: #fff; padding: .3rem;" class="swiper-button-prev"></div>
             </div>
         </div>
-    </div>-->
+    </section>
 
 
 
 
+    <!--footer-->
     <footer>
         <div class="footer-item">
             <div class="footer-text news">
@@ -303,6 +360,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
     <script>
         const hamburger = document.querySelector(".hamburger");
@@ -342,6 +400,35 @@
 
 
 
+    /*Swiper Js*/
+    var swiper = new Swiper(".card", {
+      slidesPerView: 3,
+      loop: true,
+      speed: 1000,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        320: {
+          slidesPerView: 1,
+        },
+        480: {
+          slidesPerView: 2,
+        },
+        768: {
+            slidesPerView: 3,
+        },
+        1200: {
+          slidesPerView: 4,
+          spaceBetween: 20,         
+        },
+      },
+    });
     
     </script>
 </body>
