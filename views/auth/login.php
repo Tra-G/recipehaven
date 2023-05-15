@@ -28,7 +28,7 @@
         </div>
 
         <div class="email-modal">
-            <input class="email-input" type="email" name="email" placeholder="Enter your email">
+            <input class="email-input" type="email" name="email" placeholder="Enter your email" required>
         </div>
 
         <div class="email-modal">
