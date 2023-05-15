@@ -164,19 +164,21 @@
             <div class="swiper card">
                 <div class="swiper-wrapper">
 
-                    <?php foreach($most_viewed as $popular): ?>
-                        <div class="swiper-slide">
-                            <div class="img-box">
-                                <img src="<?php echo assets('recipe-images/'.$popular['image']); ?>" alt="">
-                                <header class="swiper-header">
-                                    <h1><?php echo $popular['title']; ?></h1>
-                                </header>
-                                <div class="viewbtn">
-                                    <a class="viewrecipe" href="<?php echo route('recipe/'.$popular['id']); ?>">View recipe</a>
+                    <?php if ($most_recent): ?>
+                        <?php foreach($most_viewed as $popular): ?>
+                            <div class="swiper-slide">
+                                <div class="img-box">
+                                    <img src="<?php echo assets('recipe-images/'.$popular['image']); ?>" alt="">
+                                    <header class="swiper-header">
+                                        <h1><?php echo $popular['title']; ?></h1>
+                                    </header>
+                                    <div class="viewbtn">
+                                        <a class="viewrecipe" href="<?php echo route('recipe/'.$popular['id']); ?>">View recipe</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
                 </div>
                 <div style="color: #000; background-color: #fff; padding: .3rem;" class="swiper-button-next"></div>
@@ -210,19 +212,21 @@
             <div class="swiper card">
                 <div class="swiper-wrapper">
 
-                    <?php foreach($most_recent as $recent): ?>
-                        <div class="swiper-slide">
-                            <div class="img-box">
-                                <img src="<?php echo assets('recipe-images/'.$recent['image']); ?>" alt="">
-                                <header class="swiper-header">
-                                    <h1><?php echo $recent['title']; ?></h1>
-                                </header>
-                                <div class="viewbtn">
-                                    <a class="viewrecipe" href="<?php echo route('recipe/'.$recent['id']); ?>">View recipe</a>
+                    <?php if ($most_recent): ?>
+                        <?php foreach($most_recent as $recent): ?>
+                            <div class="swiper-slide">
+                                <div class="img-box">
+                                    <img src="<?php echo assets('recipe-images/'.$recent['image']); ?>" alt="">
+                                    <header class="swiper-header">
+                                        <h1><?php echo $recent['title']; ?></h1>
+                                    </header>
+                                    <div class="viewbtn">
+                                        <a class="viewrecipe" href="<?php echo route('recipe/'.$recent['id']); ?>">View recipe</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
 
                 </div>
