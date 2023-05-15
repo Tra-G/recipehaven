@@ -21,8 +21,8 @@ class userController {
     // user profile
     public function profile() {
         $title = pageTitle("Profile");
-        $saved_per_page = 2;
-        $mine_per_page = 2;
+        $saved_per_page = 5;
+        $mine_per_page = 5;
 
         // check if page is set
         $saved_page = isset($_GET['recipe_page']) && is_numeric($_GET['recipe_page']) ? $_GET['recipe_page'] : 1;
