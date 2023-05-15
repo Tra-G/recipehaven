@@ -292,7 +292,9 @@ swiper-slide img {
 .card-details{
     width: 70%;
     margin: auto;
-    /*transform: translate(-50% -50%);*/
+    display: grid;
+    place-items: center;
+    height: 90vh;
 }
 
 .cardheader{

@@ -14,9 +14,13 @@ class homeController {
     // home page
     public function index() {
         $title = pageTitle('Home');
+        $most_viewed = $this->recipes->getMostViewedRecipes(20);
+        $most_recent = $this->recipes->getMostRecentRecipes(20);
 
         return array(
             'title' => $title,
+            'most_viewed' => $most_viewed,
+            'most_recent' => $most_recent,
         );
     }
 

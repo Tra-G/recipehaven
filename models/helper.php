@@ -988,6 +988,26 @@ class Recipe {
         // return true if successful
         return $stmt ? true : false;
     }
+
+    // get most viewed recipes
+    public function getMostViewedRecipes($limit = 10) {
+        $sql = "SELECT * FROM recipes ORDER BY views DESC LIMIT ?";
+        $params = array($limit);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $recipes = $result->fetch_all(MYSQLI_ASSOC);
+        return $recipes;
+    }
+
+    // get most recent recipes
+    public function getMostRecentRecipes($limit = 10) {
+        $sql = "SELECT * FROM recipes ORDER BY created_at DESC LIMIT ?";
+        $params = array($limit);
+        $stmt = $this->executeQuery($sql, $params);
+        $result = $stmt->get_result();
+        $recipes = $result->fetch_all(MYSQLI_ASSOC);
+        return $recipes;
+    }
 }
 
 // Blog class
