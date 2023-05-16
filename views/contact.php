@@ -154,7 +154,7 @@
                             <p class="container2-text">Email Address</p>
                         </div>
                         <div class="flex-text2">
-                            reciperaven@gmail.com
+                            recipehaven@gmail.com
                         </div>
                     </div>
 
@@ -166,7 +166,7 @@
                         </div>
 
                         <div class="flex-text2">
-                            +2343-222-4111
+                            +44-143-222-4111
                         </div>
                     </div>
 
@@ -185,7 +185,6 @@
             </div>
         </div>
     </div>
-
 
     <footer>
         <div class="footer-item">
