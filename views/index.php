@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--Font icon links-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
     <!--Google Fonts-->
     <link
@@ -15,7 +15,7 @@
     <!--Styling Link-->
     <link rel="stylesheet" href="<?php echo assets('css/style.css'); ?>">
     <!--Swiper link-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
 
     <title><?php echo $title; ?></title>
 </head>
@@ -152,7 +152,6 @@
             </swiper-slide>
 
         </swiper-container>
-    </div>
     </div>
 
     <!--First Container-->

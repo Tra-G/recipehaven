@@ -119,7 +119,7 @@
 
         <div class="post-page">
             <p class="post1">
-                <?php echo nl2br($post['content']); ?>
+                <?php echo str_replace('<br />', '<br>', nl2br($post['content'])); ?>
             </p>
         </div>
 

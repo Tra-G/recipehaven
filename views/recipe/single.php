@@ -9,7 +9,7 @@
         <?php echo $title; ?>
     </title>
     <!--Font icon links-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
     <!--Google Fonts-->
@@ -174,7 +174,7 @@
             </header>
 
             <p>
-                <?php echo nl2br($recipe['directions']); ?>
+                <?php echo str_replace('<br />', '<br>', nl2br($recipe['directions'])); ?>
             </p>
         </div>
 
@@ -183,7 +183,7 @@
                 Ingredient
             </header>
             <div class="ingredient-list">
-                <?php echo nl2br($recipe['ingredients']); ?>
+                <?php echo str_replace('<br />', '<br>', nl2br($recipe['ingredients'])); ?>
             </div>
         </div>
 
